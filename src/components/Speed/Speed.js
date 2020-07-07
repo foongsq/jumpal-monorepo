@@ -1,27 +1,25 @@
 import React from 'react';
+import { AuthUserContext } from '../Session';
 import './Speed.css';
+import NewSpeedRecord from './NewSpeedRecord/NewSpeedRecord';
+import SpeedData from './SpeedData/SpeedData';
 
-export default class Speed extends React.Component {
+const Speed = () => (
+  <AuthUserContext.Consumer>
+    {authUser => {
+    return <SpeedBase user={authUser}/>}}
+  </AuthUserContext.Consumer>
+);
+
+class SpeedBase extends React.Component {
   render() {
     return (
-      <div className="newSpeedRecord">
-        <form className="form">
-          <h2>New Speed Record</h2>
-          <p>Store your speed scores here :)</p>
-          <label>Event: 
-            <select name="event">
-              <option value="" disabled selected>Select your event</option>
-              <option value="1x30sec Running Step">1x30sec Running Step</option>
-              <option value="30 seconds DU">30 seconds Double Unders</option>
-            </select>
-          </label>
-          <label>
-            Score:
-            <input type="number" name="score" placeholder="Enter your speed score"></input>
-          </label>
-          <input type="submit"></input>
-        </form>
+      <div className="speed">
+        <NewSpeedRecord user={this.props.user} />
+        <SpeedData user={this.props.user} />
       </div>
     );
   }
 }
+
+export default Speed;

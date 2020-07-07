@@ -1,18 +1,3 @@
-.newSpeedRecord {
-  margin: 0.5rem;
+.speed {
   padding: 1rem;
-  background-color: #38c4ff;
-  border-radius: 10px;
-}
-
-.form label {
-  display: block;
-  padding: 0.5rem;
-}
-
-.form input, select {
-  background-color: wheat;
-  margin-left: 1rem;
-  outline: none;
-  border: none;
 }

@@ -1,6 +1,7 @@
 body {
-  background-color: #dedede;
-  font-family: Roboto, Arial
+  background-color: white;
+  font-family: Roboto, Arial;
+  color:#383838;
 }
 .logoContainer {
   width: 100%;
