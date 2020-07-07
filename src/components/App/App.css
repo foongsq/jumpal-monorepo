@@ -1,0 +1,13 @@
+body {
+  background-color: #dedede;
+  font-family: Roboto, Arial
+}
+.logoContainer {
+  width: 100%;
+}
+
+.logo {
+  display: block;
+  width: 150px;
+  margin: 0.5rem auto;
+}

@@ -1,0 +1,4 @@
+Font: Lemonada
+Overall background color: #dedede
+Navigation bar blue background: #38c4ff
+Navigation bar blue hover: #8adcff
