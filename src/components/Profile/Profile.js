@@ -2,12 +2,12 @@ import React from 'react';
 import { withFirebase } from '../../Firebase/index';
 import { AuthUserContext } from '../Session';
 
-const Profile = () => (
-  <AuthUserContext.Consumer>
-    {authUser => {
-    return <ProfilePage user={authUser}/>}}
-  </AuthUserContext.Consumer>
-);
+// const Profile = () => (
+//   <AuthUserContext.Consumer>
+//     {authUser => {
+//     return <ProfilePage user={authUser}/>}}
+//   </AuthUserContext.Consumer>
+// );
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -20,15 +20,20 @@ class ProfilePage extends React.Component {
   }
 
   render() {
-    console.log('user', this.props.user)
+    console.log('user', this.props.firebase.auth.currentUser)
+    if(this.props.firebase.auth.currentUser) {
       return (
           <div>
             <h1>Profile page</h1>
-            <p>Name: {this.props.user.displayName}</p>
-            <p>Email: {this.props.user.email}</p>
+            <img src={this.props.firebase.auth.currentUser.photoURL} />
+            <p>Name: {this.props.firebase.auth.currentUser.displayName}</p>
+            <p>Email: {this.props.firebase.auth.currentUser.email}</p>
           </div>
       );
+    } else {
+      return (<p>Waiting for profile data...</p>)
+    }
   }
 }
 
-export default withFirebase(Profile);
+export default withFirebase(ProfilePage);

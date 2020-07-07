@@ -14,7 +14,7 @@ const Navigation = () => (
 );
 
 const NavigationAuth = () => (
-  <div className="nav">
+  <div className="navA">
     <ul>
       <li>
         <Link to='/Home'>Home</Link>
@@ -39,7 +39,7 @@ const NavigationAuth = () => (
 );
 
 const NavigationNonAuth = () => (
-  <div className="nav">
+  <div className="navNA">
     <ul>
       <li>
         <Link to='/SignIn'>SignIn</Link>

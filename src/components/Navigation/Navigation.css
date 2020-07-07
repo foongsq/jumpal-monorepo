@@ -1,4 +1,4 @@
-.nav {
+.navA,.navNA {
   width: 100%;
   text-align: center;
   background-color: #38c4ff;
@@ -9,8 +9,15 @@ ul {
   padding-left: 0;
 }
 
-li {
+.navNA li {
   width: 25%;
+  display: inline-block;
+  margin-left: 0;
+  padding: 1rem 0;
+}
+
+.navA li {
+  width: 16.5%;
   display: inline-block;
   margin-left: 0;
   padding: 1rem 0;
@@ -20,6 +27,7 @@ a {
   padding: 1rem 30%;
   text-decoration: none;
   color: white;
+  white-space: nowrap;
 }
 
 a:hover {
