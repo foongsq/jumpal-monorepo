@@ -17,21 +17,21 @@ class SpeedDataBase extends React.Component {
       speedRecords: [],
       isDataLoaded: false
     }
+    this.readData = this.readData.bind(this);
     this.renderTableData = this.renderTableData.bind(this);
     this.renderTableHeader = this.renderTableHeader.bind(this);
   }
 
-  componentDidMount() {
-    console.log(this.props)
+  readData() {
     let speedRecords = [];
     if (this.props.user) {
       let ref = this.props.firebase.user(this.props.user.uid).child('speed-records');
-      ref.on("value", function(snapshot) {
-        console.log('snapshot', snapshot.val())
+      console.log('ref', ref)
+      ref.on('value', function(snapshot) {
+        console.log('snapshot', snapshot)
         speedRecords.push(snapshot.val());
       });
     
-      console.log(speedRecords)
       this.setState({
         speedRecords: speedRecords,
         isDataLoaded: true
@@ -78,10 +78,16 @@ class SpeedDataBase extends React.Component {
           </div>
         );
       } else {
-        return <p className="loading">Waiting for data... Please refresh page x1 time</p>
+        return (<div>
+            <p className="loading">this.state.speedRecords[0] not loaded yet</p>
+            <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh speed data</button>
+          </div>);
       }
     } else {
-      return <p className="loading">Waiting for data... Please refresh page x2 times</p>
+      return (<div>
+          <p className="loading">Data not loaded or speed records empty</p>
+          <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh speed data</button>
+        </div>);
     }
   }
 }
