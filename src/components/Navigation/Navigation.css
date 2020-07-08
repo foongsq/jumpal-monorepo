@@ -1,4 +1,8 @@
-.navA,.navNA {
+.navMenuButton {
+  display: none;
+}
+
+.navA ul {
   width: 100%;
   text-align: center;
   background-color: #38c4ff;
@@ -9,15 +13,8 @@ ul {
   padding-left: 0;
 }
 
-.navNA li {
-  width: 25%;
-  display: inline-block;
-  margin-left: 0;
-  padding: 1rem 0;
-}
-
 .navA li {
-  width: 16.5%;
+  width: 25%;
   display: inline-block;
   margin-left: 0;
   padding: 1rem 0;
@@ -32,4 +29,11 @@ a {
 
 a:hover {
   background-color: #8adcff
+}
+
+
+@media (max-width: 600px) {
+  .navA ul {
+    display: none;
+  }
 }

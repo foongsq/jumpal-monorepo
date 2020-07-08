@@ -1,0 +1,20 @@
+.loading {
+  color: red;
+}
+
+.speedData-table {
+  width: 100%;
+}
+
+.speedData-table, .speedData-table tbody, .speedData-table td, .speedData-table th {
+  border: 1px solid black;
+  border-collapse:collapse;
+}
+
+.speedData-table th, .speedData-table td {
+  padding: 0.5rem 1rem;
+}
+
+.speedData-table th {
+  background-color: #38c4ff;
+}

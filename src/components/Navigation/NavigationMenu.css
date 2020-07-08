@@ -1,0 +1,40 @@
+.navMenu {
+  display: none;
+}
+
+.navMenu button {
+  background-color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+.menu a {
+  display: block;
+  padding: 1rem;
+  color: white;
+  background-color: #38c4ff;
+}
+
+.menu a:hover {
+  background-color: #8adcff;
+}
+
+.smallLogo {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .navMenu {
+    display: block;
+  }
+
+  .smallLogo {
+    display: block;
+    width: 150px;
+    margin: 0.5rem auto;
+  }
+
+  .button-and-logo {
+    display: flex;
+  }
+}

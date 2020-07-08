@@ -8,6 +8,7 @@ import SignInPage from '../SignIn/SignIn';
 import Profile from '../Profile/Profile';
 import SignOut from '../SignOut/SignOut';
 import Speed from '../Speed/Speed';
+import Home from '../Calendar/Calendar';
 import logo from "../../images/jumpal-logo.gif";
 
 class App extends React.Component {
@@ -20,13 +21,14 @@ class App extends React.Component {
           <Router>
             <div className="navAndcontent">
               <Navigation />
-              <Route path='/SignIn' component={SignInPage} />
-              <Route path='/Home' />
-              <Route path='/Speed' component={Speed}/>
-              <Route path='/Freestyle' />
-              <Route path='/Admin' />
-              <Route path='/Profile' component={Profile} />
-              <Route path='/SignOut' component={SignOut} />
+              <div className="content">
+                <Route path='/SignIn' component={SignInPage} />
+                <Route path='/Home' component={Home}/>
+                <Route path='/Speed' component={Speed}/>
+                <Route path='/Freestyle' />
+                <Route path='/Profile' component={Profile} />
+                <Route path='/SignOut' component={SignOut} />
+              </div>
             </div>
           </Router>
         </div>

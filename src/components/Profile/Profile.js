@@ -1,13 +1,8 @@
 import React from 'react'; 
 import { withFirebase } from '../../Firebase/index';
-import { AuthUserContext } from '../Session';
-
-// const Profile = () => (
-//   <AuthUserContext.Consumer>
-//     {authUser => {
-//     return <ProfilePage user={authUser}/>}}
-//   </AuthUserContext.Consumer>
-// );
+import SignOut from '../SignOut/SignOut';
+import SignIn from '../SignIn/SignIn';
+import './Profile.css';
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -23,15 +18,16 @@ class ProfilePage extends React.Component {
     console.log('user', this.props.firebase.auth.currentUser)
     if(this.props.firebase.auth.currentUser) {
       return (
-          <div>
+          <div className="profile-container">
             <h1>Profile page</h1>
-            <img src={this.props.firebase.auth.currentUser.photoURL} />
+            <img className="profile-pic" src={this.props.firebase.auth.currentUser.photoURL} />
             <p>Name: {this.props.firebase.auth.currentUser.displayName}</p>
             <p>Email: {this.props.firebase.auth.currentUser.email}</p>
+            <SignOut />
           </div>
       );
     } else {
-      return (<p>Waiting for profile data...</p>)
+      return <SignIn />
     }
   }
 }

@@ -1,9 +1,7 @@
 .newSpeedRecord {
-  margin: 0.5rem auto;
   padding: 1rem;
   background-color: #38c4ff;
   border-radius: 10px;
-  width: 500px;
 }
 
 .form label {

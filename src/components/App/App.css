@@ -12,3 +12,17 @@ body {
   width: 150px;
   margin: 0.5rem auto;
 }
+
+.content {
+  padding: 1rem; 
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .logo {
+    display: none;
+  }
+}

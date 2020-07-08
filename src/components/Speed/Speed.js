@@ -13,12 +13,21 @@ const Speed = () => (
 
 class SpeedBase extends React.Component {
   render() {
-    return (
-      <div className="speed">
-        <NewSpeedRecord user={this.props.user} />
-        <SpeedData user={this.props.user} />
-      </div>
-    );
+    if(this.props.user) {
+      return (
+        <div className="speed">
+          <NewSpeedRecord user={this.props.user} />
+          <SpeedData user={this.props.user} />
+        </div>
+      );
+    } else {
+      return (
+        <div className="speed">
+          <NewSpeedRecord user={this.props.user} />
+          <p style={{color: 'red'}}>Please sign in to save your speed data.</p>
+        </div>
+      );
+    }
   }
 }
 

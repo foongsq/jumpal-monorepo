@@ -17,6 +17,8 @@ class SpeedDataBase extends React.Component {
       speedRecords: [],
       isDataLoaded: false
     }
+    this.renderTableData = this.renderTableData.bind(this);
+    this.renderTableHeader = this.renderTableHeader.bind(this);
   }
 
   componentDidMount() {
@@ -24,7 +26,7 @@ class SpeedDataBase extends React.Component {
     let speedRecords = [];
     if (this.props.user) {
       let ref = this.props.firebase.user(this.props.user.uid).child('speed-records');
-      ref.orderByChild('time').on('child_added', function(snapshot) {
+      ref.on("value", function(snapshot) {
         console.log('snapshot', snapshot.val())
         speedRecords.push(snapshot.val());
       });
@@ -37,19 +39,49 @@ class SpeedDataBase extends React.Component {
     }
   }
 
+  renderTableData(records) {
+    let descRecords = records.reverse();
+    console.log('descRecords', descRecords);
+    return descRecords.map((record, key) => {
+       const { event, score, time } = record //destructuring
+       return (
+          <tr id={key}>
+             <td>{event}</td>
+             <td>{score}</td>
+             <td>{time}</td>
+          </tr>
+       )
+    })
+ }
+
+ renderTableHeader(records) {
+  let header = Object.keys(records[0])
+  return header.map((key, index) => {
+     return <th key={index}>{key.toUpperCase()}</th>
+  })
+}
+
   render() {
     if (this.state.isDataLoaded && this.state.speedRecords) {
-      console.log(this.state.speedRecords)
-      return (
-        <div>
-          <h2>My Speed Records</h2>
-          {this.state.speedRecords.map(record => {
-            return <p>{record.event} | {record.score} | {record.time.toString()}</p>
-          })}
-        </div>
-      );
+      console.log('this.state.speedRecords', this.state.speedRecords)
+      if(this.state.speedRecords[0]){
+        let records = Object.values(this.state.speedRecords[0]);
+        return (
+          <div>
+            <h2>My Speed Records</h2>
+            <table className="speedData-table">
+              <tbody>
+                <tr>{this.renderTableHeader(records)}</tr>
+                {this.renderTableData(records)}
+              </tbody>
+            </table>
+          </div>
+        );
+      } else {
+        return <p className="loading">Waiting for data... Please refresh page x1 time</p>
+      }
     } else {
-      return <p>Waiting for data</p>
+      return <p className="loading">Waiting for data... Please refresh page x2 times</p>
     }
   }
 }

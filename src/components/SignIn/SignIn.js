@@ -2,10 +2,11 @@ import React from 'react';
 import { withFirebase } from '../../Firebase/index';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
+import './SignIn.css';
 
 const SignInPage = () => (
   <div>
-    <h1>SignIn</h1>
+    <h1>Sign In</h1>
     <SignInGoogle />
   </div>
 );
@@ -13,7 +14,6 @@ const SignInPage = () => (
 class SignInGoogleBase extends React.Component {
   constructor(props) {
     super(props);
- 
     this.state = { error: null };
   }
  
@@ -38,17 +38,14 @@ class SignInGoogleBase extends React.Component {
       .catch(error => {
         this.setState({ error });
       });
- 
     event.preventDefault();
   };
  
   render() {
     const { error } = this.state;
- 
     return (
       <form onSubmit={this.onSubmit}>
-        <button type="submit">Sign In with Google</button>
- 
+        <button type="submit" className="signin-button"><i className="fa fa-google"></i>Sign In with Google</button>
         {error && <p>{error.message}</p>}
       </form>
     );
