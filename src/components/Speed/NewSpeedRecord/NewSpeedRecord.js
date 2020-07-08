@@ -47,8 +47,6 @@ class NewSpeedRecord extends React.Component {
   }
 
   saveSpeedRecord(event) {
-    console.log('this.state.event', this.state.event)
-    console.log('this.state.score', this.state.score)
     this.props.firebase.user(this.props.user.uid)
     .child('speed-records').push()
     .set({

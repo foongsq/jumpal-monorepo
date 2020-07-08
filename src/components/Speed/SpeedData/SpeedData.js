@@ -68,7 +68,10 @@ class SpeedDataBase extends React.Component {
         let records = Object.values(this.state.speedRecords[0]);
         return (
           <div>
-            <h2>My Speed Records</h2>
+            <div className="title-refresh-div">
+              <h2>My Speed Records</h2>
+              <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh speed data</button>
+            </div>
             <table className="speedData-table">
               <tbody>
                 <tr>{this.renderTableHeader(records)}</tr>
