@@ -6,10 +6,15 @@
   color: white;
   cursor: pointer;
   padding: 0.5rem;
+  margin: 0 0.5rem;
 }
 
 .title-save-div {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.buttons-div {
+  display: flex;
 }
