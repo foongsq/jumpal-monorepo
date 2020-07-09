@@ -17,8 +17,8 @@ import {
 import { withFirebase } from '../../Firebase/index';
 
 const hardcoded = [
-  { startDate: '2018-11-01T09:45', endDate: '2018-11-01T11:00', title: 'Meeting' },
-  { startDate: '2018-11-01T12:00', endDate: '2018-11-01T13:30', title: 'Go to a gym' },
+  { id: 0, startDate: '2020-07-08T09:45', endDate: '2020-07-08T11:00', title: 'Meeting' },
+  { id: 1, startDate: '2020-07-09T12:00', endDate: '2020-07-09T13:30', title: 'Go to a gym' },
 ];
 
 class Calendar extends React.PureComponent {
@@ -26,7 +26,7 @@ class Calendar extends React.PureComponent {
     super(props);
 
     this.state = {
-      data: hardcoded,
+      data: [],
       currentDate: new Date(),
       isDataLoaded: false
     };
@@ -36,43 +36,51 @@ class Calendar extends React.PureComponent {
     this.commitChanges = this.commitChanges.bind(this);
   }
 
-  /*when the home page loads, nothing in calendar,
-  users click refresh and readData() is called.
-  2 cases: database contains stuff, database contains nothing
-  if data base contains stuff, 2 cases, snapshot may contain stuff or 
-  snapshot contain nothing (havent loaded, need to refresh). when database 
-  contains nothing, only 1 case, snapshot contain nothing. Problem is: 
-  given an empty snapshot, how do i tell whether it is due to empty database or unfinished loading?
-  Try console loggin how snapshot looks like with empty database vs unfinished loading.
+  /*when the home page loads, nothing in calendar, users click refresh and readData() 
+  is called. 2 cases: database contains stuff, database contains nothing if database 
+  contains stuff, 2 cases, snapshot may contain stuff or snapshot contain nothing 
+  (havent loaded, need to refresh). when database contains nothing, only 1 case, snapshot 
+  contain nothing. Problem is: given an empty snapshot, how do i tell whether it is due 
+  to empty database or unfinished loading? Try console logging how snapshot looks like 
+  with empty database vs unfinished loading.
   
-  i was thinking right, if it is not loaded, we just keep looping the readdata until is it loaded,
-  but so the users only have to click refresh once, so after they click it once,
-  if theres nothing, means that database is empty.
+  so to do this, we need to console log snapshot and snapshot.val when database empty and
+  when data base not empty. 
+  When database is empty,
+    snapshot: DataSnapshot {node_: ChildrenNode, ref_: Reference, index_: PriorityIndex}
+    snapshot.val(): null
+  When database is not empty, 
+    snapshot: {node_: ChildrenNode, ref_: Reference, index_: PriorityIndex}
+    snapshot.val(): {appointmentArr: ...}
+  Conclusion, snapshot always loads correctly in the first place, its just whether it has 
+  pushed into appointments
+  i was thinking right, if it is not loaded, we just keep looping the readdata until is 
+  it loaded, but so the users only have to click refresh once, so after they click it 
+  once, if theres nothing, means that database is empty.
   */
   readData() {
     let appointments = [];
-    let loaded = false;
+    let snapshotIsEmpty = false;
     if (this.props.firebase.auth.currentUser) {
       let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('appointments');
       ref.on('value', function(snapshot) {
-        console.log('snapshot', snapshot.val())
+        console.log('snapshot', snapshot)
+        console.log('snapshot.val()', snapshot.val())
         if (snapshot.val()) { //if snapshot is not empty
-          appointments.push(Object.values(snapshot.val()));           
-        } else { //snapshot is empty but we cant set loaded to true here because we dont know if it has been loaded or not
-          loaded = true; //this is the problemmmmmm
-        }
+          snapshotIsEmpty = true;  //snapshot is not empty
+          appointments.push(Object.values(snapshot.val()));
+        }          
       });
 
-      if (loaded) {
+      if (!snapshotIsEmpty) { //if snapshot is empty, finish loading
+        console.log('snapshot is empty', snapshotIsEmpty) //loads before snapshot loads
         this.setState({
           isDataLoaded: true
         })
-      } else if (appointments && (appointments !== [])) {
-        console.log('appts', appointments)
-        console.log('appointments[0]', appointments[0])
-        console.log('hardcoded', hardcoded)
+      } else if (appointments[0] && (appointments !== [])) { //if snapshot is not empty
+        console.log('snapshot is not empty')
         this.setState({
-          data: appointments[0],
+          data: Object.values(appointments[0][0]),
           isDataLoaded: true
         })
       }
@@ -93,9 +101,9 @@ class Calendar extends React.PureComponent {
       .child('appointments').child('appointmentArr')
       .set({});
     let data = this.state.data;
-    //looping through and adding apppointments into db
+    //looping through this.state.data and adding apppointments into db
     data.map(appointment => {
-      console.log("saving appt.startdate",  typeof JSON.stringify(appointment.startDate))
+      console.log("saving appt.startdate",  JSON.stringify(appointment.startDate).replace(/^"(.*)"$/, '$1'))
       this.props.firebase.user(this.props.firebase.auth.currentUser.uid)
       .child('appointments').child('appointmentArr')
       .push({
@@ -112,7 +120,7 @@ class Calendar extends React.PureComponent {
       let data = this.state.data;
       if (added) {
         console.log('added', added)
-        console.log('data', data)
+        console.log('added data', data)
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
       }

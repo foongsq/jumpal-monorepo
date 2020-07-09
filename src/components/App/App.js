@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import { withAuthentication } from '../Session';
 import './App.css';
 
@@ -22,6 +22,7 @@ class App extends React.Component {
             <div className="navAndcontent">
               <Navigation />
               <div className="content">
+                <Route exact path="/"><Redirect to="/Home" /></Route>
                 <Route path='/SignIn' component={SignInPage} />
                 <Route path='/Home' component={Home}/>
                 <Route path='/Speed' component={Speed}/>
