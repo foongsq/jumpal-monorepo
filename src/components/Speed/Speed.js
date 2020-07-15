@@ -3,6 +3,7 @@ import { AuthUserContext } from '../Session';
 import './Speed.css';
 import NewSpeedRecord from './NewSpeedRecord/NewSpeedRecord';
 import SpeedData from './SpeedData/SpeedData';
+import TimingTracks from './TimingTracks/TimingTracks';
 
 const Speed = () => (
   <AuthUserContext.Consumer>
@@ -16,6 +17,7 @@ class SpeedBase extends React.Component {
     if(this.props.user) {
       return (
         <div className="speed">
+          <TimingTracks />
           <NewSpeedRecord user={this.props.user} />
           <SpeedData user={this.props.user} />
         </div>
@@ -23,6 +25,7 @@ class SpeedBase extends React.Component {
     } else {
       return (
         <div className="speed">
+          <TimingTracks />
           <NewSpeedRecord user={this.props.user} />
           <p style={{color: 'red'}}>Please sign in to save your speed data.</p>
         </div>

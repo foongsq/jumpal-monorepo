@@ -1,0 +1,26 @@
+.timing-tracks-container {
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.timing-track-select {
+  background-color: #8adcff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  margin: 0.5rem auto;
+  border-radius: 5px;
+  width: 100%;
+  outline: none;
+  border: none;
+}
+
+.timing-track-audio {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem auto;
+  width: 100%;
+}
