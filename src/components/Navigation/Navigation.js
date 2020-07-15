@@ -19,6 +19,9 @@ const NavBase = (props) => (
         <Link to='/Home'>Home</Link>
       </li>
       <li>
+        <Link to='/Calendar'>Calendar</Link>
+      </li>
+      <li>
         <Link to='/Speed'>Speed</Link>
       </li>
       <li>

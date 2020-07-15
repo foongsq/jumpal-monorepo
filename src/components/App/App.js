@@ -8,7 +8,8 @@ import SignInPage from '../SignIn/SignIn';
 import Profile from '../Profile/Profile';
 import SignOut from '../SignOut/SignOut';
 import Speed from '../Speed/Speed';
-import Home from '../Calendar/Calendar';
+import Calendar from '../Calendar/Calendar';
+import Freestyle from '../Freestyle/Freestyle';
 import logo from "../../images/jumpal-logo.gif";
 
 class App extends React.Component {
@@ -24,9 +25,10 @@ class App extends React.Component {
               <div className="content">
                 <Route exact path="/"><Redirect to="/Home" /></Route>
                 <Route path='/SignIn' component={SignInPage} />
-                <Route path='/Home' component={Home}/>
+                <Route path='/Home'/>
+                <Route path='/Calendar' component={Calendar}/>
                 <Route path='/Speed' component={Speed}/>
-                <Route path='/Freestyle' />
+                <Route path='/Freestyle' component={Freestyle} />
                 <Route path='/Profile' component={Profile} />
                 <Route path='/SignOut' component={SignOut} />
               </div>

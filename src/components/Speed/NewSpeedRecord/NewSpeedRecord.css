@@ -13,7 +13,7 @@
   background-color: #88fcb3;
 }
 
-.form input, select {
+.input{
   background-color: #8adcff;
   cursor: pointer;
   margin-left: 1rem;
@@ -21,4 +21,15 @@
   border: none;
   border-radius: 5px;
   padding: 0.5rem;
+}
+
+.time-input {
+  background-color: #8adcff;
+  cursor: pointer;
+  margin-left: 1rem;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 0 0.5rem;
+
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import DateTimePicker from 'react-datetime-picker';
 import { withFirebase } from '../../../Firebase/index';
 import './NewSpeedRecord.css';
 
@@ -8,10 +9,12 @@ class NewSpeedRecord extends React.Component {
     this.state = {
       event: null,
       score: null,
+      time: new Date()
     }
     this.saveSpeedRecord = this.saveSpeedRecord.bind(this);
     this.handleEventChange = this.handleEventChange.bind(this);
     this.handleScoreChange = this.handleScoreChange.bind(this);
+    this.handleTimeChange = this.handleTimeChange.bind(this);
     this.timeStamp = this.timeStamp.bind(this);
   }
 
@@ -23,36 +26,48 @@ class NewSpeedRecord extends React.Component {
     this.setState({ score: event.target.value });
   }
 
-  timeStamp() {
-    // Create a date object with the current time
-    var now = new Date();
+  handleTimeChange(time) {
+    this.setState({ time: time });
+  } 
+
+  timeStamp(time) {
     // Create an array with the current month, day and time
-    var date = [ now.getMonth() + 1, now.getDate(), now.getFullYear() ];
+    let date = [ time.getMonth() + 1, time.getDate(), time.getFullYear() ];
     // Create an array with the current hour, minute and second
-    var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
+    let time2 = [ time.getHours(), time.getMinutes(), time.getSeconds() ];
     // Determine AM or PM suffix based on the hour
-    var suffix = ( time[0] < 12 ) ? "AM" : "PM";
+    let suffix = ( time2[0] < 12 ) ? "AM" : "PM";
     // Convert hour from military time
-    time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
+    time2[0] = ( time2[0] < 12 ) ? time2[0] : time2[0] - 12;
     // If hour is 0, set it to 12
-    time[0] = time[0] || 12;
+    time2[0] = time2[0] || 12;
     // If seconds and minutes are less than 10, add a zero
-    for ( var i = 1; i < 3; i++ ) {
-      if ( time[i] < 10 ) {
-        time[i] = "0" + time[i];
+    for ( let i = 1; i < 3; i++ ) {
+      if ( time2[i] < 10 ) {
+        time2[i] = "0" + time2[i];
       }
     }
     // Return the formatted string
-    return date.join("/") + " " + time.join(":") + " " + suffix;
+    return date.join("/") + " " + time2.join(":") + " " + suffix;
   }
 
   saveSpeedRecord(event) {
-    this.props.firebase.user(this.props.user.uid)
-    .child('speed-records').push()
-    .set({
+    let today = this.state.time;
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+    today = `${yyyy}/${mm}/${dd}`;
+
+    console.log('today', today)
+    console.log('this.state.time', this.state.time)
+    console.log('timestamp()', this.timeStamp(this.state.time))
+    this.props.firebase.user(this.props.firebase.auth.currentUser.uid)
+    .child('speed-records')
+    .child(`${today}`)
+    .push({
       event: this.state.event, 
       score: this.state.score,
-      time: this.timeStamp()
+      time: this.timeStamp(this.state.time),
     });
     this.myFormRef.reset();
     event.preventDefault();
@@ -64,10 +79,21 @@ class NewSpeedRecord extends React.Component {
         <form className="form" ref={(el) => this.myFormRef = el}>
           <h2>New Speed Record</h2>
           <p>Store your speed scores here :)</p>
+          <label>Time: 
+            <DateTimePicker 
+              className="time-input" 
+              onChange={this.handleTimeChange} 
+              value={this.state.time}
+              calendarIcon={null}
+              clearIcon={null}
+              disableClock
+              maxDate={new Date()}/>
+          </label>
           <label>Event: 
-            <select name="event" onChange={this.handleEventChange}>
+            <select name="event" onChange={this.handleEventChange} className="input">
               <option value="" selected>Select your event</option>
               <option value="1x30sec Running Step">1x30sec Running Step</option>
+              <option value="1x60sec Running Step">1x60sec Running Step</option>
               <option value="1x30sec Double Unders">1x30sec Double Unders</option>
               <option value="1x180sec Running Step">1x180sec Running Step</option>
               <option value="2x30sec Double Unders">2x30sec Double Unders</option>
@@ -76,10 +102,10 @@ class NewSpeedRecord extends React.Component {
           </label>
           <label>
             Score:
-            <input type="number" name="score" placeholder="Enter your speed score" onChange={this.handleScoreChange}></input>
+            <input className="input" type="number" name="score" placeholder="Enter your speed score" onChange={this.handleScoreChange}></input>
           </label>
-          {this.props.user ? <input id="submitButton" type="submit" onClick={this.saveSpeedRecord}></input>
-            : <input id="submitButton" type="submit" onClick={this.saveSpeedRecord} disabled></input> }
+          {this.props.user ? <input className="input" id="submitButton" type="submit" onClick={this.saveSpeedRecord}></input>
+            : <input className="input" id="submitButton" type="submit" onClick={this.saveSpeedRecord} disabled></input> }
           
         </form>
       </div>

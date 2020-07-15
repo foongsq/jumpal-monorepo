@@ -1,37 +1,31 @@
 import React from 'react';
 import './SpeedData.css';
-import { AuthUserContext } from '../../Session';
 import { withFirebase } from '../../../Firebase/index';
 
-const SpeedData = () => (
-  <AuthUserContext.Consumer>
-    {authUser => {
-    return <SpeedDataBase user={authUser}/>}}
-  </AuthUserContext.Consumer>
-);
-
-class SpeedDataBase extends React.Component {
+class SpeedData extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       speedRecords: [],
-      isDataLoaded: false
+      isDataLoaded: false,
+      showToday: false
     }
     this.readData = this.readData.bind(this);
-    this.renderTableData = this.renderTableData.bind(this);
+    this.renderAllData = this.renderAllData.bind(this);
+    this.renderTodayData = this.renderTodayData.bind(this);
     this.renderTableHeader = this.renderTableHeader.bind(this);
+    this.showAll = this.showAll.bind(this);
+    this.showToday = this.showToday.bind(this);
   }
 
-  readData() {
+  async readData() {
     let speedRecords = [];
     if (this.props.user) {
-      let ref = this.props.firebase.user(this.props.user.uid).child('speed-records');
-      console.log('ref', ref)
-      ref.on('value', function(snapshot) {
-        console.log('snapshot', snapshot)
-        speedRecords.push(snapshot.val());
-      });
-    
+      let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('speed-records');
+      let snapshot = await ref.once('value');
+      let value = snapshot.val();
+      speedRecords.push(value);
+      console.log('speedRecords', speedRecords)
       this.setState({
         speedRecords: speedRecords,
         isDataLoaded: true
@@ -39,61 +33,146 @@ class SpeedDataBase extends React.Component {
     }
   }
 
-  renderTableData(records) {
-    let descRecords = records.reverse();
-    console.log('descRecords', descRecords);
-    return descRecords.map((record, key) => {
-       const { event, score, time } = record //destructuring
-       return (
-          <tr id={key}>
-             <td>{event}</td>
-             <td>{score}</td>
-             <td>{time}</td>
-          </tr>
-       )
-    })
- }
+  async componentDidMount() {
+    let speedRecords = [];
+    if (this.props.user) {
+      let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('speed-records');
+      let snapshot = await ref.once('value');
+      let value = snapshot.val();
+      speedRecords.push(value);
+      console.log('speedRecords', speedRecords)
+      this.setState({
+        speedRecords: speedRecords,
+        isDataLoaded: true
+      })
+    }
+  }
 
- renderTableHeader(records) {
-  let header = Object.keys(records[0])
-  return header.map((key, index) => {
-     return <th key={index}>{key.toUpperCase()}</th>
-  })
+  showToday() {
+    let today = new Date();
+    this.setState({ showToday: true })
+  }
+
+  showAll() {
+    this.setState({ showToday: false })
+  }
+
+  renderAllData(records) {
+    console.log(records)
+      return records.map(record => {
+        const { event, score, time } = record //destructuring
+        return (
+            <tr>
+              <td>{event}</td>
+              <td>{score}</td>
+              <td>{time}</td>
+            </tr>
+        )
+      });
+  }
+
+  renderTodayData(records) {
+    let today = new Date();
+    let dd = String(today.getDate());
+    let mm = String(today.getMonth() + 1); //January is 0!
+    let yyyy = today.getFullYear();
+    today = `${mm}/${dd}/${yyyy}`;
+    return records.map(record => {
+      const { event, score, time } = record //destructuring
+      let splitTime = time.split(" ");
+      console.log(splitTime[0])
+      console.log(today)
+      if (splitTime[0] === today) {
+        return (
+          <tr>
+            <td>{event}</td>
+            <td>{score}</td>
+            <td>{time}</td>
+          </tr>
+        )
+      } else { return null; } 
+    });
+  }
+
+ renderTableHeader() {
+   return (
+   <tr>
+     {/* <th>Year</th>
+     <th>Month</th>
+     <th>Day</th> */}
+     <th>Event</th>
+     <th>Score</th>
+     <th>Time</th>
+   </tr>);
+   
 }
 
   render() {
-    if (this.state.isDataLoaded && this.state.speedRecords) {
+    if (this.state.isDataLoaded && this.state.speedRecords && this.state.speedRecords !== []) {
       console.log('this.state.speedRecords', this.state.speedRecords)
-      if(this.state.speedRecords[0]){
-        let records = Object.values(this.state.speedRecords[0]);
+      if(this.state.speedRecords){
+        let records = this.state.speedRecords;
+        let years = Object.keys(records[0]);
+        // let data = []
+        let consolidated = []
+        years.forEach(year => {
+          let months = Object.keys(records[0][year]);
+          months.forEach(month => {
+            let days = Object.keys(records[0][year][month]);
+            days.forEach(day => {
+              // if (data.length === 0 || !data[year]) {
+              //   console.log('year', year)
+              //   console.log('if', data)
+                
+              //   data[year] = [];
+              //   data[year][month] = []
+              //   data[year][month][day] = Object.values(records[0][year][month][day]);
+              // } else if (!data[year][month]) {
+              //   console.log('else if', data)
+              //   data[year][month] = [];
+              //   data[year][month][day] = Object.values(records[0][year][month][day]);
+              // } else {
+              //   console.log('else', data)
+              //   data[year][month][day] = Object.values(records[0][year][month][day]);
+              // }
+              Object.values(records[0][year][month][day]).forEach(record => {
+                consolidated.push(record);
+              })
+            })
+          })
+        });
+        
         return (
           <div>
             <div className="title-refresh-div">
               <h2>My Speed Records</h2>
-              <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh speed data</button>
+              <div className="buttons-div">
+                <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh speed data</button>
+                {this.state.showToday ? <button onClick={this.showAll} className="refresh-button"><i class="fa fa-smile-o" aria-hidden="true"></i>All data</button> :
+                  <button onClick={this.showToday} className="refresh-button"><i class="fa fa-smile-o" aria-hidden="true"></i>Today</button> }
+              </div>              
             </div>
             <table className="speedData-table">
               <tbody>
-                <tr>{this.renderTableHeader(records)}</tr>
-                {this.renderTableData(records)}
+                {this.renderTableHeader()}
+                {this.state.showToday ? this.renderTodayData(consolidated) : this.renderAllData(consolidated)}
               </tbody>
             </table>
           </div>
         );
       } else {
         return (<div>
-            <p className="loading">this.state.speedRecords[0] not loaded yet</p>
+            <p className="loading">loading...</p>
             <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh speed data</button>
           </div>);
       }
     } else {
       return (<div>
-          <p className="loading">Data not loaded or speed records empty</p>
+          <p className="loading">Start by entering a new speed record above.</p>
           <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh speed data</button>
         </div>);
     }
   }
 }
 
-export default withFirebase(SpeedDataBase);
-export {SpeedData};
+export default withFirebase(SpeedData);

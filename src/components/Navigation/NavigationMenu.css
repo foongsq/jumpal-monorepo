@@ -8,6 +8,11 @@
   border: none;
   cursor: pointer;
 }
+.menu {
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+}
 .menu a {
   display: block;
   padding: 1rem;
