@@ -1,35 +1,13 @@
-.newSpeedRecord {
-  padding: 1rem;
-  background-color: #38c4ff;
-  border-radius: 10px;
-}
-
-.form label {
-  display: block;
-  padding: 0.5rem;
-}
-
 #submitButton {
   background-color: #88fcb3;
 }
 
-.input{
-  background-color: #8adcff;
-  cursor: pointer;
-  margin-left: 1rem;
-  outline: none;
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem;
-}
-
-.time-input {
-  background-color: #8adcff;
+#time-input {
+  background-color: white;
   cursor: pointer;
   margin-left: 1rem;
   outline: none;
   border: none;
   border-radius: 5px;
   padding: 0 0.5rem;
-
 }

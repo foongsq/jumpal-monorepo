@@ -30,10 +30,10 @@ class Calendar extends React.PureComponent {
     this.saveAppointmentsToDatabase = this.saveAppointmentsToDatabase.bind(this);
     this.readData = this.readData.bind(this);
     this.commitChanges = this.commitChanges.bind(this);
+    this.readPublicData = this.readPublicData.bind(this);
   }
 
   async readData() {
-    console.log('called compdidmount')
     let appointments = [];
     if (this.props.firebase.auth.currentUser) {
       let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('appointments');
@@ -48,19 +48,37 @@ class Calendar extends React.PureComponent {
     }
   }
 
+  async readPublicData() {
+    let appointments = [];
+    let ref = this.props.firebase.db.ref('main-calendar').child('appointmentArr');
+    let snapshot = await ref.once('value');
+    let value = Object.values(snapshot.val());
+    appointments.push(value);
+    this.setState({
+      data: Object.values(appointments[0]),
+      isDataLoaded: true
+    })
+  }
+
   async componentDidMount() {
     console.log('called compdidmount')
     let appointments = [];
     if (this.props.firebase.auth.currentUser) {
       let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('appointments');
       let snapshot = await ref.once('value');
-      let value = Object.values(snapshot.val());
-      appointments.push(value);
-      console.log(appointments)
-      this.setState({
-        data: Object.values(appointments[0][0]),
-        isDataLoaded: true
-      })
+      if (snapshot.val() !== null) {
+        let value = Object.values(snapshot.val());
+        appointments.push(value);
+        console.log(appointments)
+        this.setState({
+          data: Object.values(appointments[0][0]),
+          isDataLoaded: true
+        })
+      } else {
+        this.setState({
+          isDataLoaded: true
+        })
+      }
     }
   }
 
@@ -95,7 +113,42 @@ class Calendar extends React.PureComponent {
         });
       }
     });
+    window.alert("Saved calendar events successfully!");
   }
+
+  // //for saving to main calendar
+  // saveAppointmentsToDatabase() {
+  //   console.log("data to save", this.state.data)
+  //   //reseting the database first
+  //   this.props.firebase.db.ref('main-calendar')
+  //     .child('appointmentArr')
+  //     .set({});
+  //   let data = this.state.data;
+  //   //looping through this.state.data and adding apppointments into db
+  //   data.map(appointment => {
+  //     if (appointment.rRule) {
+  //       this.props.firebase.db.ref('main-calendar')
+  //       .child('appointmentArr')
+  //       .push({
+  //         id: appointment.id,
+  //         startDate: JSON.stringify(appointment.startDate).replace(/^"(.*)"$/, '$1'),
+  //         endDate: JSON.stringify(appointment.endDate).replace(/^"(.*)"$/, '$1'),
+  //         title: appointment.title,
+  //         rRule: appointment.rRule
+  //       });
+  //     } else {
+  //       this.props.firebase.db.ref('main-calendar')
+  //       .child('appointmentArr')
+  //       .push({
+  //         id: appointment.id,
+  //         startDate: JSON.stringify(appointment.startDate).replace(/^"(.*)"$/, '$1'),
+  //         endDate: JSON.stringify(appointment.endDate).replace(/^"(.*)"$/, '$1'),
+  //         title: appointment.title
+  //       });
+  //     }
+  //   });
+  //   window.alert("Saved calendar events successfully!");
+  // }
 
   commitChanges({ added, changed, deleted }) {
     this.setState((state) => {
@@ -121,15 +174,19 @@ class Calendar extends React.PureComponent {
 
   render() {
     const { data, currentDate } = this.state;
-    console.log('isDataLoaded',this.state.isDataLoaded)
-    if (this.props.firebase.auth.currentUser && this.state.isDataLoaded) {
+    console.log(this.state.data)
       return (
         <div>
           <div className="title-save-div">
           <h2>Calendar of Events</h2>
           <div className="buttons-div">
-            <button onClick={this.saveAppointmentsToDatabase} className="save-button"><i className="fa fa-save"></i>Save</button>
-            <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh appointments</button>
+          {this.props.firebase.auth.currentUser && this.state.isDataLoaded 
+            ? 
+            <div><button onClick={this.saveAppointmentsToDatabase} className="save-button"><i className="fa fa-save"></i>Save</button>
+            <button onClick={this.readData} className="button"><i className="fa fa-refresh"></i>Refresh appointments</button></div>
+            : this.props.firebase.auth.currentUser
+              ?  <button onClick={this.readData} className="button"><i className="fa fa-refresh"></i>Refresh appointments</button>
+              :  <button onClick={this.readPublicData} className="button"><i className="fa fa-refresh"></i>Get public events</button>}
           </div>
           </div>
           <Paper>
@@ -140,6 +197,7 @@ class Calendar extends React.PureComponent {
               <ViewState
                 currentDate={currentDate}
                 onCurrentDateChange={this.currentDateChange}
+                defaultCurrentViewName="Month"
               />
               <EditingState
                 onCommitChanges={this.commitChanges}
@@ -149,7 +207,7 @@ class Calendar extends React.PureComponent {
                 startDayHour={9}
                 endDayHour={19}
               />
-              <MonthView />
+              <MonthView name="Month"/>
               <Toolbar />
               <DateNavigator />
               <ViewSwitcher />
@@ -165,51 +223,6 @@ class Calendar extends React.PureComponent {
           </Paper>
         </div>
       );
-    } else if (this.props.firebase.auth.currentUser) {
-      return (
-        <div>
-          <div className="title-save-div">
-            <h2>Calendar of Events</h2>
-            <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh appointments</button>
-          </div>
-          <Paper>
-            <Scheduler
-              data={data}
-              height={660}
-            >
-              <ViewState
-                currentDate={currentDate}
-                onCurrentDateChange={this.currentDateChange}
-              />
-              <EditingState
-                onCommitChanges={this.commitChanges}
-              />
-              <IntegratedEditing />
-              <WeekView
-                startDayHour={9}
-                endDayHour={19}
-              />
-              <MonthView />
-              <Toolbar />
-              <DateNavigator />
-              <ViewSwitcher />
-              <ConfirmationDialog />
-              <Appointments />
-              <AppointmentTooltip
-                showCloseButton
-                showOpenButton
-                showDeleteButton
-              />
-              <AppointmentForm />
-            </Scheduler>
-          </Paper>
-        </div>
-      );
-    } else {
-      return (
-        <div><p style={{color: 'red'}}>Please wait for data to load...</p></div>
-      )
-    }
   }
 }
 

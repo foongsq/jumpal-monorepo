@@ -41,7 +41,7 @@ export default class TimingTracks extends React.Component {
       <div className="timing-tracks-container">
         <h2>Timing Tracks</h2>
         <div className="select-and-audio">
-          <select name="event" onChange={this.handleTrackChange} className="timing-track-select">
+          <select name="event" onChange={this.handleTrackChange} className="input">
                 <option value="" selected>Select your event</option>
                 <option value="SRSS-1x30sec">Single Rope Speed Sprints 1x30sec</option>
                 <option value="SRDU-2x30sec">Single Rope Double Unders 2x30sec</option>

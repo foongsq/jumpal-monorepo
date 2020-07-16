@@ -1,0 +1,13 @@
+.freestyle-container {
+  display: block;
+  width: 100%;
+}
+
+.button-div {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.collapsible-div {
+  margin: 1rem 0;
+}

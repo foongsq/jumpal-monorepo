@@ -19,17 +19,6 @@
   background-color: #38c4ff;
 }
 
-.refresh-button {
-  outline: none;
-  border: none;
-  border-radius: 5px;
-  background-color: #38c4ff;
-  color: white;
-  cursor: pointer;
-  padding: 0.5rem;
-  margin: 0 0.25rem;
-}
-
 .title-refresh-div {
   display: flex;
   justify-content: space-between;

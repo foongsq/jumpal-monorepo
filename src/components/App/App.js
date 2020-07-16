@@ -15,7 +15,7 @@ import logo from "../../images/jumpal-logo.gif";
 class App extends React.Component {
   render() {
     return (
-        <div className="App">
+        <div className="app">
           <div className="logoContainer">
             <img className="logo" src={logo}/>
           </div>

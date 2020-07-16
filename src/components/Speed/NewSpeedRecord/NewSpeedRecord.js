@@ -81,7 +81,8 @@ class NewSpeedRecord extends React.Component {
           <p>Store your speed scores here :)</p>
           <label>Time: 
             <DateTimePicker 
-              className="time-input" 
+              id="time-input"
+              className="input" 
               onChange={this.handleTimeChange} 
               value={this.state.time}
               calendarIcon={null}

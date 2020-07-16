@@ -20,7 +20,7 @@ class SpeedData extends React.Component {
 
   async readData() {
     let speedRecords = [];
-    if (this.props.user) {
+    if (this.props.firebase.auth.currentUser) {
       let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('speed-records');
       let snapshot = await ref.once('value');
       let value = snapshot.val();
@@ -35,7 +35,7 @@ class SpeedData extends React.Component {
 
   async componentDidMount() {
     let speedRecords = [];
-    if (this.props.user) {
+    if (this.props.firebase.auth.currentUser) {
       let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('speed-records');
       let snapshot = await ref.once('value');
       let value = snapshot.val();
@@ -49,7 +49,6 @@ class SpeedData extends React.Component {
   }
 
   showToday() {
-    let today = new Date();
     this.setState({ showToday: true })
   }
 
@@ -97,9 +96,6 @@ class SpeedData extends React.Component {
  renderTableHeader() {
    return (
    <tr>
-     {/* <th>Year</th>
-     <th>Month</th>
-     <th>Day</th> */}
      <th>Event</th>
      <th>Score</th>
      <th>Time</th>
@@ -110,31 +106,15 @@ class SpeedData extends React.Component {
   render() {
     if (this.state.isDataLoaded && this.state.speedRecords && this.state.speedRecords !== []) {
       console.log('this.state.speedRecords', this.state.speedRecords)
-      if(this.state.speedRecords){
+      if(this.state.speedRecords.length !== 0 && this.state.speedRecords[0] !== null){
         let records = this.state.speedRecords;
         let years = Object.keys(records[0]);
-        // let data = []
         let consolidated = []
         years.forEach(year => {
           let months = Object.keys(records[0][year]);
           months.forEach(month => {
             let days = Object.keys(records[0][year][month]);
             days.forEach(day => {
-              // if (data.length === 0 || !data[year]) {
-              //   console.log('year', year)
-              //   console.log('if', data)
-                
-              //   data[year] = [];
-              //   data[year][month] = []
-              //   data[year][month][day] = Object.values(records[0][year][month][day]);
-              // } else if (!data[year][month]) {
-              //   console.log('else if', data)
-              //   data[year][month] = [];
-              //   data[year][month][day] = Object.values(records[0][year][month][day]);
-              // } else {
-              //   console.log('else', data)
-              //   data[year][month][day] = Object.values(records[0][year][month][day]);
-              // }
               Object.values(records[0][year][month][day]).forEach(record => {
                 consolidated.push(record);
               })
@@ -147,9 +127,11 @@ class SpeedData extends React.Component {
             <div className="title-refresh-div">
               <h2>My Speed Records</h2>
               <div className="buttons-div">
-                <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh speed data</button>
-                {this.state.showToday ? <button onClick={this.showAll} className="refresh-button"><i class="fa fa-smile-o" aria-hidden="true"></i>All data</button> :
-                  <button onClick={this.showToday} className="refresh-button"><i class="fa fa-smile-o" aria-hidden="true"></i>Today</button> }
+                <button onClick={this.readData} className="button">
+                  <i className="fa fa-refresh"></i>Refresh speed data
+                  </button>
+                {this.state.showToday ? <button onClick={this.showAll} className="button"><i class="fa fa-smile-o" aria-hidden="true"></i>All data</button> :
+                  <button onClick={this.showToday} className="button"><i class="fa fa-smile-o" aria-hidden="true"></i>Today</button> }
               </div>              
             </div>
             <table className="speedData-table">
@@ -162,14 +144,14 @@ class SpeedData extends React.Component {
         );
       } else {
         return (<div>
-            <p className="loading">loading...</p>
-            <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh speed data</button>
+            <p className="loading">Start by entering a new speed record above.</p>
+            <button onClick={this.readData} className="button"><i className="fa fa-refresh"></i>Refresh speed data</button>
           </div>);
       }
     } else {
       return (<div>
           <p className="loading">Start by entering a new speed record above.</p>
-          <button onClick={this.readData} className="refresh-button"><i className="fa fa-refresh"></i>Refresh speed data</button>
+          <button onClick={this.readData} className="button"><i className="fa fa-refresh"></i>Refresh speed data</button>
         </div>);
     }
   }
