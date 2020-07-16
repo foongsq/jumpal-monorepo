@@ -182,7 +182,7 @@ class Calendar extends React.PureComponent {
           <div className="buttons-div">
           {this.props.firebase.auth.currentUser && this.state.isDataLoaded 
             ? 
-            <div><button onClick={this.saveAppointmentsToDatabase} className="save-button"><i className="fa fa-save"></i>Save</button>
+            <div className="buttons-div"><button onClick={this.saveAppointmentsToDatabase} className="save-button"><i className="fa fa-save"></i>Save</button>
             <button onClick={this.readData} className="button"><i className="fa fa-refresh"></i>Refresh appointments</button></div>
             : this.props.firebase.auth.currentUser
               ?  <button onClick={this.readData} className="button"><i className="fa fa-refresh"></i>Refresh appointments</button>

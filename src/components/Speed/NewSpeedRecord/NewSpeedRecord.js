@@ -80,6 +80,7 @@ class NewSpeedRecord extends React.Component {
           <h2>New Speed Record</h2>
           <p>Store your speed scores here :)</p>
           <label>Time: 
+            <br />
             <DateTimePicker 
               id="time-input"
               className="input" 

@@ -34,7 +34,7 @@ class Collapsible extends React.Component {
       .child(this.props.firebase.auth.currentUser.uid)
       .child("freestyle-saved-insta-urls")
       .child(Object.keys(value)[0]).remove();
-
+      window.alert("Instagram post deleted successfully! (Please refresh to see your updated list)")
   }
 
   render() {

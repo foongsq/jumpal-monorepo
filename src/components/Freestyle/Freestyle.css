@@ -11,3 +11,8 @@
 .collapsible-div {
   margin: 1rem 0;
 }
+
+.form label {
+  display: block;
+ padding: 0.25rem 0;
+}

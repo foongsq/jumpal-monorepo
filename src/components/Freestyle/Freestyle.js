@@ -35,6 +35,7 @@ class Freestyle extends React.Component {
       url: url,
       note: note,
     })
+    window.alert("Instagram post saved successfully!")
     this.myFormRef.reset();
   }
 
@@ -80,8 +81,8 @@ class Freestyle extends React.Component {
             <label>Instagram URL:<input className="input" type="text" onChange={this.handleURLChange} placeholder="Enter Instagram URL here"/></label>
             <label>Note:<input className="input" type="text" onChange={this.handleNoteChange} placeholder="Enter note here"/></label>
             <div className="button-div">{this.props.firebase.auth.currentUser 
-            ? <input type="submit" onSubmit={this.addInstaPost} className="button" />
-            : <input type="submit" onSubmit={this.addInstaPost} disabled /> }</div>
+            ? <input type="submit" onClick={this.addInstaPost} className="button" />
+            : <input type="submit" disabled /> }</div>
           </form>
          
           {this.props.firebase.auth.currentUser 

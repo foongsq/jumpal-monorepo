@@ -3,6 +3,7 @@
 }
 
 #time-input {
+  display: block;
   background-color: white;
   cursor: pointer;
   margin-left: 1rem;
@@ -10,4 +11,5 @@
   border: none;
   border-radius: 5px;
   padding: 0 0.5rem;
+  width: 70%;
 }
