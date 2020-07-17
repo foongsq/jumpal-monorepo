@@ -59,6 +59,21 @@ class SkillList extends React.Component {
     // this.freestyleform.reset();
   }
 
+  async componentDidMount() {
+    let dataFromDB = [];
+    if (this.props.firebase.auth.currentUser) {
+      let ref = this.props.firebase.db.ref('users')
+      .child(this.props.firebase.auth.currentUser.uid)
+      .child("freestyle-skills-list");
+      let snapshot = await ref.once("value");
+      let value = snapshot.val();
+      if (value) {
+        dataFromDB.push(value);
+      }
+      this.setState({ dataFromDB: dataFromDB });
+    }
+  }
+
   async readDatafromDB() {
     let dataFromDB = [];
     let ref = this.props.firebase.db.ref('users')
@@ -74,9 +89,16 @@ class SkillList extends React.Component {
   }
 
   render() {
+    let dataValues = [];
     let data = [];
     if (this.state.dataFromDB && this.state.dataFromDB.length !== 0) {
-      data = Object.values(this.state.dataFromDB[0]).reverse();
+      dataValues = Object.values(this.state.dataFromDB[0]).reverse();
+      let keys = Object.keys(this.state.dataFromDB[0]).reverse();
+      console.log('keys', keys)
+      for (let i = 0; i < dataValues.length; i++) {
+        data[i] = [keys[i], dataValues[i]];
+      }
+      console.log('data', data)
     }
     return (
       <div>
@@ -99,14 +121,16 @@ class SkillList extends React.Component {
         <h2>Skills I want to learn</h2>
         {this.state.dataFromDB && this.state.dataFromDB.length !== 0 ? 
               data.map(object => {
+                console.log('obj[0]', object[0])
                 return (
                   <div>
                     <SkillCollapsible 
-                      skillName={object.skillName}
-                      description={object.description} 
-                      progress={object.progress}
-                      breakthrough={object.breakthrough}
-                      mastered={object.mastered}
+                      skillName={object[1].skillName}
+                      description={object[1].description} 
+                      progress={object[1].progress}
+                      breakthrough={object[1].breakthrough}
+                      mastered={object[1].mastered}
+                      id={object[0]}
                     />
                   </div>
                 )})

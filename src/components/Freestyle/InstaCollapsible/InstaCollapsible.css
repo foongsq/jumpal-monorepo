@@ -11,6 +11,10 @@
   background-color: turquoise;
 }
 
+.note-button:focus {
+  background-color: turquoise;
+}
+
 .trash-button {
   border: none;
   outline: none;

@@ -7,10 +7,9 @@
 
 .skill-content label {
   display: flex;
-  color: 
-  #4e7ede
-  ;
+  color: #4e7ede;
   margin: 0.25rem 0;
+  align-items: center;
 }
 
 .skill-content p {

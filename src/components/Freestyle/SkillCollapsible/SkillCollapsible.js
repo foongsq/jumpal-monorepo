@@ -1,6 +1,7 @@
 import React from 'react';
 import './SkillCollapsible.css';
 import { withFirebase } from '../../../Firebase';
+import EditableText from './EditableText';
 
 class SkillCollapsible extends React.Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class SkillCollapsible extends React.Component {
     let ref = this.props.firebase.db.ref('users')
       .child(this.props.firebase.auth.currentUser.uid)
       .child("freestyle-skills-list")
-      .orderByChild('url').equalTo(this.props.url);
+      .orderByChild('skillName').equalTo(this.props.skillName);
     let snapshot = await ref.once('value');
     let value = snapshot.val();
    
@@ -36,6 +37,7 @@ class SkillCollapsible extends React.Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div>
         <div className="note-and-trash-div">
@@ -48,9 +50,9 @@ class SkillCollapsible extends React.Component {
         </div>
         {this.state.open 
           ? <div className="skill-content">
-              <label>Skill Name:<p>{this.props.skillName}</p></label>
-              <label>Description:<p>{this.props.description}</p></label>
-              <label>Progress:<p>{this.props.progress}</p></label>
+              <label>Skill Name:<EditableText id={this.props.id} type="skillName" content={this.props.skillName} /></label>
+              <label>Description:<EditableText id={this.props.id} type="description" content={this.props.description} /></label>
+              <label>Progress:<EditableText id={this.props.id} type="progress" content={this.props.progress} /></label>
               <p>{this.props.breakthrough === "on" 
                 ? "Broke through!! :)" 
                 : "Not broken through yet jiayous!" }</p>

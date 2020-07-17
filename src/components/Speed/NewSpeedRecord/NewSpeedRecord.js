@@ -1,5 +1,5 @@
 import React from 'react';
-import DateTimePicker from 'react-datetime-picker';
+import DateTime from 'react-datetime';
 import { withFirebase } from '../../../Firebase/index';
 import './NewSpeedRecord.css';
 
@@ -81,15 +81,11 @@ class NewSpeedRecord extends React.Component {
           <p>Store your speed scores here :)</p>
           <label>Time: 
             <br />
-            <DateTimePicker 
-              id="time-input"
-              className="input" 
+            <DateTime
+              className="time-input" 
               onChange={this.handleTimeChange} 
               value={this.state.time}
-              calendarIcon={null}
-              clearIcon={null}
-              disableClock
-              maxDate={new Date()}/>
+            />
           </label>
           <label>Event: 
             <select name="event" onChange={this.handleEventChange} className="input">
@@ -108,7 +104,6 @@ class NewSpeedRecord extends React.Component {
           </label>
           {this.props.firebase.auth.currentUser ? <input className="input" id="submitButton" type="submit" onClick={this.saveSpeedRecord}></input>
             : <input className="input" id="submitButton" type="submit" onClick={this.saveSpeedRecord} disabled></input> }
-          
         </form>
       </div>
     );
