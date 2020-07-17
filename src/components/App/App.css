@@ -22,7 +22,9 @@ body {
   display: block;
   background-color: #8adcff;
   border-radius: 10px;
-  padding: 1rem;
+  padding: 0 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   margin: 0.5rem 0;
 }
 
@@ -32,15 +34,33 @@ body {
 }
 
 .input{
+  box-sizing: border-box;
+  width: 100%;
+  background-color: white;
+  display: block;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 5px 12px#888888;
+  margin-right: auto 0 0 1rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.select-input{
   display: block;
   background-color: white;
   cursor: pointer;
   outline: none;
   border: none;
   border-radius: 5px;
-  padding: 0.5rem;
   box-shadow: 2px 5px 12px#888888;
-  width: 95%;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+option {
+  color: #383838;
 }
 
 .button {

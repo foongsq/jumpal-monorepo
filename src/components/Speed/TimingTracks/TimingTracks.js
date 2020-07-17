@@ -11,14 +11,18 @@ export default class TimingTracks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      track: null
+      track: null,
+      selectColor: 'gray'
     }
     this.handleTrackChange = this.handleTrackChange.bind(this);
   }
 
   handleTrackChange(event) {
     console.log(event.target.value)
-    this.setState({ track: event.target.value });
+    this.setState({ 
+      track: event.target.value,
+      selectColor: '#383838'
+     });
   }
 
   render() {
@@ -41,15 +45,15 @@ export default class TimingTracks extends React.Component {
       <div className="timing-tracks-container">
         <h2>Timing Tracks</h2>
         <div className="select-and-audio">
-          <select name="event" onChange={this.handleTrackChange} className="input">
-                <option value="" selected>Select your event</option>
-                <option value="SRSS-1x30sec">Single Rope Speed Sprints 1x30sec</option>
-                <option value="SRDU-2x30sec">Single Rope Double Unders 2x30sec</option>
-                <option value="SRSE-1x180sec">Single Rope Speed Endurance 1x180sec</option>
-                <option value="SRSR-4x30sec">Single Rope Speed Relay 4x30sec</option>
-                <option value="DDSR-4x30sec">Double Dutch Speed Relay 4x30sec</option>
-                <option value="DDSS-1x60sec">Double Dutch Speed Sprints 1x60sec</option>
-              </select>
+          <select style={{ color: this.state.selectColor }} name="event" onChange={this.handleTrackChange} className="input">
+            <option value="" selected disabled>Select your event</option>
+            <option value="SRSS-1x30sec">Single Rope Speed Sprints 1x30sec</option>
+            <option value="SRDU-2x30sec">Single Rope Double Unders 2x30sec</option>
+            <option value="SRSE-1x180sec">Single Rope Speed Endurance 1x180sec</option>
+            <option value="SRSR-4x30sec">Single Rope Speed Relay 4x30sec</option>
+            <option value="DDSR-4x30sec">Double Dutch Speed Relay 4x30sec</option>
+            <option value="DDSS-1x60sec">Double Dutch Speed Sprints 1x60sec</option>
+          </select>
           <audio className="timing-track-audio" src={src} controls></audio>
         </div>
       </div>

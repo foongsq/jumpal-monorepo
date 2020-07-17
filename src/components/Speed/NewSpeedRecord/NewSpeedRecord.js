@@ -9,7 +9,8 @@ class NewSpeedRecord extends React.Component {
     this.state = {
       event: null,
       score: null,
-      time: new Date()
+      time: new Date(),
+      color: 'gray'
     }
     this.saveSpeedRecord = this.saveSpeedRecord.bind(this);
     this.handleEventChange = this.handleEventChange.bind(this);
@@ -19,7 +20,11 @@ class NewSpeedRecord extends React.Component {
   }
 
   handleEventChange(event) {
-    this.setState({ event: event.target.value });
+    this.setState({ 
+      event: event.target.value,
+      color: '#383838',
+     });
+
   }
 
   handleScoreChange(event) {
@@ -58,9 +63,6 @@ class NewSpeedRecord extends React.Component {
     let yyyy = today.getFullYear();
     today = `${yyyy}/${mm}/${dd}`;
 
-    console.log('today', today)
-    console.log('this.state.time', this.state.time)
-    console.log('timestamp()', this.timeStamp(this.state.time))
     this.props.firebase.user(this.props.firebase.auth.currentUser.uid)
     .child('speed-records')
     .child(`${today}`)
@@ -79,31 +81,36 @@ class NewSpeedRecord extends React.Component {
         <form className="form" ref={(el) => this.myFormRef = el}>
           <h2>New Speed Record</h2>
           <p>Store your speed scores here :)</p>
-          <label>Time: 
+          <div className="input-div">
+          <label className="time-label">Time: 
             <br />
             <DateTime
+              id="time"
               className="time-input" 
               onChange={this.handleTimeChange} 
               value={this.state.time}
             />
           </label>
           <label>Event: 
-            <select name="event" onChange={this.handleEventChange} className="input">
-              <option value="" selected>Select your event</option>
-              <option value="1x30sec Running Step">1x30sec Running Step</option>
-              <option value="1x60sec Running Step">1x60sec Running Step</option>
-              <option value="1x30sec Double Unders">1x30sec Double Unders</option>
-              <option value="1x180sec Running Step">1x180sec Running Step</option>
-              <option value="2x30sec Double Unders">2x30sec Double Unders</option>
-              <option value="4x30sec Speed Relay">4x30sec Speed Relay</option>
+            <select style={{color: this.state.color}} name="event" onChange={this.handleEventChange} className="select-input">
+              <option value="" disabled selected>Select your event</option>
+              <option className="event-option" value="1x30sec Running Step">1x30sec Running Step</option>
+              <option className="event-option" value="1x60sec Running Step">1x60sec Running Step</option>
+              <option className="event-option" value="1x30sec Double Unders">1x30sec Double Unders</option>
+              <option className="event-option" value="1x180sec Running Step">1x180sec Running Step</option>
+              <option className="event-option" value="2x30sec Double Unders">2x30sec Double Unders</option>
+              <option className="event-option" value="4x30sec Speed Relay">4x30sec Speed Relay</option>
             </select>
           </label>
           <label>
             Score:
-            <input className="input" type="number" name="score" placeholder="Enter your speed score" onChange={this.handleScoreChange}></input>
+            <input className="input" type="number" min="0" placeholder="Enter your speed score" onChange={this.handleScoreChange}></input>
           </label>
-          {this.props.firebase.auth.currentUser ? <input className="input" id="submitButton" type="submit" onClick={this.saveSpeedRecord}></input>
-            : <input className="input" id="submitButton" type="submit" onClick={this.saveSpeedRecord} disabled></input> }
+          </div>
+          <div className="submit-div">
+          {this.props.firebase.auth.currentUser ? <input id="submitButton" type="submit" onClick={this.saveSpeedRecord}></input>
+            : <input className="button" id="submitButton" type="submit" onClick={this.saveSpeedRecord} disabled></input> }
+          </div>
         </form>
       </div>
     );

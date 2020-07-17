@@ -16,6 +16,21 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { withFirebase } from '../../Firebase/index';
 
+const Appointment = ({
+  children, ...restProps
+}) => (
+  <Appointments.Appointment
+    {...restProps}
+    style={{
+      backgroundColor: '#f5d247',
+      borderRadius: '3px',
+      margin: '0',
+      wordWrap: 'normal'
+    }}
+  >
+    {children}
+  </Appointments.Appointment>
+);
 
 class Calendar extends React.PureComponent {
   constructor(props) {
@@ -212,7 +227,9 @@ class Calendar extends React.PureComponent {
               <DateNavigator />
               <ViewSwitcher />
               <ConfirmationDialog />
-              <Appointments />
+              <Appointments 
+                appointmentComponent={Appointment}
+              />
               <AppointmentTooltip
                 showCloseButton
                 showOpenButton
