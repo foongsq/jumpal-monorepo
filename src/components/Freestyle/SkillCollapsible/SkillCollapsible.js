@@ -1,9 +1,8 @@
 import React from 'react';
-import './Collapsible.css';
-import InstagramEmbed from 'react-instagram-embed';
-import { withFirebase } from '../../Firebase';
+import './SkillCollapsible.css';
+import { withFirebase } from '../../../Firebase';
 
-class Collapsible extends React.Component {
+class SkillCollapsible extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,19 +21,18 @@ class Collapsible extends React.Component {
   }
 
   async handleDelete() {
-    console.log('this.state.url', this.props.url)
     let ref = this.props.firebase.db.ref('users')
       .child(this.props.firebase.auth.currentUser.uid)
-      .child("freestyle-saved-insta-urls")
+      .child("freestyle-skills-list")
       .orderByChild('url').equalTo(this.props.url);
     let snapshot = await ref.once('value');
     let value = snapshot.val();
-    console.log('Object.keys(value)[0]', Object.keys(value)[0])
+   
     this.props.firebase.db.ref('users')
       .child(this.props.firebase.auth.currentUser.uid)
-      .child("freestyle-saved-insta-urls")
+      .child("freestyle-skills-list")
       .child(Object.keys(value)[0]).remove();
-      window.alert("Instagram post deleted successfully! (Please refresh to see your updated list)")
+      window.alert("Skill deleted successfully! (Please refresh to see your updated list)")
   }
 
   render() {
@@ -42,20 +40,28 @@ class Collapsible extends React.Component {
       <div>
         <div className="note-and-trash-div">
           <button onClick={this.handleClick} className="note-button">
-            {this.props.content}
+            {this.props.skillName}
           </button>
           <button onClick={this.handleDelete} className="trash-button">
             <i className="fa fa-trash-o" aria-hidden="true"></i>
           </button>
         </div>
-        {this.state.open ? <InstagramEmbed
-          url={this.props.url}
-          hideCaption={true}
-          className="insta-post"
-        /> : null}
+        {this.state.open 
+          ? <div className="skill-content">
+              <label>Skill Name:<p>{this.props.skillName}</p></label>
+              <label>Description:<p>{this.props.description}</p></label>
+              <label>Progress:<p>{this.props.progress}</p></label>
+              <p>{this.props.breakthrough === "on" 
+                ? "Broke through!! :)" 
+                : "Not broken through yet jiayous!" }</p>
+              <p>{this.props.mastered === "on" 
+                ? "Mastered!! :)" 
+                : "Not mastered yet jiayous!" }</p>
+            </div>
+          : null}
       </div>
     )
   }
 }
 
-export default withFirebase(Collapsible);
+export default withFirebase(SkillCollapsible);

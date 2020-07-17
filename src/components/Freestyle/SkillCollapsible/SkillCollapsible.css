@@ -1,0 +1,20 @@
+.skill-content {
+  background-color: #dedede;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+}
+
+.skill-content label {
+  display: flex;
+  color: 
+  #4e7ede
+  ;
+  margin: 0.25rem 0;
+}
+
+.skill-content p {
+  margin: 0;
+  padding-left: 0.25rem;
+  color: #383838;
+}

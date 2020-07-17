@@ -106,7 +106,7 @@ class NewSpeedRecord extends React.Component {
             Score:
             <input className="input" type="number" name="score" placeholder="Enter your speed score" onChange={this.handleScoreChange}></input>
           </label>
-          {this.props.user ? <input className="input" id="submitButton" type="submit" onClick={this.saveSpeedRecord}></input>
+          {this.props.firebase.auth.currentUser ? <input className="input" id="submitButton" type="submit" onClick={this.saveSpeedRecord}></input>
             : <input className="input" id="submitButton" type="submit" onClick={this.saveSpeedRecord} disabled></input> }
           
         </form>

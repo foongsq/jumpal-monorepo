@@ -58,7 +58,7 @@ class SpeedData extends React.Component {
 
   renderAllData(records) {
     console.log(records)
-      return records.map(record => {
+      return records.reverse().map(record => {
         const { event, score, time } = record //destructuring
         return (
             <tr>
@@ -76,7 +76,7 @@ class SpeedData extends React.Component {
     let mm = String(today.getMonth() + 1); //January is 0!
     let yyyy = today.getFullYear();
     today = `${mm}/${dd}/${yyyy}`;
-    return records.map(record => {
+    return records.reverse().map(record => {
       const { event, score, time } = record //destructuring
       let splitTime = time.split(" ");
       console.log(splitTime[0])
