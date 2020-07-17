@@ -1,5 +1,4 @@
 import React from 'react';
-import './SkillList.css';
 import { withFirebase } from '../../../Firebase';
 import SkillCollapsible from '../SkillCollapsible/SkillCollapsible';
 
@@ -7,18 +6,18 @@ class SkillList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      skillName: null,
-      description: null,
-      progress: null,
+      skillName: '-',
+      progress: [['-', new Date().toString()]],
+      url: '-',
       breakthrough: false,
       mastered: false,
       dataFromDB: [],
     }
     this.handleSkillNameChange = this.handleSkillNameChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleProgressChange = this.handleProgressChange.bind(this);
     this.handleBreakthroughChange = this.handleBreakthroughChange.bind(this);
     this.handleMasteredChange = this.handleMasteredChange.bind(this);
+    this.handleURLChange = this.handleURLChange.bind(this);
     this.submitEntry = this.submitEntry.bind(this);
     this.readDatafromDB = this.readDatafromDB.bind(this);
   }
@@ -27,12 +26,8 @@ class SkillList extends React.Component {
     this.setState({ skillName: event.target.value });
   }
 
-  handleDescriptionChange(event) {
-    this.setState({ description: event.target.value });
-  }
-
   handleProgressChange(event) {
-    this.setState({ progress: event.target.value });
+    this.setState({ progress: [[event.target.value, new Date().toString()]] });
   }
 
   handleBreakthroughChange(event) {
@@ -43,20 +38,22 @@ class SkillList extends React.Component {
     this.setState({ mastered: event.target.value });
   }
 
+  handleURLChange(event) {
+    this.setState({ url: event.target.value });
+  }
+
   submitEntry() { //save entry to database
     let ref = this.props.firebase.db.ref('users')
       .child(this.props.firebase.auth.currentUser.uid)
       .child("freestyle-skills-list");
     ref.push({
       skillName: this.state.skillName,
-      description: this.state.description,
       progress: this.state.progress,
+      url: this.state.url,
       breakthrough: this.state.breakthrough,
       mastered: this.state.mastered,
     });
-    console.log('saved?')
     window.alert("New skill saved successfully!")
-    // this.freestyleform.reset();
   }
 
   async componentDidMount() {
@@ -88,6 +85,7 @@ class SkillList extends React.Component {
     this.setState({ dataFromDB: dataFromDB });
   }
 
+  
   render() {
     let dataValues = [];
     let data = [];
@@ -105,8 +103,8 @@ class SkillList extends React.Component {
         <h1>Skill List</h1>
         <form ref={(el) => this.freestyleform = el} className="form">
           <label>Skill Name:<input className="input" onChange={this.handleSkillNameChange} type="text" placeholder="Enter freestyle skill name here"/></label>
-          <label>Description:<input className="input" onChange={this.handleDescriptionChange} type="text" placeholder="Enter description here"/></label>
           <label>Progress: (as of {new Date().toDateString()})<input className="input" onChange={this.handleProgressChange} type="text" placeholder="Enter progress here"/></label>
+          <label>Instagram URL:<input className="input" type="text" onChange={this.handleURLChange} placeholder="Enter Instagram URL here"/></label>
           <label><input type="checkbox" onChange={this.handleBreakthroughChange}/>Breakthrough</label>
           <label><input type="checkbox" onChange={this.handleMasteredChange}/>Mastered</label>
           <div className="button-div">
@@ -121,13 +119,14 @@ class SkillList extends React.Component {
         <h2>Skills I want to learn</h2>
         {this.state.dataFromDB && this.state.dataFromDB.length !== 0 ? 
               data.map(object => {
-                console.log('obj[0]', object[0])
+                console.log('obj[0]', object[1])
                 return (
                   <div>
                     <SkillCollapsible 
                       skillName={object[1].skillName}
                       description={object[1].description} 
                       progress={object[1].progress}
+                      url={object[1].url}
                       breakthrough={object[1].breakthrough}
                       mastered={object[1].mastered}
                       id={object[0]}

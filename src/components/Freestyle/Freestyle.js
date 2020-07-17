@@ -19,7 +19,10 @@ class Freestyle extends React.Component {
     if (this.state.openInstagram) {
       this.setState({ openInstagram: false });
     } else {
-      this.setState({ openInstagram: true });
+      this.setState({ 
+        openInstagram: true,
+        openSkillList: false 
+      });
     }
   }
 
@@ -27,7 +30,10 @@ class Freestyle extends React.Component {
     if (this.state.openSkillList) {
       this.setState({ openSkillList: false });
     } else {
-      this.setState({ openSkillList: true });
+      this.setState({ 
+        openSkillList: true,
+        openInstagram: false
+       });
     }
   }
 

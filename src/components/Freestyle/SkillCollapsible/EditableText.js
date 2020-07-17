@@ -80,11 +80,11 @@ class EditableText extends React.Component {
   }
  
   render() {
-    console.log(this.state.editing)
     return (
       <div className="editable-text-container">
-        <div>
+        <div className="content-div">
           <p className={this.state.editing ? 'hidden' : 'show-p'}>{this.state.editText}</p>
+          
           <input 
             className={this.state.editing ? 'show-input' : 'hidden'} 
             value={this.state.editText} 

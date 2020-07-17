@@ -4,6 +4,9 @@
   justify-content: space-between;
 }
 
+.content-div {
+  width: 100%;
+}
 .hidden {
   display: none;
 }
@@ -32,4 +35,14 @@
 
 .edit-button:hover {
   cursor: pointer;
+}
+
+.datetime-div {
+  display: flex;
+}
+
+.progress-entry-div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }

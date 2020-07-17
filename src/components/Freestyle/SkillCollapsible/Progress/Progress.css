@@ -1,0 +1,66 @@
+.datetime-div {
+  display: flex;
+}
+
+.progress-entry-div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.show-p {
+  font-size: 1rem;
+  display: flex;
+}
+
+#add-square {
+  padding: 0 0.5rem;
+  background-color: #dedede;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  float: right;
+}
+
+#add-square:hover {
+  background-color: #ebebeb;
+}
+
+.progress-container {
+  box-sizing: border-box;
+}
+
+.content-div {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+.show-label {
+  display: flex;
+}
+
+.show-input {
+  box-sizing: border-box;
+  font-size: 1rem;
+  display: flex;
+  background-color: #dedede;
+  outline: none;
+  border: 1px solid grey;
+  border-radius: 3px;
+  width: 100%;
+}
+
+.show {
+  display: flex;
+  padding: 0.5rem;
+  background-color: #ebebeb;
+  border-radius: 5px;
+}
+
+.show p{
+ color: #4e7ede;
+}

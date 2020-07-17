@@ -2,14 +2,18 @@ import React from 'react';
 import './SkillCollapsible.css';
 import { withFirebase } from '../../../Firebase';
 import EditableText from './EditableText';
+import InstagramEmbed from 'react-instagram-embed';
+import Progress from '../SkillCollapsible/Progress/Progress';
 
 class SkillCollapsible extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      openProgress: false,
     }
     this.handleClick = this.handleClick.bind(this);
+    this.handleProgressClick = this.handleProgressClick.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
@@ -18,6 +22,14 @@ class SkillCollapsible extends React.Component {
       this.setState({ open: false });
     } else {
       this.setState({ open: true });
+    }
+  }
+
+  handleProgressClick() {
+    if (this.state.openProgress) {
+      this.setState({ openProgress: false });
+    } else {
+      this.setState({ openProgress: true });
     }
   }
 
@@ -51,14 +63,20 @@ class SkillCollapsible extends React.Component {
         {this.state.open 
           ? <div className="skill-content">
               <label>Skill Name:<EditableText id={this.props.id} type="skillName" content={this.props.skillName} /></label>
-              <label>Description:<EditableText id={this.props.id} type="description" content={this.props.description} /></label>
-              <label>Progress:<EditableText id={this.props.id} type="progress" content={this.props.progress} /></label>
+              <button id="progress-button" onClick={this.handleProgressClick}><label>Progress:</label></button>
+              {this.state.openProgress ? <Progress progress={this.props.progress} id={this.props.id} /> : null}
               <p>{this.props.breakthrough === "on" 
                 ? "Broke through!! :)" 
-                : "Not broken through yet jiayous!" }</p>
-              <p>{this.props.mastered === "on" 
+                : "Not broken through yet jiayous!" } {this.props.mastered === "on" 
                 ? "Mastered!! :)" 
                 : "Not mastered yet jiayous!" }</p>
+              {this.props.url === '-' 
+                ? null 
+                : <InstagramEmbed
+                    url={this.props.url}
+                    hideCaption={true}
+                    className="insta-post"
+                  /> }
             </div>
           : null}
       </div>
