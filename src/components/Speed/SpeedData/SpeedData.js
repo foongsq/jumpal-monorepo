@@ -16,6 +16,26 @@ class SpeedData extends React.Component {
     this.renderTableHeader = this.renderTableHeader.bind(this);
     this.showAll = this.showAll.bind(this);
     this.showToday = this.showToday.bind(this);
+    this.onSpeedDataUpdate = this.onSpeedDataUpdate.bind(this);
+
+    this.ref = this.props.firebase.db.ref('users')
+      .child(this.props.firebase.auth.currentUser.uid)
+      .child('speed-records');
+    this.ref.on("value", this.onSpeedDataUpdate);
+  }
+
+  componentWillUnmount() {
+    // detach all listeners to this reference when component unmounts (very important!)
+    this.ref.off();
+  }
+
+  onSpeedDataUpdate(snapshot) {
+    let speedRecords = [];
+    speedRecords.push(snapshot.val())
+    this.setState({
+      speedRecords: speedRecords,
+      isDataLoaded: true
+    })
   }
 
   async readData() {

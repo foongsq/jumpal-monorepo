@@ -15,6 +15,18 @@ class Instagram extends React.Component {
     this.handleNoteChange = this.handleNoteChange.bind(this);
     this.addInstaPost = this.addInstaPost.bind(this);
     this.readDatafromDB = this.readDatafromDB.bind(this);
+    this.onInstagramDataChange = this.onInstagramDataChange.bind(this);
+
+    this.ref = this.props.firebase.db.ref('users')
+      .child(this.props.firebase.auth.currentUser.uid)
+      .child("freestyle-saved-insta-urls");
+    this.ref.on('value', this.onInstagramDataChange)
+  }
+
+  onInstagramDataChange(snapshot) {
+    let dataFromDB = [];
+    dataFromDB.push(snapshot.val());
+    this.setState({ dataFromDB: dataFromDB });
   }
 
   handleURLChange(event) {
@@ -25,7 +37,7 @@ class Instagram extends React.Component {
     this.setState({ note: event.target.value });
   }
 
-  addInstaPost() { //saves url to database
+  addInstaPost(event) { //saves url to database
     let url = this.state.url;
     let note = this.state.note;
     let ref = this.props.firebase.db.ref('users')
@@ -36,7 +48,8 @@ class Instagram extends React.Component {
       note: note,
     })
     window.alert("Instagram post saved successfully!")
-    this.myFormRef.reset();
+    this.freestyleform.reset();
+    event.preventDefault();
   }
 
   async componentDidMount() {

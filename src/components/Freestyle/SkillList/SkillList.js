@@ -20,6 +20,18 @@ class SkillList extends React.Component {
     this.handleURLChange = this.handleURLChange.bind(this);
     this.submitEntry = this.submitEntry.bind(this);
     this.readDatafromDB = this.readDatafromDB.bind(this);
+    this.onSkillListDataChange = this.onSkillListDataChange.bind(this);
+    
+    this.ref = this.props.firebase.db.ref('users')
+    .child(this.props.firebase.auth.currentUser.uid)
+    .child("freestyle-skills-list");
+    this.ref.on('value', this.onSkillListDataChange)
+  }
+
+  onSkillListDataChange(snapshot) {
+    let dataFromDB = [];
+    dataFromDB.push(snapshot.val());
+    this.setState({ dataFromDB: dataFromDB });
   }
 
   handleSkillNameChange(event) {
@@ -42,7 +54,7 @@ class SkillList extends React.Component {
     this.setState({ url: event.target.value });
   }
 
-  submitEntry() { //save entry to database
+  submitEntry(event) { //save entry to database
     let ref = this.props.firebase.db.ref('users')
       .child(this.props.firebase.auth.currentUser.uid)
       .child("freestyle-skills-list");
@@ -54,6 +66,8 @@ class SkillList extends React.Component {
       mastered: this.state.mastered,
     });
     window.alert("New skill saved successfully!")
+    this.freestyleform.reset();
+    event.preventDefault();
   }
 
   async componentDidMount() {
@@ -117,7 +131,7 @@ class SkillList extends React.Component {
             ? <button onClick={this.readDatafromDB} id="refresh-button" className="button">Refresh</button>
             : null }
         <h2>Skills I want to learn</h2>
-        {this.state.dataFromDB && this.state.dataFromDB.length !== 0 ? 
+        {this.state.dataFromDB && this.state.dataFromDB.length !== 0 && this.props.firebase.auth.currentUser ? 
               data.map(object => {
                 console.log('obj[0]', object[1])
                 return (
