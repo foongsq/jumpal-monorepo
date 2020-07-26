@@ -32,3 +32,13 @@
   padding-left: 0.25rem;
   color: #383838;
 }
+
+.learnt-button {
+  border: none;
+  outline: none;
+}
+
+.learnt-button:hover {
+  background-color: #8adcff;
+  cursor: pointer;
+}

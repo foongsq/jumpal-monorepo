@@ -1,6 +1,5 @@
 import React from 'react';
 import './InstaCollapsible.css';
-import InstagramEmbed from 'react-instagram-embed';
 import { withFirebase } from '../../../Firebase';
 
 class InstaCollapsible extends React.Component {
@@ -39,7 +38,7 @@ class InstaCollapsible extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="insta-collapsible-container">
         <div className="note-and-trash-div">
           <button onClick={this.handleClick} className="note-button">
             {this.props.content}
@@ -48,11 +47,7 @@ class InstaCollapsible extends React.Component {
             <i className="fa fa-trash-o" aria-hidden="true"></i>
           </button>
         </div>
-        {this.state.open ? <InstagramEmbed
-          url={this.props.url}
-          hideCaption={true}
-          className="insta-post"
-        /> : null}
+        {this.state.open ? <a target="_blank" href={this.props.url} className="insta-link"><p>{this.props.url}</p></a> : null}
       </div>
     )
   }

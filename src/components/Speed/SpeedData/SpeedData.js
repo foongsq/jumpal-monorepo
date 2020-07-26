@@ -1,6 +1,7 @@
 import React from 'react';
 import './SpeedData.css';
 import { withFirebase } from '../../../Firebase/index';
+import ReactLoading from 'react-loading';
 
 class SpeedData extends React.Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class SpeedData extends React.Component {
       isDataLoaded: false,
       showToday: false
     }
-    this.readData = this.readData.bind(this);
+    // this.readData = this.readData.bind(this);
     this.renderAllData = this.renderAllData.bind(this);
     this.renderTodayData = this.renderTodayData.bind(this);
     this.renderTableHeader = this.renderTableHeader.bind(this);
@@ -38,20 +39,20 @@ class SpeedData extends React.Component {
     })
   }
 
-  async readData() {
-    let speedRecords = [];
-    if (this.props.firebase.auth.currentUser) {
-      let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('speed-records');
-      let snapshot = await ref.once('value');
-      let value = snapshot.val();
-      speedRecords.push(value);
-      console.log('speedRecords', speedRecords)
-      this.setState({
-        speedRecords: speedRecords,
-        isDataLoaded: true
-      })
-    }
-  }
+  // async readData() {
+  //   let speedRecords = [];
+  //   if (this.props.firebase.auth.currentUser) {
+  //     let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('speed-records');
+  //     let snapshot = await ref.once('value');
+  //     let value = snapshot.val();
+  //     speedRecords.push(value);
+  //     console.log('speedRecords', speedRecords)
+  //     this.setState({
+  //       speedRecords: speedRecords,
+  //       isDataLoaded: true
+  //     })
+  //   }
+  // }
 
   async componentDidMount() {
     let speedRecords = [];
@@ -60,7 +61,6 @@ class SpeedData extends React.Component {
       let snapshot = await ref.once('value');
       let value = snapshot.val();
       speedRecords.push(value);
-      console.log('speedRecords', speedRecords)
       this.setState({
         speedRecords: speedRecords,
         isDataLoaded: true
@@ -124,9 +124,8 @@ class SpeedData extends React.Component {
 }
 
   render() {
-    if (this.state.isDataLoaded && this.state.speedRecords && this.state.speedRecords !== []) {
-      console.log('this.state.speedRecords', this.state.speedRecords)
-      if(this.state.speedRecords.length !== 0 && this.state.speedRecords[0] !== null){
+    if (this.state.isDataLoaded) {
+      if (this.state.speedRecords && this.state.speedRecords.length !== 0 && this.state.speedRecords[0]){
         let records = this.state.speedRecords;
         let years = Object.keys(records[0]);
         let consolidated = []
@@ -147,9 +146,9 @@ class SpeedData extends React.Component {
             <div className="title-refresh-div">
               <h2>My Speed Records</h2>
               <div className="buttons-div">
-                <button onClick={this.readData} className="button">
+                {/* <button onClick={this.readData} className="button">
                   <i className="fa fa-refresh"></i>Refresh speed data
-                  </button>
+                  </button> */}
                 {this.state.showToday ? <button onClick={this.showAll} className="button"><i class="fa fa-smile-o" aria-hidden="true"></i>All data</button> :
                   <button onClick={this.showToday} className="button"><i class="fa fa-smile-o" aria-hidden="true"></i>Today</button> }
               </div>              
@@ -165,14 +164,11 @@ class SpeedData extends React.Component {
       } else {
         return (<div>
             <p className="loading">Start by entering a new speed record above.</p>
-            <button onClick={this.readData} className="button"><i className="fa fa-refresh"></i>Refresh speed data</button>
+            {/* <button onClick={this.readData} className="button"><i className="fa fa-refresh"></i>Refresh speed data</button> */}
           </div>);
       }
     } else {
-      return (<div>
-          <p className="loading">Start by entering a new speed record above.</p>
-          <button onClick={this.readData} className="button"><i className="fa fa-refresh"></i>Refresh speed data</button>
-        </div>);
+      return <ReactLoading type='spin' color='white' height={'5%'} width={'5%'} />;
     }
   }
 }

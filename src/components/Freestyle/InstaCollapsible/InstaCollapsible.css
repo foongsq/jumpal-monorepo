@@ -1,9 +1,16 @@
+.insta-collapsible-container {
+  width: 100%;
+  box-sizing: border-box;
+  /* border: 1px solid red; */
+}
+
 .note-button {
   border: none;
   outline: none;
   width: 100%;
   text-align: left;
   padding: 0.5rem;
+  font-size: 1rem;
 }
 
 .note-button:hover {
@@ -20,6 +27,7 @@
   outline: none;
   float: right;
 }
+
 .trash-button:hover {
   cursor: pointer;
   background-color: red;
@@ -27,4 +35,27 @@
 
 .note-and-trash-div {
   display: flex;
+}
+
+.insta-link {
+  display: flex;
+  color: #383838;
+  /* border: 1px solid red; */
+  padding: 0.5rem;
+  margin-right: 1rem;
+  box-sizing: border-box;
+}
+
+.insta-link p {
+  /* border: 1px solid red; */
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  font-size: 1rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.insta-link:hover {
+  background-color:#8adcff;
 }

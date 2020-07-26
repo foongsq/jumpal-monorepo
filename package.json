@@ -17,6 +17,7 @@
     "react-datetime-picker": "^3.0.2",
     "react-dom": "^16.13.1",
     "react-instagram-embed": "^1.5.0",
+    "react-loading": "^2.0.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "recompose": "^0.30.0"
