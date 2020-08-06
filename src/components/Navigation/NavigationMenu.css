@@ -18,6 +18,7 @@
   padding: 1rem;
   color: white;
   background-color: #38c4ff;
+  border-radius: 0;
 }
 
 .menu a:hover {

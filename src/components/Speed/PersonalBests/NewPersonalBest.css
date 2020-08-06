@@ -1,0 +1,13 @@
+.form {
+  background-color: inherit;
+}
+
+.input, .form select {
+  background-color: inherit;
+  border: 1px solid grey
+}
+
+.newSpeedRecord h2 {
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #383838;
+}

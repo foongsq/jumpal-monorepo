@@ -11,7 +11,7 @@ import quote7 from '../../images/quote-7.jpg';
 export default class Home extends React.Component {
   render() {
     return (
-      <div>
+      <div className='home-container'>
         <h2 style={{textAlign:'center'}}>Motivational Quotes</h2>
         <img src={quote1} className='motivation-img'/>
         <img src={quote2} className='motivation-img'/>

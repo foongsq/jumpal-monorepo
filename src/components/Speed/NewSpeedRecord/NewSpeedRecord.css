@@ -1,3 +1,17 @@
+.form {
+  background-color: inherit;
+}
+
+.input, .form select {
+  background-color: inherit;
+  border: 1px solid grey
+}
+
+.newSpeedRecord h2 {
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #383838;
+}
+
 .submit-div {
   display: flex;
   width: 100%;
@@ -20,17 +34,18 @@
 
 .time-label input {
   box-sizing: border-box;
-  background-color: white;
+  background-color: inherit;
   display: block;
   cursor: pointer;
   outline: none;
-  border: none;
+  border: 1px solid grey;
   border-radius: 5px;
   box-shadow: 2px 5px 12px#888888;
   margin-right: auto 0 0 1rem;
   padding: 0.5rem 0.5rem;
   width: 100%;
 }
+
 
 .rdt {
   position: relative;

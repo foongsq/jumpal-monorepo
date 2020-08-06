@@ -2,6 +2,7 @@ import React from 'react';
 import './SpeedData.css';
 import { withFirebase } from '../../../Firebase/index';
 import ReactLoading from 'react-loading';
+import NewSpeedRecord from '../NewSpeedRecord/NewSpeedRecord';
 
 class SpeedData extends React.Component {
   constructor(props) {
@@ -9,15 +10,18 @@ class SpeedData extends React.Component {
     this.state = {
       speedRecords: [],
       isDataLoaded: false,
-      showToday: false
+      showToday: false,
+      openNewSpeedRecord: false,
     }
     // this.readData = this.readData.bind(this);
+    this.toggleNewSpeedRecord = this.toggleNewSpeedRecord.bind(this);
     this.renderAllData = this.renderAllData.bind(this);
     this.renderTodayData = this.renderTodayData.bind(this);
     this.renderTableHeader = this.renderTableHeader.bind(this);
     this.showAll = this.showAll.bind(this);
     this.showToday = this.showToday.bind(this);
     this.onSpeedDataUpdate = this.onSpeedDataUpdate.bind(this);
+    this.handleDelete.bind(this);
 
     this.ref = this.props.firebase.db.ref('users')
       .child(this.props.firebase.auth.currentUser.uid)
@@ -68,6 +72,34 @@ class SpeedData extends React.Component {
     }
   }
 
+  toggleNewSpeedRecord() {
+    this.setState({openNewSpeedRecord: !this.state.openNewSpeedRecord});
+  }
+  handleDelete(event, score, time) {
+    console.log(time);
+    let dd = String(new Date(time).getDate()).padStart(2, '0');
+    let mm = String(new Date(time).getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = new Date(time).getFullYear();
+    let date = `${yyyy}/${mm}/${dd}`;
+    let result = window.confirm("Are you sure you want to delete?");
+    if (this.props.firebase.auth.currentUser && result) {
+      this.props.firebase.db.ref('users')
+      .child(this.props.firebase.auth.currentUser.uid)
+      .child('speed-records')
+      .child(date)
+      .once('value', snapshot => {
+        snapshot.forEach(child => {
+          console.log(child.val())
+          if (child.val().event === event &&
+            child.val().score === score &&
+            child.val().time === time) {
+            child.ref.remove();
+          }
+        })
+      })
+    }
+  }
+
   showToday() {
     this.setState({ showToday: true })
   }
@@ -85,6 +117,7 @@ class SpeedData extends React.Component {
               <td>{event}</td>
               <td>{score}</td>
               <td>{time}</td>
+              <td id='delete-cell'><button className='delete' onClick={() => this.handleDelete(event, score, time)}><i className="fa fa-trash-o" aria-hidden="true"></i></button></td>
             </tr>
         )
       });
@@ -119,6 +152,7 @@ class SpeedData extends React.Component {
      <th>Event</th>
      <th>Score</th>
      <th>Time</th>
+     <th></th>
    </tr>);
    
 }
@@ -143,6 +177,13 @@ class SpeedData extends React.Component {
         
         return (
           <div>
+            {this.state.openNewSpeedRecord 
+              ? <div className='newSpeedRecord-div'>
+                  <button className="closeNewSpeedRecord" onClick={this.toggleNewSpeedRecord}>x</button>
+                  <NewSpeedRecord />
+                </div>
+              : <button className="addNewSpeedRecord" onClick={this.toggleNewSpeedRecord}>+ Add New Speed Record</button>}
+            
             <div className="title-refresh-div">
               <h2>My Speed Records</h2>
               <div className="buttons-div">

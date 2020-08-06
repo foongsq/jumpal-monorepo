@@ -19,9 +19,8 @@ class ProfilePage extends React.Component {
     if(this.props.firebase.auth.currentUser) {
       return (
           <div className="profile-container">
-            <h1>Profile page</h1>
             <img className="profile-pic" src={this.props.firebase.auth.currentUser.photoURL} />
-            <p>Name: {this.props.firebase.auth.currentUser.displayName}</p>
+            <p className="name">{this.props.firebase.auth.currentUser.displayName}</p>
             <p>Email: {this.props.firebase.auth.currentUser.email}</p>
             <SignOut />
           </div>

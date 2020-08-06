@@ -1,7 +1,13 @@
 body {
-  background-color: white;
   font-family: Roboto, Arial;
   color:#383838;
+}
+
+.app {
+  background-color: white;
+  margin: 0 auto;
+  max-width: 900px;
+   /* border: 1px solid red; */
 }
 
 .logoContainer {
@@ -16,6 +22,7 @@ body {
 
 .content {
   margin: 1rem; 
+  /* border: 1px solid red; */
 }
 
 .form {

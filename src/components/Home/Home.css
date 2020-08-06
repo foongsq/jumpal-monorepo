@@ -1,4 +1,10 @@
+.home-container {
+  background: linear-gradient(0deg, black 0%, grey 51%, white 85%);
+}
+
 .motivation-img {
-  width: 100%;
+  width: 80%;
   height: auto;
+  margin: 0.5rem auto;
+  display: block;
 }
