@@ -91,7 +91,7 @@ class PersonalBests extends React.Component {
     return eventsArr.map(event => {
       console.log(records)
       return (
-          <tr>
+          <tr className="tableData">
             <td>{event}</td>
             <td>{records[0][event].score}</td>
             <td>{records[0][event].time}</td>

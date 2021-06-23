@@ -1,3 +1,25 @@
+.title-refresh-div {
+  padding: 0 1rem;
+}
+
+.speedData-table {
+  margin: 0 1rem;
+  box-shadow: 5px 5px 10px #888888;
+}
+
+.speedData-table th,td {
+  border-top-style: hidden !important;
+  border-bottom-style: hidden !important;
+  border-left-style: hidden !important;
+  border-right-style: hidden !important;
+  border-radius:5px;
+}
+
+.speedData-table th {
+  background-color: rgb(12, 12, 128) ;
+  color: white;
+}
+
 .addNewPersonalBest {
   display: block;
   background-color: inherit;
