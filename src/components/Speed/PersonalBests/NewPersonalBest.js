@@ -40,22 +40,9 @@ class NewPersonalBest extends React.Component {
     time = new Date(time)
     // Create an array with the current month, day and time
     let date = [ time.getMonth() + 1, time.getDate(), time.getFullYear() ];
-    // Create an array with the current hour, minute and second
-    let time2 = [ time.getHours(), time.getMinutes(), time.getSeconds() ];
-    // Determine AM or PM suffix based on the hour
-    let suffix = ( time2[0] < 12 ) ? "AM" : "PM";
-    // Convert hour from military time
-    time2[0] = ( time2[0] < 12 ) ? time2[0] : time2[0] - 12;
-    // If hour is 0, set it to 12
-    time2[0] = time2[0] || 12;
-    // If seconds and minutes are less than 10, add a zero
-    for ( let i = 1; i < 3; i++ ) {
-      if ( time2[i] < 10 ) {
-        time2[i] = "0" + time2[i];
-      }
-    }
+
     // Return the formatted string
-    return date.join("/") + " " + time2.join(":") + " " + suffix;
+    return date.join("/");
   }
 
   saveNewPersonalBest(event) {
@@ -93,6 +80,7 @@ class NewPersonalBest extends React.Component {
               className="time-input" 
               onChange={this.handleTimeChange} 
               value={this.state.time}
+              timeFormat={false}
             />
           </label>
           <label>Event: 

@@ -1,3 +1,27 @@
+:root {
+  --green50: #F1F8E9;
+  --green100: #DCEDC8;
+  --green200: #C5E1A5;
+  --green300: #AED581;
+  --green400: #9CCC65;
+  --green500: #8BC34A;
+  --green600: #7CB342;
+  --green700: #689F38;
+  --green800: #558B2F;
+  --green900: #33691E;
+  --greenA100: #CCFF90;
+  --greenA200: #B2FF59;
+  --greenA400: #76FF03;
+  --greenA700: #64DD17;
+  --bootstrapGreen: #28a745;
+  --red: #C62828;
+  --shadow: #888888;
+  --borderRadius: 5px;
+  --blueInputFocus: rgba(0, 127, 255, 0.25);
+  --inputBorderColor: rgba(0, 0, 0, 0.15);
+  --reactSelectOptionColor: #383838;
+}
+
 body {
   font-family: Roboto, Arial;
   color:#383838;
@@ -7,7 +31,6 @@ body {
   background-color: white;
   margin: 0 auto;
   max-width: 900px;
-   /* border: 1px solid red; */
 }
 
 .logoContainer {
@@ -20,6 +43,7 @@ body {
   margin: 0.5rem auto;
 }
 
+/* For debugging */
 /* .content {
   border: 1px solid red;
 } */
@@ -39,34 +63,41 @@ body {
   padding: 0.5rem;
 }
 
-.input{
+.input {
   box-sizing: border-box;
   width: 100%;
   background-color: white;
   display: block;
   cursor: pointer;
   outline: none;
-  border: none;
+  border: 1px solid var(--inputBorderColor);
   border-radius: 5px;
-  box-shadow: 2px 5px 12px#888888;
   margin-right: auto 0 0 1rem;
   padding: 0.5rem 0.75rem;
 }
 
-.select-input{
+.input:focus {
+  border: 3px solid var(--blueInputFocus);
+  transition: all 0.1s linear;
+}
+
+.select-input {
   display: block;
   background-color: white;
   cursor: pointer;
   outline: none;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 5px;
-  box-shadow: 2px 5px 12px#888888;
   width: 100%;
   padding: 0.5rem;
 }
 
+
+
 option {
-  color: #383838;
+  color: var(--reactSelectOptionColor);
+  border: 1px solid red;
+  border-radius: 5px;
 }
 
 .button {

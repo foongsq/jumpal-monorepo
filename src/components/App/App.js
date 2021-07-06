@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import { withAuthentication } from '../Session';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navigation from '../Navigation/Navigation';
 import SignInPage from '../SignIn/SignIn';

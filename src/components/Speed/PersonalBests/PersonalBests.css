@@ -1,86 +1,63 @@
-.title-refresh-div {
+/* For padding entire PersonalBests component */
+.componentContentDiv {
   padding: 0 1rem;
 }
 
-.speedData-table {
-  box-shadow: 5px 5px 10px #888888;
-}
-
-.speedTable-div {
-  padding: 1rem;
-}
-
-.speedData-table th,td {
+/* For rounding bottom 2 corners of table
+   For shadow effect
+   For removing external borders of table */
+.personalBestTable {
+  border-radius: var(--borderRadius);
+  box-shadow: 5px 5px 10px var(--shadow);
   border-top-style: hidden !important;
   border-bottom-style: hidden !important;
   border-left-style: hidden !important;
   border-right-style: hidden !important;
-  border-radius:5px;
 }
 
-.speedData-table th {
-  background-color: rgb(12, 12, 128) ;
+/* For rounding top 2 corners of the table */
+.personalBestTable tr:first-child td:first-child {
+  border-top-left-radius: 5px;
+}
+
+.personalBestTable tr:first-child td:last-child {
+  border-top-right-radius: 5px;
+}
+
+/* To set font and background color of table header */
+.personalBestTable tr:first-child td
+{
+  background-color: var(--bootstrapGreen);
   color: white;
+  font-weight: bold;
 }
 
-.addNewPersonalBest {
-  display: block;
+/* For centering delete button in its cell */
+.deleteTableCell {
+  text-align: center;
+}
+
+/* Delete button:
+  - no borders
+  - inherit background color
+  - rounded corners */
+.deleteTableButton {
+  border: none;
   background-color: inherit;
-  margin: 0 auto;
-  margin-top: 1rem;
-  border: none;
-  outline: none;
-  padding: 0.5rem;
   border-radius: 5px;
-  border: 1px solid grey;
 }
 
-.addNewPersonalBest:hover {
-  cursor: pointer;
-  background-color: #ffe270;
-  border-radius: 5px;
-  border: 1px solid grey;
+/* When hovering delete button:
+    - trash icon turns white
+    - background color turns red */
+.deleteTableButton:hover {
+  color: white;
+  background-color: var(--red);
 }
 
-.closeNewPersonalBest {
-  margin: 0.1rem;
-  font-size: 1.5rem;
-  float: right;
-  border: none;
-  outline: none;
-  background: inherit;
-}
-
-.closeNewPersonalBest:hover {
-  color: #ffe270;
-}
-
-.newPersonalBest-div {
-  background-color: #f0f0f0;
-}
-
-@keyframes fade {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
-.newPersonalBest-div {
-  position: fixed;
-  width: 400px;
-  animation-name: fade;
-  animation-duration: 1s;
-}
-
-@media (max-width: 900px) {
-  @keyframes slideRight {
-    from {left:-400px;}
-    to {left: 1rem;}
-  }
-  
-  .newPersonalBest-div {
-    position: fixed;
-    width: 400px;
-    animation-name: slideRight;
-    animation-duration: 1s;
-  }
+/* To center and add padding to add new personal best button */
+.addNewPersonalBestButtonDiv {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
 }

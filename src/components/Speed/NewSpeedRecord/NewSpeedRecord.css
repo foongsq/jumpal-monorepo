@@ -4,7 +4,7 @@
 
 .input, .form select {
   background-color: inherit;
-  border: 1px solid grey
+  /* border: 1px solid grey */
 }
 
 .newSpeedRecord h2 {

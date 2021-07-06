@@ -1,6 +1,5 @@
 import React from 'react';
 import { withFirebase } from '../../Firebase';
-import './Speed.css';
 import SpeedData from './SpeedData/SpeedData';
 import TimingTracks from './TimingTracks/TimingTracks';
 import Counter from './Counter/Counter';
