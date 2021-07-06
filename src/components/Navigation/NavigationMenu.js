@@ -42,7 +42,7 @@ class NavMenu extends React.Component {
           <button onClick={this.showMenu}>
             <i className="fa fa-bars" style={{fontSize: '40px', color: '#38c4ff'}}></i>
           </button>
-          <img className="smallLogo" src={logo}/>
+          <img className="smallLogo" alt='Logo' src={logo}/>
         </div>
         {
           this.state.showMenu

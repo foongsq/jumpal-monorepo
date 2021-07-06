@@ -63,7 +63,16 @@ class EditableLink extends React.Component {
     return (
       <div className="editable-text-container">
         <div className="content-div">
-          <div className="insta-link"><a href={this.state.editText} target='_blank' className={this.state.editing ? 'hidden' : 'insta-link'}>{this.state.editText}</a></div>
+          <div className="insta-link">
+            <a 
+              href={this.state.editText} 
+              target='_blank' 
+              rel="noopener noreferrer"  // added for security: https://mathiasbynens.github.io/rel-noopener/
+              className={this.state.editing ? 'hidden' : 'insta-link'}
+            >
+              {this.state.editText}
+            </a>
+          </div>
           
           <input 
             className={this.state.editing ? 'show-input' : 'hidden'} 

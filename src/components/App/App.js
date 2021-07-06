@@ -8,7 +8,6 @@ import SignInPage from '../SignIn/SignIn';
 import Profile from '../Profile/Profile';
 import SignOut from '../SignOut/SignOut';
 import Speed from '../Speed/Speed';
-import Calendar from '../Calendar/Calendar';
 import Freestyle from '../Freestyle/Freestyle';
 import Home from '../Home/Home';
 import logo from "../../images/jumpal-logo.gif";
@@ -18,7 +17,7 @@ class App extends React.Component {
     return (
         <div className="app">
           <div className="logoContainer">
-            <img className="logo" src={logo}/>
+            <img className="logo" src={logo} alt='Logo'/>
           </div>
           <Router>
             <div className="navAndcontent">
@@ -27,7 +26,6 @@ class App extends React.Component {
                 <Route exact path="/"><Redirect to="/Home" /></Route>
                 <Route path='/SignIn' component={SignInPage} />
                 <Route path='/Home' component={Home} />
-                <Route path='/Calendar' component={Calendar}/>
                 <Route path='/Speed' component={Speed}/>
                 <Route path='/Freestyle' component={Freestyle} />
                 <Route path='/Profile' component={Profile} />

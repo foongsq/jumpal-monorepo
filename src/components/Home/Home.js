@@ -13,13 +13,13 @@ export default class Home extends React.Component {
     return (
       <div className='home-container'>
         <h2 style={{textAlign:'center'}}>Motivational Quotes</h2>
-        <img src={quote1} className='motivation-img'/>
-        <img src={quote2} className='motivation-img'/>
-        <img src={quote3} className='motivation-img'/>
-        <img src={quote4} className='motivation-img'/>
-        <img src={quote5} className='motivation-img'/>
-        <img src={quote6} className='motivation-img'/>
-        <img src={quote7} className='motivation-img'/>
+        <img src={quote1} className='motivation-img' alt='' />
+        <img src={quote2} className='motivation-img' alt='' />
+        <img src={quote3} className='motivation-img' alt='' />
+        <img src={quote4} className='motivation-img' alt='' />
+        <img src={quote5} className='motivation-img' alt='' />
+        <img src={quote6} className='motivation-img' alt='' />
+        <img src={quote7} className='motivation-img' alt='' />
       </div>
     );
   }
