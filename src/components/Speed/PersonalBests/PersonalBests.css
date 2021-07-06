@@ -3,8 +3,11 @@
 }
 
 .speedData-table {
-  margin: 0 1rem;
   box-shadow: 5px 5px 10px #888888;
+}
+
+.speedTable-div {
+  padding: 1rem;
 }
 
 .speedData-table th,td {
@@ -54,8 +57,6 @@
 
 .newPersonalBest-div {
   background-color: #f0f0f0;
-  /* border: 3px double grey; */
-  border: 1px solid red;
 }
 
 @keyframes fade {

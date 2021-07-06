@@ -3,6 +3,7 @@ import './PersonalBests.css';
 import { withFirebase } from '../../../Firebase/index';
 import ReactLoading from 'react-loading';
 import NewPersonalBest from './NewPersonalBest';
+import Button from 'react-bootstrap/Button';
 
 class PersonalBests extends React.Component {
   constructor(props) {
@@ -128,19 +129,21 @@ class PersonalBests extends React.Component {
             <div className="title-refresh-div">
            
               <h2>My Personal Bests</h2>
-            
+              <Button variant="primary">Primary</Button>{''}
               <div className="buttons-div">
                 {/* <button onClick={this.readData} className="button">
                   <i className="fa fa-refresh"></i>Refresh speed data
                   </button> */}
               </div>              
             </div>
-            <table className="speedData-table">
-              <tbody>
-                {this.renderTableHeader()}
-                {this.renderAllData(records)}
-              </tbody>
-            </table>
+            <div className="speedTable-div">
+              <table className="speedData-table">
+                <tbody>
+                  {this.renderTableHeader()}
+                  {this.renderAllData(records)}
+                </tbody>
+              </table>
+            </div>
           </div>
         );
       } else {
