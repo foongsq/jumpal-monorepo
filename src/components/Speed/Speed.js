@@ -4,20 +4,37 @@ import SpeedData from './SpeedData/SpeedData';
 import TimingTracks from './TimingTracks/TimingTracks';
 import Counter from './Counter/Counter';
 import PersonalBests from './PersonalBests/PersonalBests';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import './Speed.css';
+import { BorderAll } from '@material-ui/icons';
+
+const timingTrack = "Timing Track";
+const counter = "Counter";
+const speedData = "Speed Data";
+const personalBest = "Personal Best";
 
 class Speed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      active: personalBest,
+      buttonNames: [timingTrack, counter, speedData, personalBest],
+      buttons: [],
       openTimingTracks: false,
       openCounter: false,
       openSpeedData: false,
       openPersonalBests: true,
     }
+    this.updateButtonGroup = this.updateButtonGroup.bind(this);
     this.toggleTimingTracks = this.toggleTimingTracks.bind(this);
     this.toggleCounter = this.toggleCounter.bind(this);
     this.toggleSpeedData = this.toggleSpeedData.bind(this);
     this.togglePersonalBests = this.togglePersonalBests.bind(this);
+  }
+
+  componentDidMount() {
+    this.updateButtonGroup(personalBest);
   }
 
   toggleTimingTracks() {
@@ -28,9 +45,9 @@ class Speed extends React.Component {
         openTimingTracks: true,
         openPersonalBests: false,
         openSpeedData: false,
-        openNewSpeedRecord: false,
       });
     }
+    this.updateButtonGroup(timingTrack);
   }
 
   toggleCounter() {
@@ -41,9 +58,9 @@ class Speed extends React.Component {
         openCounter: true,
         openPersonalBests: false,
         openSpeedData: false,
-        openNewSpeedRecord: false,
       });
     }
+    this.updateButtonGroup(counter);
   }
 
   toggleSpeedData() {
@@ -57,6 +74,7 @@ class Speed extends React.Component {
         openPersonalBests: false,
       });
     }
+    this.updateButtonGroup(speedData);
   }
 
   togglePersonalBests() {
@@ -66,21 +84,60 @@ class Speed extends React.Component {
       this.setState({
         openPersonalBests: true,
         openSpeedData: false,
-        openNewSpeedRecord: false,
         openTimingTracks: false,
         openCounter: false,
       });
     }
+    this.updateButtonGroup(personalBest);
   }
 
+  updateButtonGroup(newActive) {
+    let newButtons = [];
+    for (let i = 0; i < this.state.buttonNames.length; i++) {
+      let functionToCall = null;
+      switch (this.state.buttonNames[i]) {
+        case timingTrack:
+          functionToCall = this.toggleTimingTracks;
+          break;
+        case counter:
+          functionToCall = this.toggleCounter;
+          break;
+        case speedData:
+          functionToCall = this.toggleSpeedData;
+          break;
+        case personalBest:
+          functionToCall = this.togglePersonalBests;
+          break;
+        default: 
+          break;
+      }
+      newButtons.push(
+        <Button 
+          variant={this.state.buttonNames[i] === newActive 
+            ? "success" : "outline-success"}
+          onClick={functionToCall}
+        >
+          {this.state.buttonNames[i]}
+        </Button>,
+      );
+    }
+    this.setState({
+      buttons: newButtons,
+      active: newActive,
+    })
+  }
+  
   render() {
     if(this.props.firebase.auth.currentUser) {
       return (
-        <div className="speed">
-          <button className="button" onClick={this.toggleTimingTracks}>Timing Tracks</button>
-          <button className="button" onClick={this.toggleCounter}>Counter</button>
-          <button className="button" onClick={this.toggleSpeedData}>Speed Data</button>
-          <button className="button" onClick={this.togglePersonalBests}>Personal Bests</button>
+        <div className="componentContentDiv">
+          <div className="speedPagesButtonsDiv">
+            <ButtonGroup aria-label="Speed Pages" 
+              className="speedPagesButtons"
+            >
+              {this.state.buttons}
+            </ButtonGroup>
+          </div>
           {this.state.openTimingTracks ? <TimingTracks /> : null }
           {this.state.openCounter ? <Counter /> : null }
           {this.state.openSpeedData ? <SpeedData /> : null }
@@ -89,15 +146,14 @@ class Speed extends React.Component {
       );
     } else {
       return (
-        <div className="speed">
-          <button className="button" onClick={this.toggleTimingTracks}>Timing Tracks</button>
-          <button className="button" onClick={this.toggleCounter}>Counter</button>
-          <button className="button" onClick={this.toggleSpeedData}>Speed Data</button>
-          <button className="button" onClick={this.togglePersonalBests}>Personal Bests</button>
+        <div className="componentContentDiv">
+          {/* <Pagination>
+            {this.state.items}
+          </Pagination> */}
           {this.state.openTimingTracks ? <TimingTracks /> : null }
           {this.state.openCounter ? <Counter /> : null }
           {this.state.openSpeedData ? <p style={{color: 'red'}}>Please sign in to see your speed data.</p> : null }
-          {this.state.openPersonalBests ?<p style={{color: 'red'}}>Please sign in to see your personal bests.</p> : null }
+          {this.state.openPersonalBests ? <p style={{color: 'red'}}>Please sign in to see your personal bests.</p> : null }
         </div>
       );
     }
