@@ -7,7 +7,6 @@ import PersonalBests from './PersonalBests/PersonalBests';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import './Speed.css';
-import { BorderAll } from '@material-ui/icons';
 
 const timingTrack = "Timing Track";
 const counter = "Counter";
