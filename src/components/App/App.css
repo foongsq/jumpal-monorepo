@@ -33,6 +33,11 @@ body {
   max-width: 1000px;
 }
 
+/* For padding entire content component */
+.componentContentDiv {
+  padding: 0 1rem;
+}
+
 .logoContainer {
   width: 100%;
 }
