@@ -2,7 +2,6 @@ import React from 'react';
 import './PersonalBests.css';
 import { withFirebase } from '../../../Firebase/index';
 import ReactLoading from 'react-loading';
-import NewPersonalBest from './NewPersonalBest';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";

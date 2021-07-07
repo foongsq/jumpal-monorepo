@@ -1,8 +1,3 @@
-/* For padding entire PersonalBests component */
-.componentContentDiv {
-  padding: 0 1rem;
-}
-
 /* For rounding bottom 2 corners of table
    For shadow effect
    For removing external borders of table */
