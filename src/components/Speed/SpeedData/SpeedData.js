@@ -2,7 +2,24 @@ import React from 'react';
 import './SpeedData.css';
 import { withFirebase } from '../../../Firebase/index';
 import ReactLoading from 'react-loading';
-import NewSpeedRecord from '../NewSpeedRecord/NewSpeedRecord';
+// import NewSpeedRecord from '../NewSpeedRecord/NewSpeedRecord';
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+import Modal from "react-bootstrap/Modal";
+import DateTime from 'react-datetime';
+import Select from 'react-select';
+
+const options = [
+  { value: '1x30sec Running Step', label: '1x30sec Running Step' },
+  { value: '1x60sec Running Step', label: '1x60sec Running Step' },
+  { value: '1x30sec Double Unders', label: '1x30sec Double Unders' },
+  { value: '1x60sec Double Unders', label: '1x60sec Double Unders' },
+  { value: '1x180sec Running Step', label: '1x180sec Running Step' },
+  { value: '1x240sec Running Step', label: '1x240sec Running Step' },
+  { value: 'Consecutive Triple Unders', label: 'Consecutive Triple Unders' },
+  { value: '2x30sec Double Unders', label: '2x30sec Double Unders' },
+  { value: '4x30sec Speed Relay', label: '4x30sec Speed Relay' },
+];
 
 class SpeedData extends React.Component {
   constructor(props) {
@@ -11,6 +28,10 @@ class SpeedData extends React.Component {
       speedRecords: [],
       isDataLoaded: false,
       showToday: false,
+      event: null,
+      score: null,
+      time: new Date(),
+      color: 'gray',
       openNewSpeedRecord: false,
     }
     // this.readData = this.readData.bind(this);
@@ -22,6 +43,13 @@ class SpeedData extends React.Component {
     this.showToday = this.showToday.bind(this);
     this.onSpeedDataUpdate = this.onSpeedDataUpdate.bind(this);
     this.handleDelete.bind(this);
+
+    // New Speed Record methods
+    this.saveSpeedRecord = this.saveSpeedRecord.bind(this);
+    this.handleEventChange = this.handleEventChange.bind(this);
+    this.handleScoreChange = this.handleScoreChange.bind(this);
+    this.handleTimeChange = this.handleTimeChange.bind(this);
+    this.timeStamp = this.timeStamp.bind(this);
 
     this.ref = this.props.firebase.db.ref('users')
       .child(this.props.firebase.auth.currentUser.uid)
@@ -58,6 +86,62 @@ class SpeedData extends React.Component {
   //   }
   // }
 
+  handleEventChange(event) {
+    this.setState({ 
+      event: event.value,
+      color: '#383838',
+     });
+
+  }
+
+  handleScoreChange(event) {
+    this.setState({ score: event.target.value });
+  }
+
+  handleTimeChange(time) {
+    this.setState({ time: time });
+  } 
+
+  timeStamp(time) {
+    // Create an array with the current month, day and time
+    let date = [ time.getMonth() + 1, time.getDate(), time.getFullYear() ];
+    // Create an array with the current hour, minute and second
+    let time2 = [ time.getHours(), time.getMinutes(), time.getSeconds() ];
+    // Determine AM or PM suffix based on the hour
+    let suffix = ( time2[0] < 12 ) ? "AM" : "PM";
+    // Convert hour from military time
+    time2[0] = ( time2[0] < 12 ) ? time2[0] : time2[0] - 12;
+    // If hour is 0, set it to 12
+    time2[0] = time2[0] || 12;
+    // If minutes are less than 10, add a zero
+    for ( let i = 1; i < 2; i++ ) {
+      if ( time2[i] < 10 ) {
+        time2[i] = "0" + time2[i];
+      }
+    }
+    // Return the formatted string
+    return date.join("/") + " " + time2.join(":") + " " + suffix;
+  }
+
+  saveSpeedRecord(event) {
+    let today = this.state.time;
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+    today = `${yyyy}/${mm}/${dd}`;
+
+    this.props.firebase.user(this.props.firebase.auth.currentUser.uid)
+    .child('speed-records')
+    .child(`${today}`)
+    .push({
+      event: this.state.event, 
+      score: this.state.score,
+      time: this.timeStamp(this.state.time),
+    });
+    this.myFormRef.reset();
+    event.preventDefault();
+  }
+
   async componentDidMount() {
     let speedRecords = [];
     if (this.props.firebase.auth.currentUser) {
@@ -75,6 +159,7 @@ class SpeedData extends React.Component {
   toggleNewSpeedRecord() {
     this.setState({openNewSpeedRecord: !this.state.openNewSpeedRecord});
   }
+
   handleDelete(event, score, time) {
     console.log(time);
     let dd = String(new Date(time).getDate()).padStart(2, '0');
@@ -108,6 +193,66 @@ class SpeedData extends React.Component {
     this.setState({ showToday: false })
   }
 
+  renderNewSpeedRecordModal() {
+    return (
+      <>
+        <div className="jumpalCenteredButton">
+          <Button variant="success" onClick={this.toggleNewSpeedRecord}>
+            Add New Speed Record
+          </Button>
+        </div>
+  
+        <Modal 
+          show={this.state.openNewSpeedRecord} 
+          onHide={this.toggleNewSpeedRecord}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>New Speed Record</Modal.Title>
+          </Modal.Header>
+          <form className="jumpalForm" ref={(el) => this.myFormRef = el}>
+            <div>
+              {/* Time Input */}
+              <label>Time: 
+                <br />
+                <DateTime
+                  onChange={this.handleTimeChange} 
+                  value={this.state.time}
+                  timeFormat={false}
+                />
+              </label>
+              {/* Event Input */}
+              <label>Event: 
+                <Select  
+                  value={this.state.event} 
+                  onChange={this.handleEventChange} 
+                  options={options}
+                />
+              </label>
+              {/* Score Input */}
+              <label>
+                Score:
+                <input 
+                  className="jumpalInput" 
+                  type="number" 
+                  min="0" 
+                  placeholder="Enter your speed score" 
+                  onChange={this.handleScoreChange}>
+                  </input>
+              </label>
+            </div>
+          </form>
+          <Modal.Footer>
+            {this.props.firebase.auth.currentUser 
+                ? <Button variant="success" onClick={this.saveSpeedRecord}>Save</Button>
+                : <Button variant="success" onClick={this.saveSpeedRecord} disabled>Save</Button>
+            }
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  }
+
   renderAllData(records) {
     console.log(records)
       return records.reverse().map(record => {
@@ -117,7 +262,14 @@ class SpeedData extends React.Component {
               <td>{event}</td>
               <td>{score}</td>
               <td>{time}</td>
-              <td id='delete-cell'><button className='delete' onClick={() => this.handleDelete(event, score, time)}><i className="fa fa-trash-o" aria-hidden="true"></i></button></td>
+              <td className="jumpalTableDeleteButtonCell">
+                <button 
+                  className="jumpalTableDeleteButton" 
+                  onClick={() => this.handleDelete(event, score, time)}
+                >
+                  <i className="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+              </td>
             </tr>
         )
       });
@@ -146,16 +298,15 @@ class SpeedData extends React.Component {
     });
   }
 
- renderTableHeader() {
+  renderTableHeader() {
    return (
    <tr>
-     <th>Event</th>
-     <th>Score</th>
-     <th>Time</th>
-     <th></th>
+     <td>Event</td>
+     <td>Score</td>
+     <td>Time</td>
+     <td></td>
    </tr>);
-   
-}
+  }
 
   render() {
     if (this.state.isDataLoaded) {
@@ -177,29 +328,26 @@ class SpeedData extends React.Component {
         
         return (
           <div>
-            {this.state.openNewSpeedRecord 
-              ? <div className='newSpeedRecord-div'>
-                  <button className="closeNewSpeedRecord" onClick={this.toggleNewSpeedRecord}>x</button>
-                  <NewSpeedRecord />
-                </div>
-              : <button className="addNewSpeedRecord" onClick={this.toggleNewSpeedRecord}>+ Add New Speed Record</button>}
-            
-            <div className="title-refresh-div">
+           {this.renderNewSpeedRecordModal()}
+            <div className="titleAndButtonDiv">
               <h2>My Speed Records</h2>
-              <div className="buttons-div">
-                {/* <button onClick={this.readData} className="button">
-                  <i className="fa fa-refresh"></i>Refresh speed data
-                  </button> */}
-                {this.state.showToday ? <button onClick={this.showAll} className="button"><i class="fa fa-smile-o" aria-hidden="true"></i>All data</button> :
-                  <button onClick={this.showToday} className="button"><i class="fa fa-smile-o" aria-hidden="true"></i>Today</button> }
-              </div>              
+              {this.state.showToday ? 
+                <Button variant="success" onClick={this.showAll} className="button">
+                  <i class="fa fa-smile-o" aria-hidden="true"></i>
+                  All data
+                </Button> 
+                :
+                <Button variant="success" onClick={this.showToday} className="button">
+                  <i class="fa fa-smile-o" aria-hidden="true"></i>
+                  Today
+                </Button> }             
             </div>
-            <table className="speedData-table">
+            <Table striped bordered className="jumpalTable">
               <tbody>
                 {this.renderTableHeader()}
                 {this.state.showToday ? this.renderTodayData(consolidated) : this.renderAllData(consolidated)}
               </tbody>
-            </table>
+              </Table>
           </div>
         );
       } else {

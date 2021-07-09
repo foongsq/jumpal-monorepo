@@ -1,7 +1,11 @@
-/* For rounding bottom 2 corners of table
-   For shadow effect
-   For removing external borders of table */
-.personalBestTable {
+
+/* Table:  
+- For adding 1rem top margin
+- For rounding bottom 2 corners of table
+- For shadow effect
+- For removing external borders of table */
+.jumpalTable {
+  margin-top: 1rem;
   border-radius: var(--borderRadius);
   box-shadow: 5px 5px 10px var(--shadow);
   border-top-style: hidden !important;
@@ -11,16 +15,16 @@
 }
 
 /* For rounding top 2 corners of the table */
-.personalBestTable tr:first-child td:first-child {
+.jumpalTable tr:first-child td:first-child {
   border-top-left-radius: 5px;
 }
 
-.personalBestTable tr:first-child td:last-child {
+.jumpalTable tr:first-child td:last-child {
   border-top-right-radius: 5px;
 }
 
 /* To set font and background color of table header */
-.personalBestTable tr:first-child td
+.jumpalTable tr:first-child td
 {
   background-color: var(--bootstrapGreen);
   color: white;
@@ -28,7 +32,7 @@
 }
 
 /* For centering delete button in its cell */
-.deleteTableCell {
+.jumpalTableDeleteButtonCell {
   text-align: center;
 }
 
@@ -36,7 +40,7 @@
   - no borders
   - inherit background color
   - rounded corners */
-.deleteTableButton {
+.jumpalTableDeleteButton {
   border: none;
   background-color: inherit;
   border-radius: 5px;
@@ -45,14 +49,7 @@
 /* When hovering delete button:
     - trash icon turns white
     - background color turns red */
-.deleteTableButton:hover {
+.jumpalTableDeleteButton:hover {
   color: white;
   background-color: var(--red);
-}
-
-/* To center and add padding to add new personal best button */
-.addNewPersonalBestButtonDiv {
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
 }

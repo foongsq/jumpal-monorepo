@@ -17,7 +17,6 @@ class Navigation extends React.Component {
   render() {
     return (
       <div>
-        <img className="topLogo" src={logo} alt='Logo'/>
         <Navbar bg="light" expand="sm">
           <Navbar.Brand href="/Home"><img className="logo" src={logo} alt='Logo'/></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />

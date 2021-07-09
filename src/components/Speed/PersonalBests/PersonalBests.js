@@ -1,5 +1,4 @@
 import React from 'react';
-import './PersonalBests.css';
 import { withFirebase } from '../../../Firebase/index';
 import ReactLoading from 'react-loading';
 import Table from 'react-bootstrap/Table';
@@ -164,24 +163,22 @@ class PersonalBests extends React.Component {
   renderNewPersonalBestModal() {
     return (
       <>
-        <div className="addNewPersonalBestButtonDiv">
+        <div className="jumpalCenteredButton">
           <Button variant="success" onClick={this.toggleNewPersonalBest}>
             Add New Personal Best
           </Button>
         </div>
   
         <Modal 
-          className="newPersonalBestModal" 
           show={this.state.openNewPersonalBest} 
           onHide={this.toggleNewPersonalBest}
           centered
         >
           <Modal.Header closeButton>
-            <Modal.Title>New Personal Best Record</Modal.Title>
+            <Modal.Title>New Personal Best</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Store your Personal Bests here :)</Modal.Body>
-          <form className="form" ref={(el) => this.PbFormRef = el}>
-            <div className="newPersonalBestModalInputDiv">
+          <form className="jumpalForm" ref={(el) => this.PbFormRef = el}>
+            <div>
               {/* Time Input */}
               <label>Time: 
                 <br />
@@ -203,7 +200,13 @@ class PersonalBests extends React.Component {
               {/* Score Input */}
               <label>
                 Score:
-                <input className="input" type="number" min="0" placeholder="Enter your speed score" onChange={this.handleScoreChange}></input>
+                <input 
+                  className="jumpalInput" 
+                  type="number" 
+                  min="0" 
+                  placeholder="Enter your speed score" 
+                  onChange={this.handleScoreChange}>
+                  </input>
               </label>
             </div>
           </form>
@@ -228,9 +231,9 @@ class PersonalBests extends React.Component {
           <td>{event}</td>
           <td>{records[0][event].score}</td>
           <td>{records[0][event].time}</td>
-          <td className="deleteTableCell">
+          <td className="jumpalTableDeleteButtonCell">
             <button 
-              className="deleteTableButton" 
+              className="jumpalTableDeleteButton" 
               onClick={() => this.handleDelete(event)}
             >
               <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -261,7 +264,7 @@ class PersonalBests extends React.Component {
           <div className="componentContentDiv">
             {this.renderNewPersonalBestModal()}
             <h2>My Personal Bests</h2>           
-            <Table striped bordered className="personalBestTable">
+            <Table striped bordered className="jumpalTable">
               <tbody>
                 {this.renderTableHeader()}
                 {this.renderAllData(records)}

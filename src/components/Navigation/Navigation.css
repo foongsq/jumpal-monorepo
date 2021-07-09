@@ -1,12 +1,5 @@
-.topLogo {
-  display: none;
-}
-
-/* On screens that are 600px or less, set the background color to olive */
-@media screen and (max-width: 600px) {
-  .topLogo {
-    display: block;
-    margin: 0 auto;
-    height: 5rem;
-  }
+.logo {
+  display: block;
+  width: 150px;
+  margin: 0.5rem auto;
 }

@@ -1,8 +1,14 @@
+/* To vertically center the buttons */
 .homeContainerDiv {
+  height: 100%;
+  display: flex;
+}
+
+/* To display buttons side by side and vertically center them */
+.speedFreestyleDiv {
   display: flex;
   justify-content: center;
-  width: 100%;
-  height: 50%;
+  margin: auto 0;
 }
 
 .speedFreestyleButtonImage {
@@ -41,4 +47,20 @@
   position: relative;
   bottom: 50%;
   text-shadow: 2px 2px var(--shadow);
+}
+
+/* On screens that are 1000px or less, display the images vertically */
+@media screen and (max-width: 1000px) {
+  .speedFreestyleDiv {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+  }
+
+  .speedFreestyleButtonImage {
+    max-height: 35vh;
+    display: block;
+    border-radius: 10px;
+    opacity: 80%;
+  }
 }

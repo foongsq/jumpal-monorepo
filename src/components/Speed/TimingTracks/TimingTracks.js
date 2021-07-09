@@ -6,6 +6,16 @@ import SRSE1x180sec from '../../../audio/SRSE-1x180sec.mp3';
 import SRSR4x30sec from '../../../audio/SRSR-4x30sec.mp3';
 import DDSS1x60sec from '../../../audio/DDSS-1x60sec.mp3';
 import DDSR4x30sec from '../../../audio/DDSR-4x30sec.mp3';
+import Select from 'react-select';
+
+const options = [
+  { value: 'SRSS-1x30sec', label: 'Single Rope Speed Sprints 1x30sec' },
+  { value: 'SRDU-2x30sec', label: 'Single Rope Double Unders 2x30sec' },
+  { value: 'SRSE-1x180sec', label: 'Single Rope Speed Endurance 1x180sec' },
+  { value: 'SRSR-4x30sec', label: 'Single Rope Speed Relay 4x30sec' },
+  { value: 'DDSR-4x30sec', label: 'Double Dutch Speed Relay 4x30sec' },
+  { value: 'DDSS-1x60sec', label: 'Double Dutch Speed Sprints 1x60sec' },
+];
 
 export default class TimingTracks extends React.Component {
   constructor(props) {
@@ -18,9 +28,9 @@ export default class TimingTracks extends React.Component {
   }
 
   handleTrackChange(event) {
-    console.log(event.target.value)
+    console.log(event)
     this.setState({ 
-      track: event.target.value,
+      track: event.value,
       selectColor: '#383838'
      });
   }
@@ -43,17 +53,13 @@ export default class TimingTracks extends React.Component {
 
     return (
       <div className="timing-tracks-container">
-        <h2>Timing Tracks</h2>
+        <h2 className="timingTrackTitle">Timing Tracks</h2>
         <div className="select-and-audio">
-          <select style={{ color: this.state.selectColor }} name="event" onChange={this.handleTrackChange} className="input">
-            <option value="" selected disabled>Select your event</option>
-            <option value="SRSS-1x30sec">Single Rope Speed Sprints 1x30sec</option>
-            <option value="SRDU-2x30sec">Single Rope Double Unders 2x30sec</option>
-            <option value="SRSE-1x180sec">Single Rope Speed Endurance 1x180sec</option>
-            <option value="SRSR-4x30sec">Single Rope Speed Relay 4x30sec</option>
-            <option value="DDSR-4x30sec">Double Dutch Speed Relay 4x30sec</option>
-            <option value="DDSS-1x60sec">Double Dutch Speed Sprints 1x60sec</option>
-          </select>
+          <Select  
+            value={this.state.newPersonalBestEvent} 
+            onChange={this.handleTrackChange}
+            options={options}
+          />
           <audio className="timing-track-audio" src={src} controls></audio>
         </div>
       </div>

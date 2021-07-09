@@ -25,96 +25,23 @@
 body {
   font-family: Roboto, Arial;
   color:#383838;
+  height: 100vh;
 }
 
 .app {
   background-color: white;
   margin: 0 auto;
   max-width: 1000px;
+  height: 100vh;
 }
 
 /* For padding entire content component */
 .componentContentDiv {
   padding: 0 1rem;
-}
-
-.logoContainer {
-  width: 100%;
-}
-
-.logo {
-  display: block;
-  width: 150px;
-  margin: 0.5rem auto;
-}
-
-/* For debugging */
-/* .content {
-  border: 1px solid red;
-} */
-
-.form {
-  display: block;
-  background-color: #8adcff;
-  border-radius: 10px;
-  padding: 0 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  margin: 0.5rem 0;
-}
-
-.form label {
-  display: block;
-  padding: 0.5rem;
-}
-
-.input {
-  box-sizing: border-box;
-  width: 100%;
-  background-color: white;
-  display: block;
-  cursor: pointer;
-  outline: none;
-  border: 1px solid var(--inputBorderColor);
-  border-radius: 5px;
-  margin-right: auto 0 0 1rem;
-  padding: 0.5rem 0.75rem;
-}
-
-.input:focus {
-  border: 3px solid var(--blueInputFocus);
-  transition: all 0.1s linear;
-}
-
-.select-input {
-  display: block;
-  background-color: white;
-  cursor: pointer;
-  outline: none;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 5px;
-  width: 100%;
-  padding: 0.5rem;
+  height: 90vh;
 }
 
 
-
-option {
-  color: var(--reactSelectOptionColor);
-  border: 1px solid red;
-  border-radius: 5px;
-}
-
-.button {
-  outline: none;
-  border: none;
-  border-radius: 5px;
-  background-color: #38c4ff;
-  color: white;
-  cursor: pointer;
-  padding: 0.5rem;
-  margin: 0.25rem 0.25rem;
-}
 
 ::-webkit-scrollbar {
   display: none;
@@ -124,9 +51,9 @@ option {
   touch-action: manipulation;
 }
 
-@media (max-width: 600px) {
-  .logo {
-    display: none;
-  }
-
+/* To center and add padding to button */
+.jumpalCenteredButton {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
 }
