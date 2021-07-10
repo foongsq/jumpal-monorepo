@@ -144,9 +144,6 @@ class PersonalBests extends React.Component {
 
   saveNewPersonalBest(event) {
     event.preventDefault();
-    console.log(this.state.newPersonalBestEvent);
-    console.log(this.state.newPersonalBestScore);
-    console.log(this.state.newPersonalBestTime);
     this.props.firebase.db.ref('users')
     .child(this.props.firebase.auth.currentUser.uid)
     .child('personal-bests')
@@ -222,10 +219,8 @@ class PersonalBests extends React.Component {
   }
 
   renderAllData(records) {
-    console.log(records)
     let eventsArr = Object.keys(records[0]);
     return eventsArr.map(event => {
-      console.log(records)
       return (
         <tr>
           <td>{event}</td>
@@ -236,7 +231,7 @@ class PersonalBests extends React.Component {
               className="jumpalTableDeleteButton" 
               onClick={() => this.handleDelete(event)}
             >
-              <i class="fa fa-trash-o" aria-hidden="true"></i>
+              <i className="fa fa-trash-o" aria-hidden="true"></i>
             </button>
           </td>
         </tr>

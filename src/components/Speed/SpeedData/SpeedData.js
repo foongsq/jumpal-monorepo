@@ -2,12 +2,12 @@ import React from 'react';
 import './SpeedData.css';
 import { withFirebase } from '../../../Firebase/index';
 import ReactLoading from 'react-loading';
-// import NewSpeedRecord from '../NewSpeedRecord/NewSpeedRecord';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";
 import DateTime from 'react-datetime';
 import Select from 'react-select';
+import Toast from 'react-bootstrap/Toast';
 
 const options = [
   { value: '1x30sec Running Step', label: '1x30sec Running Step' },
@@ -28,23 +28,32 @@ class SpeedData extends React.Component {
       speedRecords: [],
       isDataLoaded: false,
       showToday: false,
-      event: null,
-      score: null,
+      newSpeedRecordEvent: null,
+      newSpeedRecordScore: null,
       time: new Date(),
-      color: 'gray',
       openNewSpeedRecord: false,
+      showToast: false,
     }
     // this.readData = this.readData.bind(this);
+    // For toggling
     this.toggleNewSpeedRecord = this.toggleNewSpeedRecord.bind(this);
+    this.toggleToast = this.toggleToast.bind(this);
+
+    // For rendering
     this.renderAllData = this.renderAllData.bind(this);
     this.renderTodayData = this.renderTodayData.bind(this);
     this.renderTableHeader = this.renderTableHeader.bind(this);
+    this.renderNewSpeedRecordModal = this.renderNewSpeedRecordModal.bind(this);
+    this.renderToast = this.renderToast.bind(this);
     this.showAll = this.showAll.bind(this);
     this.showToday = this.showToday.bind(this);
-    this.onSpeedDataUpdate = this.onSpeedDataUpdate.bind(this);
-    this.handleDelete.bind(this);
 
-    // New Speed Record methods
+    // For data updates
+    this.onSpeedDataUpdate = this.onSpeedDataUpdate.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+
+
+    // For New Speed Record Modal
     this.saveSpeedRecord = this.saveSpeedRecord.bind(this);
     this.handleEventChange = this.handleEventChange.bind(this);
     this.handleScoreChange = this.handleScoreChange.bind(this);
@@ -88,8 +97,7 @@ class SpeedData extends React.Component {
 
   handleEventChange(event) {
     this.setState({ 
-      event: event.value,
-      color: '#383838',
+      newSpeedRecordEvent: event,
      });
 
   }
@@ -134,12 +142,14 @@ class SpeedData extends React.Component {
     .child('speed-records')
     .child(`${today}`)
     .push({
-      event: this.state.event, 
+      event: this.state.newSpeedRecordEvent.value, 
       score: this.state.score,
       time: this.timeStamp(this.state.time),
     });
     this.myFormRef.reset();
     event.preventDefault();
+    this.toggleNewSpeedRecord();
+    this.toggleToast(true)
   }
 
   async componentDidMount() {
@@ -161,7 +171,6 @@ class SpeedData extends React.Component {
   }
 
   handleDelete(event, score, time) {
-    console.log(time);
     let dd = String(new Date(time).getDate()).padStart(2, '0');
     let mm = String(new Date(time).getMonth() + 1).padStart(2, '0'); //January is 0!
     let yyyy = new Date(time).getFullYear();
@@ -174,7 +183,6 @@ class SpeedData extends React.Component {
       .child(date)
       .once('value', snapshot => {
         snapshot.forEach(child => {
-          console.log(child.val())
           if (child.val().event === event &&
             child.val().score === score &&
             child.val().time === time) {
@@ -191,6 +199,32 @@ class SpeedData extends React.Component {
 
   showAll() {
     this.setState({ showToday: false })
+  }
+
+  toggleToast(showToast) {
+    this.setState({ showToast: showToast })
+  }
+
+  renderToast() {
+    return (
+      <Toast 
+        onClose={() => this.toggleToast(false)} 
+        show={this.state.showToast} 
+        delay={3000} 
+        autohide
+        className="jumpalToast"
+      >
+        <Toast.Header>
+          <img
+            src="holder.js/20x20?text=%20"
+            className="rounded mr-2"
+            alt=""
+          />
+          <strong className="mr-auto">Congratulations!</strong>
+        </Toast.Header>
+        <Toast.Body>You have successfully added a new speed record!</Toast.Body>
+      </Toast>
+    );
   }
 
   renderNewSpeedRecordModal() {
@@ -212,6 +246,7 @@ class SpeedData extends React.Component {
           </Modal.Header>
           <form className="jumpalForm" ref={(el) => this.myFormRef = el}>
             <div>
+            
               {/* Time Input */}
               <label>Time: 
                 <br />
@@ -224,7 +259,7 @@ class SpeedData extends React.Component {
               {/* Event Input */}
               <label>Event: 
                 <Select  
-                  value={this.state.event} 
+                  value={this.state.newSpeedRecordEvent} 
                   onChange={this.handleEventChange} 
                   options={options}
                 />
@@ -254,7 +289,6 @@ class SpeedData extends React.Component {
   }
 
   renderAllData(records) {
-    console.log(records)
       return records.reverse().map(record => {
         const { event, score, time } = record //destructuring
         return (
@@ -284,8 +318,6 @@ class SpeedData extends React.Component {
     return records.reverse().map(record => {
       const { event, score, time } = record //destructuring
       let splitTime = time.split(" ");
-      console.log(splitTime[0])
-      console.log(today)
       if (splitTime[0] === today) {
         return (
           <tr>
@@ -328,7 +360,8 @@ class SpeedData extends React.Component {
         
         return (
           <div>
-           {this.renderNewSpeedRecordModal()}
+            {this.renderToast()}
+            {this.renderNewSpeedRecordModal()}
             <div className="titleAndButtonDiv">
               <h2>My Speed Records</h2>
               {this.state.showToday ? 
