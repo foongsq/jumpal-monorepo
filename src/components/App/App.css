@@ -51,6 +51,10 @@ body {
   touch-action: manipulation;
 }
 
+.jumpalButton {
+  background-color: var(--bootstrapGreen);
+}
+
 /* To center and add padding to button */
 .jumpalCenteredButton {
   padding: 1rem;

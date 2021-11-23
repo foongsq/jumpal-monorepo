@@ -1,9 +1,9 @@
 import React from 'react';
 import './SpeedData.css';
 import { withFirebase } from '../../../Firebase/index';
+import JumpalButton from '../../CustomComponents/core';
 import ReactLoading from 'react-loading';
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";
 import DateTime from 'react-datetime';
 import Select from 'react-select';
@@ -231,9 +231,9 @@ class SpeedData extends React.Component {
     return (
       <>
         <div className="jumpalCenteredButton">
-          <Button variant="success" onClick={this.toggleNewSpeedRecord}>
+          <JumpalButton onClick={this.toggleNewSpeedRecord}>
             Add New Speed Record
-          </Button>
+          </JumpalButton>
         </div>
   
         <Modal 
@@ -279,8 +279,8 @@ class SpeedData extends React.Component {
           </form>
           <Modal.Footer>
             {this.props.firebase.auth.currentUser 
-                ? <Button variant="success" onClick={this.saveSpeedRecord}>Save</Button>
-                : <Button variant="success" onClick={this.saveSpeedRecord} disabled>Save</Button>
+                ? <JumpalButton onClick={this.saveSpeedRecord}>Save</JumpalButton>
+                : <JumpalButton onClick={this.saveSpeedRecord} disabled>Save</JumpalButton>
             }
           </Modal.Footer>
         </Modal>
@@ -365,15 +365,15 @@ class SpeedData extends React.Component {
             <div className="titleAndButtonDiv">
               <h2>My Speed Records</h2>
               {this.state.showToday ? 
-                <Button variant="success" onClick={this.showAll} className="button">
+                <JumpalButton onClick={this.showAll} className="button">
                   <i class="fa fa-smile-o" aria-hidden="true"></i>
                   All data
-                </Button> 
+                </JumpalButton> 
                 :
-                <Button variant="success" onClick={this.showToday} className="button">
+                <JumpalButton variant="success" onClick={this.showToday} className="button">
                   <i class="fa fa-smile-o" aria-hidden="true"></i>
                   Today
-                </Button> }             
+                </JumpalButton> }             
             </div>
             <Table striped bordered className="jumpalTable">
               <tbody>
