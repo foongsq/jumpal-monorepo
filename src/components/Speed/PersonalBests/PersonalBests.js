@@ -3,7 +3,6 @@ import { withFirebase } from '../../../Firebase/index';
 import JumpalButton from '../../CustomComponents/core';
 import { StyledHeaderTableCell, StyledTableCell, StyledTableRow } from '../../CustomComponents/table';
 import ReactLoading from 'react-loading';
-// import Table from 'react-bootstrap/Table';
 import Button from '@material-ui/core/Button';
 import Modal from "react-bootstrap/Modal";
 import DateTime from 'react-datetime';
