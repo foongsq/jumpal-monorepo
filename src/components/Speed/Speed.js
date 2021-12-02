@@ -146,9 +146,6 @@ class Speed extends React.Component {
     } else {
       return (
         <div className="componentContentDiv">
-          {/* <Pagination>
-            {this.state.items}
-          </Pagination> */}
           {this.state.openTimingTracks ? <TimingTracks /> : null }
           {this.state.openCounter ? <Counter /> : null }
           {this.state.openSpeedData ? <p style={{color: 'red'}}>Please sign in to see your speed data.</p> : null }
