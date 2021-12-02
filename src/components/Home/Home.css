@@ -1,10 +1,66 @@
-.home-container {
-  background: linear-gradient(0deg, black 0%, grey 51%, white 85%);
+/* To vertically center the buttons */
+.homeContainerDiv {
+  height: 100%;
+  display: flex;
 }
 
-.motivation-img {
-  width: 80%;
+/* To display buttons side by side and vertically center them */
+.speedFreestyleDiv {
+  display: flex;
+  justify-content: center;
+  margin: auto 0;
+}
+
+.speedFreestyleButtonImage {
+  max-width: 100%;
   height: auto;
   margin: 0.5rem auto;
   display: block;
+  border-radius: 10px;
+  opacity: 80%;
+}
+
+.speedFreestyleLink {
+  margin: 1rem;
+  border-radius: 10px;
+}
+
+.speedFreestyleLink:hover p {
+  font-size: 1.75rem;
+  transition: all 1s ease;
+}
+
+.speedFreestyleLink:hover img {
+  opacity: 40%;
+  transition: all 1s ease;
+}
+
+.speedFreestyleLink:hover {
+  text-decoration: none;
+}
+
+.speedFreestyleLink p {
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  position: relative;
+  bottom: 50%;
+  text-shadow: 2px 2px var(--shadow);
+}
+
+/* On screens that are 1000px or less, display the images vertically */
+@media screen and (max-width: 1000px) {
+  .speedFreestyleDiv {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+  }
+
+  .speedFreestyleButtonImage {
+    max-height: 35vh;
+    display: block;
+    border-radius: 10px;
+    opacity: 80%;
+  }
 }

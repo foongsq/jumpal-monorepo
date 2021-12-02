@@ -1,0 +1,7 @@
+.speedPagesButtons {
+  margin: 1rem;
+}
+.speedPagesButtonsDiv {
+  display: flex;
+  justify-content: center;
+}

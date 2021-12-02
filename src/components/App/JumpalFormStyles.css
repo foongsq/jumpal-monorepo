@@ -1,0 +1,36 @@
+
+/* Form:
+  - add padding and margin */
+.jumpalForm {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+}
+
+/* Form label:
+  - display it one on top of another
+  - add padding */
+.jumpalForm label {
+  display: block;
+  padding: 0.5rem;
+}
+
+/* For input fields in forms (eg. New Personal Best Score):
+  - Make input box full width
+  - Change cursor to pointer on mouseover
+  - Remove outline
+  - Set up border and padding according to Material Design guidelines */
+.jumpalInput {
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid var(--inputBorderColor);
+  border-radius: 5px;
+  padding: 0.5rem 0.75rem;
+}
+
+/* For input fields in forms (on focus):
+  - Slowly make blue border appear */
+.jumpalInput:focus {
+  border: 3px solid var(--blueInputFocus);
+  transition: all 0.1s linear;
+}

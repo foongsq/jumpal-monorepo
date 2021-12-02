@@ -1,25 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+// import freestyle from '../../images/freestyle.jpg';
+// import speed from '../../images/speed.jpg';
+import freestyle2 from '../../images/freestyle2.jpg';
+import speed2 from '../../images/speed2.jpg';
 import './Home.css';
-import quote1 from '../../images/quote-1.jpg';
-import quote2 from '../../images/quote-2.jpg';
-import quote3 from '../../images/quote-3.jpg';
-import quote4 from '../../images/quote-4.jpg';
-import quote5 from '../../images/quote-5.jpg';
-import quote6 from '../../images/quote-6.jpg';
-import quote7 from '../../images/quote-7.jpg';
 
 export default class Home extends React.Component {
   render() {
     return (
-      <div className='home-container'>
-        <h2 style={{textAlign:'center'}}>Motivational Quotes</h2>
-        <img src={quote1} className='motivation-img'/>
-        <img src={quote2} className='motivation-img'/>
-        <img src={quote3} className='motivation-img'/>
-        <img src={quote4} className='motivation-img'/>
-        <img src={quote5} className='motivation-img'/>
-        <img src={quote6} className='motivation-img'/>
-        <img src={quote7} className='motivation-img'/>
+      <div className='componentContentDiv'>
+        <div className="homeContainerDiv">
+          <div className='speedFreestyleDiv'>
+            <Link to='/Speed' className='speedFreestyleLink'>
+              <img src={speed2} className='speedFreestyleButtonImage' alt='' />
+              <p>Speed</p>
+            </Link>
+            
+            <Link to='/Freestyle' className='speedFreestyleLink'>
+              <img src={freestyle2} className='speedFreestyleButtonImage' alt='' />
+              <p>Freestyle</p>
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }

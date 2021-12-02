@@ -2,36 +2,41 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import { withAuthentication } from '../Session';
 import './App.css';
+import './JumpalTableStyles.css';
+import './JumpalFormStyles.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navigation from '../Navigation/Navigation';
 import SignInPage from '../SignIn/SignIn';
 import Profile from '../Profile/Profile';
 import SignOut from '../SignOut/SignOut';
 import Speed from '../Speed/Speed';
-import Calendar from '../Calendar/Calendar';
+import TimingTracks from '../Speed/TimingTracks/TimingTracks';
+import Counter from '../Speed/Counter/Counter';
+import SpeedData from '../Speed/SpeedData/SpeedData';
+import PersonalBests from '../Speed/PersonalBests/PersonalBests';
 import Freestyle from '../Freestyle/Freestyle';
 import Home from '../Home/Home';
-import logo from "../../images/jumpal-logo.gif";
 
 class App extends React.Component {
   render() {
     return (
         <div className="app">
-          <div className="logoContainer">
-            <img className="logo" src={logo}/>
-          </div>
           <Router>
             <div className="navAndcontent">
               <Navigation />
               <div className="content">
                 <Route exact path="/"><Redirect to="/Home" /></Route>
-                <Route path='/SignIn' component={SignInPage} />
-                <Route path='/Home' component={Home} />
-                <Route path='/Calendar' component={Calendar}/>
-                <Route path='/Speed' component={Speed}/>
-                <Route path='/Freestyle' component={Freestyle} />
-                <Route path='/Profile' component={Profile} />
-                <Route path='/SignOut' component={SignOut} />
+                <Route path='/signin' component={SignInPage} />
+                <Route path='/home' component={Home} />
+                <Route path='/speed' component={Speed}/>
+                <Route path='/freestyle' component={Freestyle} />
+                <Route path='/profile' component={Profile} />
+                <Route path='/signout' component={SignOut} />
+                <Route path='/speed/TimingTracks' component={TimingTracks} />
+                <Route path='/speed/Counter' component={Counter} />
+                <Route path='/speed/speeddata' component={SpeedData} />
+                <Route path='/speed/personalbests' component={PersonalBests} />
               </div>
             </div>
           </Router>

@@ -1,3 +1,7 @@
+.timingTrackTitle {
+  padding: 1rem 0;
+}
+
 .timing-tracks-container {
   margin-bottom: 1rem;
   display: flex;
@@ -7,6 +11,6 @@
 .timing-track-audio {
   display: flex;
   flex-direction: column;
-  margin: 0.5rem auto;
+  margin: 1rem auto;
   width: 100%;
 }
