@@ -1,7 +1,7 @@
 import React from 'react';
 import './SpeedData.css';
 import { withFirebase } from '../../../Firebase/index';
-import JumpalButton from '../../CustomComponents/core';
+import { JumpalButton } from '../../CustomComponents/core';
 import ReactLoading from 'react-loading';
 import Table from 'react-bootstrap/Table';
 import Modal from "react-bootstrap/Modal";

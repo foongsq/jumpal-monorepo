@@ -1,13 +1,16 @@
 import React from 'react'; 
-import { withFirebase } from '../../Firebase/index';
+import { withFirebase } from '../../../Firebase/index';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import './SignIn.css';
+import { JumpalButton } from '../../CustomComponents/core';
 
 const SignInPage = () => (
   <div>
-    <h1>Sign In</h1>
-    <SignInGoogle />
+    <h1 className='signInText'>Sign In</h1>
+    <div className='signInButtons'>
+      <SignInGoogle />
+    </div>
   </div>
 );
 
@@ -27,8 +30,8 @@ class SignInGoogleBase extends React.Component {
           return this.props.firebase
           .user(socialAuthUser.user.uid)
           .set({
-            username: socialAuthUser.user.displayName,
-            email: socialAuthUser.user.email,
+            username: socialAuthUser.additionalUserInfo.profile.name,
+            email: socialAuthUser.additionalUserInfo.profile.email,
             roles: {},
           });
         }
@@ -47,7 +50,9 @@ class SignInGoogleBase extends React.Component {
     const { error } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
-        <button type="submit" className="signin-button"><i className="fa fa-google"></i>Sign In with Google</button>
+        <JumpalButton type='submit' className='signInButton'>
+          <i id='googleIcon' className="fa fa-google"></i>Sign In with Google
+        </JumpalButton>
         {error && <p>{error.message}</p>}
       </form>
     );

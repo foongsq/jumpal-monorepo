@@ -1,6 +1,6 @@
 import React from 'react';
 import { withFirebase } from '../../../Firebase/index';
-import JumpalButton from '../../CustomComponents/core';
+import { JumpalButton } from '../../CustomComponents/core';
 import { StyledHeaderTableCell, StyledTableCell, StyledTableRow } from '../../CustomComponents/table';
 import ReactLoading from 'react-loading';
 import Button from '@material-ui/core/Button';

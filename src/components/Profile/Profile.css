@@ -1,18 +1,35 @@
-.profile-container {
+#profileContainer {
   width: 100%;
-  height: 100%;
-  padding: 1rem;
+  padding: 2rem;
   background-image: url('../../images/cloudy-sky.jpg');
+  background-repeat: repeat-y;
 }
 
-.name {
-  text-align: center;
-  font-size: 1.5rem;
-}
 
-.profile-pic {
+
+.profilePic {
   display: block;
   margin: 0 auto;
   height: 10rem;
   border-radius: 50%;
+  box-shadow: 5px 5px 5px var(--shadow);
+}
+
+.nameDisplay {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 0.5rem;
+}
+
+.emailDisplay {
+  display: flex;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.emailLabel {
+  font-weight: bold;
+}
+
+.emailValue {
+  margin: 0 0.5rem;
 }
