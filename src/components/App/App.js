@@ -7,9 +7,9 @@ import './JumpalFormStyles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navigation from '../Navigation/Navigation';
-import SignInPage from '../SignIn/SignIn';
+import SignInPage from '../Profile/SignIn/SignIn';
 import Profile from '../Profile/Profile';
-import SignOut from '../SignOut/SignOut';
+import SignOut from '../Profile/SignOut/SignOut';
 import Speed from '../Speed/Speed';
 import TimingTracks from '../Speed/TimingTracks/TimingTracks';
 import Counter from '../Speed/Counter/Counter';
