@@ -6,6 +6,7 @@ import Counter from './Counter/Counter';
 import PersonalBests from './PersonalBests/PersonalBests';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { CircularProgress } from '@material-ui/core';
 import './Speed.css';
 
 const timingTrack = "Timing Track";
@@ -17,6 +18,8 @@ class Speed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: null,
+      loading: false,
       active: personalBest,
       buttonNames: [timingTrack, counter, speedData, personalBest],
       buttons: [],
@@ -32,8 +35,23 @@ class Speed extends React.Component {
     this.togglePersonalBests = this.togglePersonalBests.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    this.setState({ loading: true });
     this.updateButtonGroup(personalBest);
+    // Get current user from firebase and save to state as user
+    this.props.firebase.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({
+          user: user,
+          loading: false,
+        })
+      } else {
+        alert("Please sign in to continue");
+        this.setState({
+          loading: false,
+        })
+      }
+    });
   }
 
   toggleTimingTracks() {
@@ -127,31 +145,42 @@ class Speed extends React.Component {
   }
   
   render() {
-    if(this.props.firebase.auth.currentUser) {
+    if (this.state.loading) {
       return (
-        <div className="componentContentDiv">
-          <div className="speedPagesButtonsDiv">
-            <ButtonGroup aria-label="Speed Pages" 
-              className="speedPagesButtons"
-            >
-              {this.state.buttons}
-            </ButtonGroup>
+        // Render spinner while loading
+        <div className='componentContentDiv'>
+          <div className='loadingBox'>
+            <CircularProgress color="success" />
           </div>
-          {this.state.openTimingTracks ? <TimingTracks /> : null }
-          {this.state.openCounter ? <Counter /> : null }
-          {this.state.openSpeedData ? <SpeedData /> : null }
-          {this.state.openPersonalBests ?<PersonalBests /> : null }
         </div>
       );
     } else {
-      return (
-        <div className="componentContentDiv">
-          {this.state.openTimingTracks ? <TimingTracks /> : null }
-          {this.state.openCounter ? <Counter /> : null }
-          {this.state.openSpeedData ? <p style={{color: 'red'}}>Please sign in to see your speed data.</p> : null }
-          {this.state.openPersonalBests ? <p style={{color: 'red'}}>Please sign in to see your personal bests.</p> : null }
-        </div>
-      );
+      if (this.state.user) {
+        return (
+          <div className="componentContentDiv">
+            <div className="speedPagesButtonsDiv">
+              <ButtonGroup aria-label="Speed Pages" 
+                className="speedPagesButtons"
+              >
+                {this.state.buttons}
+              </ButtonGroup>
+            </div>
+            {this.state.openTimingTracks ? <TimingTracks /> : null }
+            {this.state.openCounter ? <Counter /> : null }
+            {this.state.openSpeedData ? <SpeedData /> : null }
+            {this.state.openPersonalBests ?<PersonalBests /> : null }
+          </div>
+        );
+      } else {
+        return (
+          <div className="componentContentDiv">
+            {this.state.openTimingTracks ? <TimingTracks /> : null }
+            {this.state.openCounter ? <Counter /> : null }
+            {this.state.openSpeedData ? <p style={{color: 'red'}}>Please sign in to see your speed data.</p> : null }
+            {this.state.openPersonalBests ? <p style={{color: 'red'}}>Please sign in to see your personal bests.</p> : null }
+          </div>
+        );
+      }
     }
   }
 }
