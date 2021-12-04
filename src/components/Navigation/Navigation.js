@@ -5,7 +5,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import logo from "../../images/jumpal-logo.png";
 import './Navigation.css';
 
-
+// Uses NavBar component from React Bootstrap library because
+// Material UI library doesn't have the kind of navigation bar we want
 class Navigation extends React.Component {
   constructor(props) {
     super(props);

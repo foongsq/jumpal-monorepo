@@ -80,21 +80,6 @@ class SpeedData extends React.Component {
     })
   }
 
-  // async readData() {
-  //   let speedRecords = [];
-  //   if (this.props.firebase.auth.currentUser) {
-  //     let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('speed-records');
-  //     let snapshot = await ref.once('value');
-  //     let value = snapshot.val();
-  //     speedRecords.push(value);
-  //     console.log('speedRecords', speedRecords)
-  //     this.setState({
-  //       speedRecords: speedRecords,
-  //       isDataLoaded: true
-  //     })
-  //   }
-  // }
-
   handleEventChange(event) {
     this.setState({ 
       newSpeedRecordEvent: event,

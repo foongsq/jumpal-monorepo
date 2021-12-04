@@ -55,7 +55,6 @@ class PersonalBests extends React.Component {
       newPersonalBestEventColor: 'gray',
     }
     // Personal best data methods
-    // this.readData = this.readData.bind(this);
     this.renderAllData = this.renderAllData.bind(this);
     this.renderTableHeader = this.renderTableHeader.bind(this);
     this.onPersonalBestsUpdate = this.onPersonalBestsUpdate.bind(this);
@@ -95,21 +94,6 @@ class PersonalBests extends React.Component {
       isDataLoaded: true,
     })
   }
-
-  // async readData() {
-  //   let speedRecords = [];
-  //   if (this.props.firebase.auth.currentUser) {
-  //     let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('speed-records');
-  //     let snapshot = await ref.once('value');
-  //     let value = snapshot.val();
-  //     speedRecords.push(value);
-  //     console.log('speedRecords', speedRecords)
-  //     this.setState({
-  //       speedRecords: speedRecords,
-  //       isDataLoaded: true
-  //     })
-  //   }
-  // }
 
   async componentDidMount() {
     let personalBests = [];
@@ -238,38 +222,36 @@ class PersonalBests extends React.Component {
     );
   }
 
+  renderTableHeader() {
+    return (
+      <TableRow>
+        <StyledHeaderTableCell>Event</StyledHeaderTableCell>
+        <StyledHeaderTableCell>Score</StyledHeaderTableCell>
+        <StyledHeaderTableCell>Date</StyledHeaderTableCell>
+        <StyledHeaderTableCell></StyledHeaderTableCell>
+      </TableRow>
+    );
+  }
+
   renderAllData(records) {
     let eventsArr = Object.keys(records[0]);
     return eventsArr.map(event => {
       return (
-        <tr>
-          <td>{event}</td>
-          <td>{records[0][event].score}</td>
-          <td>{records[0][event].time}</td>
-          <td className="jumpalTableDeleteButtonCell">
+        <StyledTableRow key={event}>
+          <StyledTableCell>{event}</StyledTableCell>
+          <StyledTableCell>{records[0][event].score}</StyledTableCell>
+          <StyledTableCell>{records[0][event].time}</StyledTableCell>
+          <StyledTableCell>
             <button 
               className="jumpalTableDeleteButton" 
               onClick={() => this.handleDelete(event)}
             >
               <i className="fa fa-trash-o" aria-hidden="true"></i>
-            </button>
-          </td>
-        </tr>
+            </button></StyledTableCell>
+        </StyledTableRow>
       )
     });
   }
-
-  renderTableHeader() {
-    return (
-      <tr>
-        <td>Event</td>
-        <td>Score</td>
-        <td>Date</td>
-        <td></td>
-      </tr>
-    );
-  }
-
   render() {
     if (this.state.isDataLoaded) {
       if (this.state.personalBests && this.state.personalBests.length !== 0 && this.state.personalBests[0]){
@@ -279,38 +261,12 @@ class PersonalBests extends React.Component {
           <div className="componentContentDiv">
             {this.renderNewPersonalBestModal()}
             <h2>My Personal Bests</h2>
-            <TableContainer component={Paper}>
-              <Table aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <StyledHeaderTableCell>Dessert (100g serving)</StyledHeaderTableCell>
-                    <StyledTableCell align="right">Calories</StyledTableCell>
-                    <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                    <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                    <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <StyledTableRow key={row.name}>
-                      <StyledTableCell component="th" scope="row">
-                        {row.name}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                      <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                      <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                      <StyledTableCell align="right">{row.protein}</StyledTableCell>
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
+            <TableContainer component={Paper}>  
+              <Table>
+                  {this.renderTableHeader()}
+                  {this.renderAllData(records)}
               </Table>
-            </TableContainer>        
-            <Table striped bordered className="jumpalTable">
-              <tbody>
-                {this.renderTableHeader()}
-                {this.renderAllData(records)}
-              </tbody>
-            </Table>
+            </TableContainer>     
           </div>
         );
       } else {
@@ -319,7 +275,6 @@ class PersonalBests extends React.Component {
             {this.renderNewPersonalBestModal()}
             <h2>My Personal Bests</h2>
               <p className="loading">Start by entering a new personal best record above.</p>
-              {/* <button onClick={this.readData} className="button"><i className="fa fa-refresh"></i>Refresh speed data</button> */}
           </div>
         );
       }
