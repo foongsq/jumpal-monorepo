@@ -127,7 +127,7 @@ class Speed extends React.Component {
   }
   
   render() {
-    if(this.props.firebase.auth.currentUser) {
+    if (this.props.firebase.auth.currentUser) {
       return (
         <div className="componentContentDiv">
           <div className="speedPagesButtonsDiv">

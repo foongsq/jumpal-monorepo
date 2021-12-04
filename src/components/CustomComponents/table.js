@@ -1,58 +1,41 @@
 import { styled } from '@material-ui/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import TableContainer from '@material-ui/core/TableContainer';
+import { styles } from './constants.js';
 
+
+const StyledTableContainer = styled(TableContainer) ({
+  borderRadius: '10px',
+  marginTop: '1rem',
+  boxShadow: `10px 10px 10px ${styles.shadow}`
+});
+
+// For table headers:
+// - Apply green background color
+// - Bold, horizontally center text, change text color to white
+// - Add grey border
 const StyledHeaderTableCell = styled(TableCell) ({
-    backgroundColor: 'green',
+    background: styles.bootstrapGreen,
+    fontWeight: 'bold',
     color: 'white',
+    border: '1px solid',
+    borderColor: styles.greyTableBorder,
+    padding: '0.75rem',
 });
 
+// Add grey border
 const StyledTableCell = styled(TableCell) ({
-    fontSize: 14,
+  border: '1px solid',
+  borderColor: styles.greyTableBorder,
+  padding: '0.75rem',
 });
 
+// Alternate white and grey rows
 const StyledTableRow = styled(TableRow) ({
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: 'grey',
-    },
+  '&:nth-of-type(odd)': {
+    background: styles.greyTableRow,
   },
 });
 
-
-
-
-// function CustomizedTables() {
-//   const classes = useStyles();
-
-//   return (
-//     <TableContainer component={Paper}>
-//       <Table className={classes.table} aria-label="customized table">
-//         <TableHead>
-//           <TableRow>
-//             <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-//             <StyledTableCell align="right">Calories</StyledTableCell>
-//             <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-//             <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-//             <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
-//           </TableRow>
-//         </TableHead>
-//         <TableBody>
-//           {rows.map((row) => (
-//             <StyledTableRow key={row.name}>
-//               <StyledTableCell component="th" scope="row">
-//                 {row.name}
-//               </StyledTableCell>
-//               <StyledTableCell align="right">{row.calories}</StyledTableCell>
-//               <StyledTableCell align="right">{row.fat}</StyledTableCell>
-//               <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-//               <StyledTableCell align="right">{row.protein}</StyledTableCell>
-//             </StyledTableRow>
-//           ))}
-//         </TableBody>
-//       </Table>
-//     </TableContainer>
-//   );
-// }
-
-export {StyledHeaderTableCell, StyledTableCell, StyledTableRow}
+export {StyledHeaderTableCell, StyledTableCell, StyledTableRow, StyledTableContainer}
