@@ -1,31 +1,15 @@
 import React from 'react';
 import { withFirebase } from '../../../Firebase/index';
 import { JumpalButton } from '../../CustomComponents/core';
-import { StyledHeaderTableCell, StyledTableCell, StyledTableRow } from '../../CustomComponents/table';
 import ReactLoading from 'react-loading';
 import Button from '@material-ui/core/Button';
 import Modal from "react-bootstrap/Modal";
 import DateTime from 'react-datetime';
 import Select from 'react-select';
 
+import { StyledHeaderTableCell, StyledTableCell, StyledTableRow, StyledTableContainer } from '../../CustomComponents/table';
 import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 const options = [
   { value: '1x30sec Running Step', label: '1x30sec Running Step' },
@@ -55,7 +39,6 @@ class PersonalBests extends React.Component {
       newPersonalBestEventColor: 'gray',
     }
     // Personal best data methods
-    // this.readData = this.readData.bind(this);
     this.renderAllData = this.renderAllData.bind(this);
     this.renderTableHeader = this.renderTableHeader.bind(this);
     this.onPersonalBestsUpdate = this.onPersonalBestsUpdate.bind(this);
@@ -95,21 +78,6 @@ class PersonalBests extends React.Component {
       isDataLoaded: true,
     })
   }
-
-  // async readData() {
-  //   let speedRecords = [];
-  //   if (this.props.firebase.auth.currentUser) {
-  //     let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('speed-records');
-  //     let snapshot = await ref.once('value');
-  //     let value = snapshot.val();
-  //     speedRecords.push(value);
-  //     console.log('speedRecords', speedRecords)
-  //     this.setState({
-  //       speedRecords: speedRecords,
-  //       isDataLoaded: true
-  //     })
-  //   }
-  // }
 
   async componentDidMount() {
     let personalBests = [];
@@ -238,38 +206,36 @@ class PersonalBests extends React.Component {
     );
   }
 
+  renderTableHeader() {
+    return (
+      <TableRow>
+        <StyledHeaderTableCell>Event</StyledHeaderTableCell>
+        <StyledHeaderTableCell>Score</StyledHeaderTableCell>
+        <StyledHeaderTableCell>Date</StyledHeaderTableCell>
+        <StyledHeaderTableCell></StyledHeaderTableCell>
+      </TableRow>
+    );
+  }
+
   renderAllData(records) {
     let eventsArr = Object.keys(records[0]);
     return eventsArr.map(event => {
       return (
-        <tr>
-          <td>{event}</td>
-          <td>{records[0][event].score}</td>
-          <td>{records[0][event].time}</td>
-          <td className="jumpalTableDeleteButtonCell">
+        <StyledTableRow key={event}>
+          <StyledTableCell>{event}</StyledTableCell>
+          <StyledTableCell>{records[0][event].score}</StyledTableCell>
+          <StyledTableCell>{records[0][event].time}</StyledTableCell>
+          <StyledTableCell>
             <button 
               className="jumpalTableDeleteButton" 
               onClick={() => this.handleDelete(event)}
             >
               <i className="fa fa-trash-o" aria-hidden="true"></i>
-            </button>
-          </td>
-        </tr>
+            </button></StyledTableCell>
+        </StyledTableRow>
       )
     });
   }
-
-  renderTableHeader() {
-    return (
-      <tr>
-        <td>Event</td>
-        <td>Score</td>
-        <td>Date</td>
-        <td></td>
-      </tr>
-    );
-  }
-
   render() {
     if (this.state.isDataLoaded) {
       if (this.state.personalBests && this.state.personalBests.length !== 0 && this.state.personalBests[0]){
@@ -279,38 +245,12 @@ class PersonalBests extends React.Component {
           <div className="componentContentDiv">
             {this.renderNewPersonalBestModal()}
             <h2>My Personal Bests</h2>
-            <TableContainer component={Paper}>
-              <Table aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <StyledHeaderTableCell>Dessert (100g serving)</StyledHeaderTableCell>
-                    <StyledTableCell align="right">Calories</StyledTableCell>
-                    <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                    <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                    <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <StyledTableRow key={row.name}>
-                      <StyledTableCell component="th" scope="row">
-                        {row.name}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                      <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                      <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                      <StyledTableCell align="right">{row.protein}</StyledTableCell>
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
+            <StyledTableContainer>
+              <Table>
+                  {this.renderTableHeader()}
+                  {this.renderAllData(records)}
               </Table>
-            </TableContainer>        
-            <Table striped bordered className="jumpalTable">
-              <tbody>
-                {this.renderTableHeader()}
-                {this.renderAllData(records)}
-              </tbody>
-            </Table>
+            </StyledTableContainer>
           </div>
         );
       } else {
@@ -319,7 +259,6 @@ class PersonalBests extends React.Component {
             {this.renderNewPersonalBestModal()}
             <h2>My Personal Bests</h2>
               <p className="loading">Start by entering a new personal best record above.</p>
-              {/* <button onClick={this.readData} className="button"><i className="fa fa-refresh"></i>Refresh speed data</button> */}
           </div>
         );
       }

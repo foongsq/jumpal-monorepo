@@ -3,11 +3,14 @@ import './SpeedData.css';
 import { withFirebase } from '../../../Firebase/index';
 import { JumpalButton } from '../../CustomComponents/core';
 import ReactLoading from 'react-loading';
-import Table from 'react-bootstrap/Table';
 import Modal from "react-bootstrap/Modal";
 import DateTime from 'react-datetime';
 import Select from 'react-select';
 import Toast from 'react-bootstrap/Toast';
+
+import { StyledHeaderTableCell, StyledTableCell, StyledTableRow, StyledTableContainer } from '../../CustomComponents/table';
+import Table from '@material-ui/core/Table';
+import TableRow from '@material-ui/core/TableRow';
 
 const options = [
   { value: '1x30sec Running Step', label: '1x30sec Running Step' },
@@ -79,21 +82,6 @@ class SpeedData extends React.Component {
       isDataLoaded: true
     })
   }
-
-  // async readData() {
-  //   let speedRecords = [];
-  //   if (this.props.firebase.auth.currentUser) {
-  //     let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('speed-records');
-  //     let snapshot = await ref.once('value');
-  //     let value = snapshot.val();
-  //     speedRecords.push(value);
-  //     console.log('speedRecords', speedRecords)
-  //     this.setState({
-  //       speedRecords: speedRecords,
-  //       isDataLoaded: true
-  //     })
-  //   }
-  // }
 
   handleEventChange(event) {
     this.setState({ 
@@ -288,23 +276,33 @@ class SpeedData extends React.Component {
     );
   }
 
+  renderTableHeader() {
+    return (
+      <TableRow>
+        <StyledHeaderTableCell>Event</StyledHeaderTableCell>
+        <StyledHeaderTableCell>Score</StyledHeaderTableCell>
+        <StyledHeaderTableCell>Time</StyledHeaderTableCell>
+        <StyledHeaderTableCell></StyledHeaderTableCell>
+      </TableRow>
+    );
+  }
+
   renderAllData(records) {
       return records.reverse().map(record => {
         const { event, score, time } = record //destructuring
         return (
-            <tr>
-              <td>{event}</td>
-              <td>{score}</td>
-              <td>{time}</td>
-              <td className="jumpalTableDeleteButtonCell">
-                <button 
-                  className="jumpalTableDeleteButton" 
-                  onClick={() => this.handleDelete(event, score, time)}
-                >
-                  <i className="fa fa-trash-o" aria-hidden="true"></i>
-                </button>
-              </td>
-            </tr>
+          <StyledTableRow key={time}>
+            <StyledTableCell>{event}</StyledTableCell>
+            <StyledTableCell>{score}</StyledTableCell>
+            <StyledTableCell>{time}</StyledTableCell>
+            <StyledTableCell>
+              <button 
+                className="jumpalTableDeleteButton" 
+                onClick={() => this.handleDelete(event)}
+              >
+                <i className="fa fa-trash-o" aria-hidden="true"></i>
+              </button></StyledTableCell>
+          </StyledTableRow>
         )
       });
   }
@@ -320,25 +318,24 @@ class SpeedData extends React.Component {
       let splitTime = time.split(" ");
       if (splitTime[0] === today) {
         return (
-          <tr>
-            <td>{event}</td>
-            <td>{score}</td>
-            <td>{time}</td>
-          </tr>
+          <StyledTableRow key={time}>
+          <StyledTableCell>{event}</StyledTableCell>
+          <StyledTableCell>{score}</StyledTableCell>
+          <StyledTableCell>{time}</StyledTableCell>
+          <StyledTableCell>
+            <button 
+              className="jumpalTableDeleteButton" 
+              onClick={() => this.handleDelete(event)}
+            >
+              <i className="fa fa-trash-o" aria-hidden="true"></i>
+            </button></StyledTableCell>
+        </StyledTableRow>
         )
       } else { return null; } 
     });
   }
 
-  renderTableHeader() {
-   return (
-   <tr>
-     <td>Event</td>
-     <td>Score</td>
-     <td>Time</td>
-     <td></td>
-   </tr>);
-  }
+
 
   render() {
     if (this.state.isDataLoaded) {
@@ -359,7 +356,7 @@ class SpeedData extends React.Component {
         });
         
         return (
-          <div>
+          <div className="componentContentDiv">
             {this.renderToast()}
             {this.renderNewSpeedRecordModal()}
             <div className="titleAndButtonDiv">
@@ -375,12 +372,12 @@ class SpeedData extends React.Component {
                   Today
                 </JumpalButton> }             
             </div>
-            <Table striped bordered className="jumpalTable">
-              <tbody>
-                {this.renderTableHeader()}
-                {this.state.showToday ? this.renderTodayData(consolidated) : this.renderAllData(consolidated)}
-              </tbody>
+            <StyledTableContainer>
+              <Table>
+                  {this.renderTableHeader()}
+                  {this.state.showToday ? this.renderTodayData(consolidated) : this.renderAllData(consolidated)}
               </Table>
+            </StyledTableContainer>
           </div>
         );
       } else {
