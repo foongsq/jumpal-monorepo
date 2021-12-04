@@ -356,7 +356,7 @@ class SpeedData extends React.Component {
         });
         
         return (
-          <div>
+          <div className="componentContentDiv">
             {this.renderToast()}
             {this.renderNewSpeedRecordModal()}
             <div className="titleAndButtonDiv">
