@@ -1,31 +1,15 @@
 import React from 'react';
 import { withFirebase } from '../../../Firebase/index';
 import { JumpalButton } from '../../CustomComponents/core';
-import { StyledHeaderTableCell, StyledTableCell, StyledTableRow } from '../../CustomComponents/table';
 import ReactLoading from 'react-loading';
 import Button from '@material-ui/core/Button';
 import Modal from "react-bootstrap/Modal";
 import DateTime from 'react-datetime';
 import Select from 'react-select';
 
+import { StyledHeaderTableCell, StyledTableCell, StyledTableRow, StyledTableContainer } from '../../CustomComponents/table';
 import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 const options = [
   { value: '1x30sec Running Step', label: '1x30sec Running Step' },
@@ -261,12 +245,12 @@ class PersonalBests extends React.Component {
           <div className="componentContentDiv">
             {this.renderNewPersonalBestModal()}
             <h2>My Personal Bests</h2>
-            <TableContainer component={Paper}>  
+            <StyledTableContainer>
               <Table>
                   {this.renderTableHeader()}
                   {this.renderAllData(records)}
               </Table>
-            </TableContainer>     
+            </StyledTableContainer>
           </div>
         );
       } else {

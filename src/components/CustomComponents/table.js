@@ -1,7 +1,15 @@
 import { styled } from '@material-ui/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import TableContainer from '@material-ui/core/TableContainer';
 import { styles } from './constants.js';
+
+
+const StyledTableContainer = styled(TableContainer) ({
+  borderRadius: '10px',
+  marginTop: '1rem',
+  boxShadow: `10px 10px 10px ${styles.shadow}`
+});
 
 // For table headers:
 // - Apply green background color
@@ -30,4 +38,4 @@ const StyledTableRow = styled(TableRow) ({
   },
 });
 
-export {StyledHeaderTableCell, StyledTableCell, StyledTableRow}
+export {StyledHeaderTableCell, StyledTableCell, StyledTableRow, StyledTableContainer}
