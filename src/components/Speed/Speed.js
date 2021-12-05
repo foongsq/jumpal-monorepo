@@ -6,8 +6,9 @@ import Counter from './Counter/Counter';
 import PersonalBests from './PersonalBests/PersonalBests';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import { CircularProgress } from '@material-ui/core';
+
 import './Speed.css';
+import { JumpalSpinner } from '../CustomComponents/core';
 
 const timingTrack = "Timing Track";
 const counter = "Counter";
@@ -129,6 +130,7 @@ class Speed extends React.Component {
           break;
       }
       newButtons.push(
+        // TODO: Change button to non react-bootstrap ones
         <Button 
           variant={this.state.buttonNames[i] === newActive 
             ? "success" : "outline-success"}
@@ -146,14 +148,7 @@ class Speed extends React.Component {
   
   render() {
     if (this.state.loading) {
-      return (
-        // Render spinner while loading
-        <div className='componentContentDiv'>
-          <div className='loadingBox'>
-            <CircularProgress color="success" />
-          </div>
-        </div>
-      );
+      return <JumpalSpinner />;
     } else {
       if (this.state.user) {
         return (

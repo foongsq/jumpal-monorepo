@@ -6,13 +6,3 @@
   justify-content: center;
 }
 
-/* Division to render spinner:
-  - make height of box 100% so that spinner can be in
-  middle of page
-  - center spinner horizontally and vertically */
-.loadingBox {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
