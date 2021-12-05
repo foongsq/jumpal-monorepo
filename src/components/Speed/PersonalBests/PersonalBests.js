@@ -62,7 +62,7 @@ class PersonalBests extends React.Component {
   }
 
   componentWillUnmount() {
-    // detach listeners personal best of current user when component unmounts
+    // detach listeners to personal best of current user when component unmounts
     this.ref.off();
   }
 

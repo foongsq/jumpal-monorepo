@@ -1,6 +1,8 @@
 import React from 'react';
+import './SpeedData.css';
 import { withFirebase } from '../../../Firebase/index';
 import { JumpalButton } from '../../CustomComponents/core';
+import { styles } from '../../CustomComponents/constants';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -11,9 +13,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-import { styles } from '../../CustomComponents/constants';
-import './NewPersonalBestModal.css';
 
 const options = [
   { value: '1x30sec Running Step', label: '1x30sec Running Step' },
@@ -27,23 +26,20 @@ const options = [
   { value: '4x30sec Speed Relay', label: '4x30sec Speed Relay' },
 ];
 
-class NewPersonalBestModal extends React.Component {
+class NewSpeedRecordModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: null,
       loading: false,
 
-      // For new personal best modal
-      openNewPersonalBest: false,
-      newPersonalBestEvent: null,
-      newPersonalBestScore: null,
-      newPersonalBestTime: null,
+      openNewSpeedRecord: false,
+      newSpeedRecordEvent: null,
+      newSpeedRecordScore: null,
+      time: new Date(),
     }
-
-    // New personal best modal methods
-    this.toggleNewPersonalBest = this.toggleNewPersonalBest.bind(this);
-    this.saveNewPersonalBest = this.saveNewPersonalBest.bind(this);
+    this.toggleNewSpeedRecord = this.toggleNewSpeedRecord.bind(this);
+    this.saveSpeedRecord = this.saveSpeedRecord.bind(this);
     this.handleEventChange = this.handleEventChange.bind(this);
     this.handleScoreChange = this.handleScoreChange.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
@@ -69,83 +65,93 @@ class NewPersonalBestModal extends React.Component {
     });
   }
 
-  toggleNewPersonalBest() {
-    this.setState({
-      openNewPersonalBest: !this.state.openNewPersonalBest,
-      newPersonalBestEvent: null,
-      newPersonalBestScore: null,
-      newPersonalBestTime: new Date(),
-    })
+  toggleNewSpeedRecord() {
+    this.setState({ 
+      openNewSpeedRecord: !this.state.openNewSpeedRecord,
+      newSpeedRecordEvent: null,
+      newSpeedRecordScore: null,
+      time: new Date(),
+    });
   }
 
-  // New personal best modal methods
   handleEventChange(event) {
-    this.setState({ 
-      newPersonalBestEvent: event.target.value,
-      newPersonalBestEventColor: '#383838',
-     });
-
+    this.setState({ newSpeedRecordEvent: event.target.value });
   }
 
   handleScoreChange(event) {
-    this.setState({ newPersonalBestScore: event.target.value });
+    this.setState({ score: event.target.value });
   }
 
   handleTimeChange(time) {
-    this.setState({ newPersonalBestTime: time });
+    this.setState({ time: time });
   } 
 
   timeStamp(time) {
-    time = new Date(time)
     // Create an array with the current month, day and time
     let date = [ time.getMonth() + 1, time.getDate(), time.getFullYear() ];
-
+    // Create an array with the current hour, minute and second
+    let time2 = [ time.getHours(), time.getMinutes(), time.getSeconds() ];
+    // Determine AM or PM suffix based on the hour
+    let suffix = ( time2[0] < 12 ) ? "AM" : "PM";
+    // Convert hour from military time
+    time2[0] = ( time2[0] < 12 ) ? time2[0] : time2[0] - 12;
+    // If hour is 0, set it to 12
+    time2[0] = time2[0] || 12;
+    // If minutes are less than 10, add a zero
+    for ( let i = 1; i < 2; i++ ) {
+      if ( time2[i] < 10 ) {
+        time2[i] = "0" + time2[i];
+      }
+    }
     // Return the formatted string
-    return date.join("/");
+    return date.join("/") + " " + time2.join(":") + " " + suffix;
   }
 
-  saveNewPersonalBest(event) {
-    event.preventDefault();
+  saveSpeedRecord(event) {
+    let today = this.state.time;
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+    today = `${yyyy}/${mm}/${dd}`;
 
-    // Add new personal best entry into database
-    this.props.firebase.db.ref('users')
-    .child(this.props.firebase.auth.currentUser.uid)
-    .child('personal-bests')
-    .child(this.state.newPersonalBestEvent)
-    .set({
-      score: this.state.newPersonalBestScore,
-      time: this.timeStamp(this.state.newPersonalBestTime),
+    this.props.firebase.user(this.props.firebase.auth.currentUser.uid)
+    .child('speed-records')
+    .child(`${today}`)
+    .push({
+      event: this.state.newSpeedRecordEvent, 
+      score: this.state.score,
+      time: this.timeStamp(this.state.time),
     });
-    
-    // TODO: Change this into a toast
-    window.alert('New Personal Best saved successfully!');
-    this.toggleNewPersonalBest();
+    this.myFormRef.reset();
+    event.preventDefault();
+    this.toggleNewSpeedRecord();
+    window.alert("Congratulations! You have successfully saved a new speed record. Keep going!!");
   }
 
   render() {
     return (
       <>
         <div className='jumpalCenteredButton'>
-          <JumpalButton onClick={this.toggleNewPersonalBest}>
-            Add New Personal Best
+          <JumpalButton onClick={this.toggleNewSpeedRecord}>
+            Add New Speed Record
           </JumpalButton>
         </div>
         <Modal
-          open={this.state.openNewPersonalBest}
-          onClose={this.toggleNewPersonalBest}
+          open={this.state.openNewSpeedRecord}
+          onClose={this.toggleNewSpeedRecord}
         >
           <Box sx={styles.modalStyle}>
             <Typography variant="h6" component="h2">
-              New Personal Best
+              New Speed Record
             </Typography>
-            <form className='jumpalForm' ref={(el) => this.PbFormRef = el}>
+            <form className='jumpalForm' ref={(el) => this.myFormRef = el}>
               <div className='modalInput'>
                 <FormControl fullWidth>
                   {/* Time Input */}
                   <DateTimePicker
                     renderInput={(props) => <TextField {...props} />}
                     label="Time"
-                    value={this.state.newPersonalBestTime}
+                    value={this.state.time}
                     onChange={this.handleTimeChange}
                   />
                 </FormControl>
@@ -156,7 +162,7 @@ class NewPersonalBestModal extends React.Component {
                   <InputLabel>Event</InputLabel>
                   <Select
                     label="Event"
-                    value={this.state.newPersonalBestEvent}
+                    value={this.state.newSpeedRecordEvent}
                     onChange={this.handleEventChange}
                   >
                     {options.map(event => <MenuItem value={event.value}>{event.label}</MenuItem>)}
@@ -179,8 +185,8 @@ class NewPersonalBestModal extends React.Component {
               </div>
             </form>
             {this.state.user 
-                ? <JumpalButton onClick={this.saveNewPersonalBest}>Save</JumpalButton>
-                : <JumpalButton onClick={this.saveNewPersonalBest} disabled>Save</JumpalButton>
+                ? <JumpalButton onClick={this.saveSpeedRecord}>Save</JumpalButton>
+                : <JumpalButton onClick={this.saveSpeedRecord} disabled>Save</JumpalButton>
             }
           </Box>
         </Modal>
@@ -189,4 +195,4 @@ class NewPersonalBestModal extends React.Component {
   }
 }
 
-export default withFirebase(NewPersonalBestModal);
+export default withFirebase(NewSpeedRecordModal);
