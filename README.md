@@ -1,7 +1,7 @@
 # Jumpal
 A tracking app for jump rope athletes to track their speed scores, personal bests, and freestyle tricks they want to learn.
 
-![banner](./banner.png)
+![Jumpal Banner](./docs/images/banner.png)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
