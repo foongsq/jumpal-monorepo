@@ -1,7 +1,8 @@
 import React from 'react'; 
-import { Paper } from '@material-ui/core';
+import CircularProgress from '@mui/core';
+import Paper from '@mui/core';
+
 import { withFirebase } from '../../Firebase/index';
-import { CircularProgress } from '@material-ui/core';
 import SignOut from './SignOut/SignOut';
 import SignIn from './SignIn/SignIn';
 import './Profile.css';

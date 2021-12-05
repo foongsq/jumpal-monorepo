@@ -2,14 +2,19 @@ import React from 'react';
 import { withFirebase } from '../../../Firebase/index';
 import { JumpalButton } from '../../CustomComponents/core';
 import ReactLoading from 'react-loading';
-import Button from '@material-ui/core/Button';
-import Modal from "react-bootstrap/Modal";
+import Button from '@mui/core/Button';
+import Modal from '@mui/core/Modal';
 import DateTime from 'react-datetime';
 import Select from 'react-select';
 
 import { StyledHeaderTableCell, StyledTableCell, StyledTableRow, StyledTableContainer } from '../../CustomComponents/table';
-import Table from '@material-ui/core/Table';
-import TableRow from '@material-ui/core/TableRow';
+import Table from '@mui/core/Table';
+import TableRow from '@mui/core/TableRow';
+
+import Box from '@mui/core/Box';
+import Typography from '@mui/core/Typography';
+
+import { styles } from '../../CustomComponents/constants';
 
 const options = [
   { value: '1x30sec Running Step', label: '1x30sec Running Step' },
@@ -27,9 +32,11 @@ class PersonalBests extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: null,
+      loading: false,
+
       // Personal best data
       personalBests: [],
-      isDataLoaded: false,
 
       // For new personal best modal
       openNewPersonalBest: false,
@@ -58,8 +65,34 @@ class PersonalBests extends React.Component {
     this.ref.on("value", this.onPersonalBestsUpdate);
   }
 
+  async componentDidMount() {
+    this.setState({ loading: true });
+    // Get current user from firebase and save to state as user
+    this.props.firebase.auth.onAuthStateChanged(async user => {
+      if (user) {
+        // Fetch personal best data associated to current user's uid and set as state
+        let personalBests = [];
+        let ref = this.props.firebase.user(user.uid).child('personal-bests');
+        let snapshot = await ref.once('value');
+        let value = snapshot.val();
+        personalBests.push(value);
+        this.setState({
+          personalBests: personalBests,
+          user: user,
+          loading: false,
+        })
+      } else {
+        // Prompts user to sign in
+        alert("Please sign in to continue");
+        this.setState({
+          loading: false,
+        })
+      }
+    });
+  }
+
   componentWillUnmount() {
-    // detach all listeners to this reference when component unmounts (very important!)
+    // detach all listeners to this reference when component unmounts
     this.ref.off();
   }
 
@@ -77,20 +110,6 @@ class PersonalBests extends React.Component {
       personalBests: personalBests,
       isDataLoaded: true,
     })
-  }
-
-  async componentDidMount() {
-    let personalBests = [];
-    if (this.props.firebase.auth.currentUser) {
-      let ref = this.props.firebase.user(this.props.firebase.auth.currentUser.uid).child('personal-bests');
-      let snapshot = await ref.once('value');
-      let value = snapshot.val();
-      personalBests.push(value);
-      this.setState({
-        personalBests: personalBests,
-        isDataLoaded: true
-      })
-    }
   }
 
   handleDelete(event) {
@@ -154,53 +173,54 @@ class PersonalBests extends React.Component {
           </JumpalButton>
         </div>
   
-        <Modal 
-          show={this.state.openNewPersonalBest} 
-          onHide={this.toggleNewPersonalBest}
-          centered
+        <Modal
+          open={this.state.openNewPersonalBest}
+          onClose={this.toggleNewPersonalBest}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
         >
-          <Modal.Header closeButton>
-            <Modal.Title>New Personal Best</Modal.Title>
-          </Modal.Header>
-          <form className="jumpalForm" ref={(el) => this.PbFormRef = el}>
-            <div>
-              {/* Time Input */}
-              <label>Time: 
-                <br />
-                <DateTime
-                  onChange={this.handleTimeChange} 
-                  value={this.state.newPersonalBestTime}
-                  timeFormat={false}
-                />
-              </label>
-              {/* Event Input */}
-              <label>Event: 
-                <Select  
-                  value={this.state.newPersonalBestEvent} 
-                  onChange={this.handleEventChange} 
-                  options={options}
-                />
-              </label>
+          <Box sx={styles.modalStyle}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              New Personal Best
+            </Typography>
+            <form className="jumpalForm" ref={(el) => this.PbFormRef = el}>
+              <div>
+                {/* Time Input */}
+                <label>Time: 
+                  <br />
+                  <DateTime
+                    onChange={this.handleTimeChange} 
+                    value={this.state.newPersonalBestTime}
+                    timeFormat={false}
+                  />
+                </label>
+                {/* Event Input */}
+                <label>Event: 
+                  <Select  
+                    value={this.state.newPersonalBestEvent} 
+                    onChange={this.handleEventChange} 
+                    options={options}
+                  />
+                </label>
 
-              {/* Score Input */}
-              <label>
-                Score:
-                <input 
-                  className="jumpalInput" 
-                  type="number" 
-                  min="0" 
-                  placeholder="Enter your speed score" 
-                  onChange={this.handleScoreChange}>
-                  </input>
-              </label>
-            </div>
-          </form>
-          <Modal.Footer>
-            {this.props.firebase.auth.currentUser 
+                {/* Score Input */}
+                <label>
+                  Score:
+                  <input 
+                    className="jumpalInput" 
+                    type="number" 
+                    min="0" 
+                    placeholder="Enter your speed score" 
+                    onChange={this.handleScoreChange}>
+                    </input>
+                </label>
+              </div>
+            </form>
+            {this.state.user 
                 ? <Button variant="success" onClick={this.saveNewPersonalBest}>Save</Button>
                 : <Button variant="success" onClick={this.saveNewPersonalBest} disabled>Save</Button>
             }
-          </Modal.Footer>
+          </Box>
         </Modal>
       </>
     );
