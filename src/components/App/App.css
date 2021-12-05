@@ -41,8 +41,6 @@ body {
   height: 90vh;
 }
 
-
-
 ::-webkit-scrollbar {
   display: none;
 }
@@ -67,3 +65,14 @@ body {
   top: 1rem;
   right: 1rem;
 }
+
+/* Division to render spinner:
+  - make height of box 50% so that spinner can be in
+  middle of page (but closer to top)
+  - center spinner horizontally and vertically */
+  .jumpalSpinnerDiv {
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

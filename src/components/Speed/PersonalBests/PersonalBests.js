@@ -1,9 +1,7 @@
 import React from 'react';
 import { withFirebase } from '../../../Firebase/index';
-import { JumpalButton } from '../../CustomComponents/core';
 import NewPersonalBestModal from './NewPersonalBestModal';
-import ReactLoading from 'react-loading';
-import Modal from '@mui/material/Modal';
+import { JumpalSpinner } from '../../CustomComponents/core'
 
 import { StyledHeaderTableCell, StyledTableCell, StyledTableRow, StyledTableContainer } from '../../CustomComponents/table';
 import Table from '@mui/material/Table';
@@ -54,13 +52,11 @@ class PersonalBests extends React.Component {
           personalBests: personalBests,
           user: user,
           loading: false,
-        })
+        });
       } else {
         // Prompts user to sign in
         alert("Please sign in to continue");
-        this.setState({
-          loading: false,
-        })
+        this.setState({ loading: false });
       }
     });
   }
@@ -70,20 +66,23 @@ class PersonalBests extends React.Component {
     this.ref.off();
   }
 
+  // This method updates the state with new personalBests data when data in database is updated.
   onPersonalBestsUpdate(snapshot) {
+    this.setState({ loading: true });
     let personalBests = [];
     personalBests.push(snapshot.val())
     this.setState({
       personalBests: personalBests,
-      isDataLoaded: true,
+      loading: false,
     })
   }
 
   handleDelete(event) {
+    // TODO: Change this to modal/toast
     let result = window.confirm("Are you sure you want to delete?");
-    if (this.props.firebase.auth.currentUser && result) {
+    if (this.state.user && result) {
       this.props.firebase.db.ref('users')
-      .child(this.props.firebase.auth.currentUser.uid)
+      .child(this.state.user.uid)
       .child('personal-bests')
       .child(event)
       .remove()
@@ -122,7 +121,9 @@ class PersonalBests extends React.Component {
   }
 
   render() {
-    if (this.state.isDataLoaded) {
+    if (this.state.loading) {
+      return <JumpalSpinner />;
+    } else {
       if (this.state.personalBests && this.state.personalBests.length !== 0 && this.state.personalBests[0]){
         let records = this.state.personalBests;
         
@@ -139,6 +140,7 @@ class PersonalBests extends React.Component {
           </div>
         );
       } else {
+        // User doesn't have any personal best records yet
         return (
           <div>
             <NewPersonalBestModal />
@@ -147,8 +149,6 @@ class PersonalBests extends React.Component {
           </div>
         );
       }
-    } else {
-      return <ReactLoading type='spin' color='white' height={'5%'} width={'5%'} />;
     }
   }
 }
