@@ -2,17 +2,17 @@ import React from 'react';
 import { withFirebase } from '../../../Firebase/index';
 import { JumpalButton } from '../../CustomComponents/core';
 import ReactLoading from 'react-loading';
-import Button from '@mui/core/Button';
-import Modal from '@mui/core/Modal';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
 import DateTime from 'react-datetime';
 import Select from 'react-select';
 
 import { StyledHeaderTableCell, StyledTableCell, StyledTableRow, StyledTableContainer } from '../../CustomComponents/table';
-import Table from '@mui/core/Table';
-import TableRow from '@mui/core/TableRow';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
 
-import Box from '@mui/core/Box';
-import Typography from '@mui/core/Typography';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import { styles } from '../../CustomComponents/constants';
 

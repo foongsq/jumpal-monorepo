@@ -1,5 +1,5 @@
 import { styled } from '@mui/styles';
-import Button from '@mui/core/Button';
+import Button from '@mui/material/Button';
 import { styles } from './constants.js';
 
 export const JumpalButton = styled(Button)({

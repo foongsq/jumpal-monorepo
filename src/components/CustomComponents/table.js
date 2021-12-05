@@ -1,7 +1,7 @@
 import { styled } from '@mui/styles';
-import TableCell from '@mui/core/TableCell';
-import TableRow from '@mui/core/TableRow';
-import TableContainer from '@mui/core/TableContainer';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import TableContainer from '@mui/material/TableContainer';
 import { styles } from './constants.js';
 
 

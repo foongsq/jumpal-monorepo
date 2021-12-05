@@ -6,7 +6,8 @@ import Counter from './Counter/Counter';
 import PersonalBests from './PersonalBests/PersonalBests';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import CircularProgress from '@mui/core';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import './Speed.css';
 
 const timingTrack = "Timing Track";

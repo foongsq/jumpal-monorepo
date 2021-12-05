@@ -9,8 +9,8 @@ import Select from 'react-select';
 import Toast from 'react-bootstrap/Toast';
 
 import { StyledHeaderTableCell, StyledTableCell, StyledTableRow, StyledTableContainer } from '../../CustomComponents/table';
-import Table from '@mui/core/Table';
-import TableRow from '@mui/core/TableRow';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
 
 const options = [
   { value: '1x30sec Running Step', label: '1x30sec Running Step' },
