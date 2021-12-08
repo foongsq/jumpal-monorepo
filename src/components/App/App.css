@@ -38,8 +38,7 @@ body {
 /* For padding entire content component */
 .componentContentDiv {
   padding: 0 1rem 1rem 1rem;
-  height: 90vh;
-  border: 1px solid red;
+  height: 90%;
 }
 
 ::-webkit-scrollbar {

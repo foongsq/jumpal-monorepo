@@ -1,11 +1,11 @@
 import React from 'react'; 
-import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
 
 import { withFirebase } from '../../Firebase/index';
 import SignOut from './SignOut/SignOut';
 import SignIn from './SignIn/SignIn';
 import './Profile.css';
+import { JumpalSpinner } from '../CustomComponents/core';
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -38,14 +38,7 @@ class ProfilePage extends React.Component {
 
   render() {
     if (this.state.loading) {
-      return (
-        // Render spinner while loading
-        <div className='componentContentDiv'>
-          <div className='loadingBox'>
-            <CircularProgress color="success" />
-          </div>
-        </div>
-      );
+      return <JumpalSpinner />;
     } else {
       if (this.state.user != null) {
         return (
