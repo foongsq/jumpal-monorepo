@@ -14,3 +14,9 @@ In the project directory, you can run:
 **Launches the test runner in the interactive watch mode:** `npm test`
 
 **Builds the app for production to the `build` folder:** `npm run build`
+
+## Project setup
+
+- Add firebase configurations in `/src/Firebase/config.js` according to `config.js sample` file
+- `npm install` to install dependencies
+- `npm start` to start up app on localhost
