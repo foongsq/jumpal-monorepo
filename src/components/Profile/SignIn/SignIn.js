@@ -1,7 +1,6 @@
-import React from 'react'; 
-import { withFirebase } from '../../../Firebase/index';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
+import { useState, useContext } from 'react'; 
+import { FirebaseContext } from '../../../Firebase/index';
+import { useHistory } from "react-router-dom";
 import './SignIn.css';
 import { JumpalButton } from '../../CustomComponents/core';
 
@@ -14,20 +13,18 @@ const SignInPage = () => (
   </div>
 );
 
-class SignInGoogleBase extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { error: null };
-  }
+function SignInGoogle() {
+  const firebase = useContext(FirebaseContext);
+  let history = useHistory();
+  const [error, setError] = useState(null);
  
-  onSubmit = event => {
-    this.props.firebase
+  const onSubmit = event => {
+    firebase
       .doSignInWithGoogle()
       .then(socialAuthUser => {
-        console.log('socialAuthUser', socialAuthUser);
-        if (!this.props.firebase.database.ref('users').child(socialAuthUser.user.uid)) {
+        if (!firebase.database.ref('users').child(socialAuthUser.user.uid)) {
           // Create a user in your Firebase Realtime Database too
-          return this.props.firebase
+          return firebase
           .user(socialAuthUser.user.uid)
           .set({
             username: socialAuthUser.additionalUserInfo.profile.name,
@@ -37,32 +34,24 @@ class SignInGoogleBase extends React.Component {
         }
       })
       .then(() => {
-        this.setState({ error: null });
-        this.props.history.push('/Home');
+        setError(null);
+        history.push('/Home');
       })
       .catch(error => {
-        this.setState({ error });
+        setError(error);
       });
     event.preventDefault();
   };
  
-  render() {
-    const { error } = this.state;
-    return (
-      <form onSubmit={this.onSubmit}>
-        <JumpalButton type='submit' className='signInButton'>
-          <i id='googleIcon' className="fa fa-google"></i>Sign In with Google
-        </JumpalButton>
-        {error && <p>{error.message}</p>}
-      </form>
-    );
-  }
+  return (
+    <form onSubmit={onSubmit}>
+      <JumpalButton type='submit' className='signInButton'>
+        <i id='googleIcon' className="fa fa-google"></i>Sign In with Google
+      </JumpalButton>
+      {error && <p>{error.message}</p>}
+    </form>
+  );
 }
-
-const SignInGoogle = compose(
-  withRouter,
-  withFirebase,
-)(SignInGoogleBase);
 
 export default SignInPage;
 export { SignInGoogle };

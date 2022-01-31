@@ -4,8 +4,9 @@ import SpeedData from './SpeedData/SpeedData';
 import TimingTracks from './TimingTracks/TimingTracks';
 import Counter from './Counter/Counter';
 import PersonalBests from './PersonalBests/PersonalBests';
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
+
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 import './Speed.css';
 import { JumpalSpinner } from '../CustomComponents/core';
@@ -130,10 +131,9 @@ class Speed extends React.Component {
           break;
       }
       newButtons.push(
-        // TODO: Change button to non react-bootstrap ones
         <Button 
           variant={this.state.buttonNames[i] === newActive 
-            ? "success" : "outline-success"}
+            ? "contained" : "outlined"}
           onClick={functionToCall}
         >
           {this.state.buttonNames[i]}
@@ -154,7 +154,7 @@ class Speed extends React.Component {
         return (
           <div className="componentContentDiv">
             <div className="speedPagesButtonsDiv">
-              <ButtonGroup aria-label="Speed Pages" 
+              <ButtonGroup
                 className="speedPagesButtons"
               >
                 {this.state.buttons}

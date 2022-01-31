@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '@mui/styles';
+import styled from '@emotion/styled';
 import Button from '@mui/material/Button';
 import { CircularProgress } from '@mui/material';
 import { styles } from './constants.js';

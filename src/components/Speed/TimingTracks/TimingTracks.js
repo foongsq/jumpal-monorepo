@@ -6,7 +6,10 @@ import SRSE1x180sec from '../../../audio/SRSE-1x180sec.mp3';
 import SRSR4x30sec from '../../../audio/SRSR-4x30sec.mp3';
 import DDSS1x60sec from '../../../audio/DDSS-1x60sec.mp3';
 import DDSR4x30sec from '../../../audio/DDSR-4x30sec.mp3';
-import Select from 'react-select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const options = [
   { value: 'SRSS-1x30sec', label: 'Single Rope Speed Sprints 1x30sec' },
@@ -55,11 +58,16 @@ export default class TimingTracks extends React.Component {
       <div className="timing-tracks-container">
         <h2 className="timingTrackTitle">Timing Tracks</h2>
         <div className="select-and-audio">
-          <Select  
-            value={this.state.newPersonalBestEvent} 
-            onChange={this.handleTrackChange}
-            options={options}
-          />
+          <FormControl fullWidth>
+            <InputLabel>Select timing track</InputLabel>
+            <Select
+              value={this.state.newPersonalBestEvent}
+              label="Select timing track"
+              onChange={this.state.handleTrackChange}
+            >
+              {options.map((option) => (<MenuItem value={option}>option</MenuItem>))}
+            </Select>
+          </FormControl>
           <audio className="timing-track-audio" src={src} controls></audio>
         </div>
       </div>

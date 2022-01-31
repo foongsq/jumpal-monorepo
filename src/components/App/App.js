@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
+import routes from '../../routes/routes';
 import { withAuthentication } from '../Session';
 import './App.css';
 import './JumpalTableStyles.css';
@@ -7,6 +8,8 @@ import './JumpalFormStyles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../../styles/theme';
 
 import Navigation from '../Navigation/Navigation';
 import SignInPage from '../Profile/SignIn/SignIn';
@@ -25,24 +28,26 @@ class App extends React.Component {
     return (
         <div className="app">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Router>
-              <div className="navAndcontent">
-                <Navigation />
-                <div className="content">
-                  <Route exact path="/"><Redirect to="/Home" /></Route>
-                  <Route path='/signin' component={SignInPage} />
-                  <Route path='/home' component={Home} />
-                  <Route path='/speed' component={Speed}/>
-                  <Route path='/freestyle' component={Freestyle} />
-                  <Route path='/profile' component={Profile} />
-                  <Route path='/signout' component={SignOut} />
-                  <Route path='/speed/TimingTracks' component={TimingTracks} />
-                  <Route path='/speed/Counter' component={Counter} />
-                  <Route path='/speed/speeddata' component={SpeedData} />
-                  <Route path='/speed/personalbests' component={PersonalBests} />
+            <ThemeProvider theme={theme}>
+              <Router>
+                <div className="navAndcontent">
+                  <Navigation />
+                  <div className="content">
+                    <Route exact path={routes.LANDING}><Redirect to={routes.HOME} /></Route>
+                    <Route path={routes.HOME} component={Home} />
+                    <Route path={routes.SPEED} component={Speed}/>
+                    <Route path={routes.TIMINGTRACKS} component={TimingTracks} />
+                    <Route path={routes.COUNTER} component={Counter} />
+                    <Route path={routes.SPEEDDATA} component={SpeedData} />
+                    <Route path={routes.PERSONALBESTS} component={PersonalBests} />
+                    <Route path={routes.FREESTYLE} component={Freestyle} />
+                    <Route path={routes.PROFILE} component={Profile} />
+                    <Route path={routes.SIGNIN} component={SignInPage} />
+                    <Route path={routes.SIGNOUT} component={SignOut} />
+                  </div>
                 </div>
-              </div>
-            </Router>
+              </Router>
+            </ThemeProvider>
           </LocalizationProvider>
         </div>
     );

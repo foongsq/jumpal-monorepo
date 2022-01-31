@@ -1,16 +1,15 @@
-import firebase from 'firebase/app';
-import "firebase/auth";
-import "firebase/database";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
+import { getDatabase } from "firebase/database";
 import config from "./config";
 
 export default class Firebase {
     constructor(props) {
-      firebase.initializeApp(config);
-   
-      this.auth = firebase.auth();
-      this.db = firebase.database();
-   
-      this.googleProvider = new firebase.auth.GoogleAuthProvider();
+      const firebase = initializeApp(config);
+      this.auth = getAuth();
+      this.db = getDatabase(firebase);
+      this.googleProvider = new GoogleAuthProvider();
     }
    
     // *** Auth API ***

@@ -1,4 +1,4 @@
-import { styled } from '@mui/styles';
+import styled from '@emotion/styled';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import TableContainer from '@mui/material/TableContainer';
