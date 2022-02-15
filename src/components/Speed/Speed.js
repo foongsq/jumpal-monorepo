@@ -135,6 +135,7 @@ class Speed extends React.Component {
           variant={this.state.buttonNames[i] === newActive 
             ? "contained" : "outlined"}
           onClick={functionToCall}
+          key={i}
         >
           {this.state.buttonNames[i]}
         </Button>,

@@ -159,7 +159,7 @@ class NewPersonalBestModal extends React.Component {
                     value={this.state.newPersonalBestEvent}
                     onChange={this.handleEventChange}
                   >
-                    {options.map(event => <MenuItem value={event.value}>{event.label}</MenuItem>)}
+                    {options.map(event => <MenuItem value={event.value} key={event.value}>{event.label}</MenuItem>)}
                   </Select>
                 </FormControl>
               </div>
