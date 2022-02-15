@@ -26,7 +26,6 @@ const Navigation = () => {
   };
 
   const handleNavigate = (page) => {
-    // TODO: Navigate to correct page
     console.log(page);
     navigate(page);
     handleCloseNavMenu();

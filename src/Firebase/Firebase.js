@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { getDatabase, ref, child } from "firebase/database";
 import config from "./config";
 
@@ -14,10 +14,9 @@ export default class Firebase {
   }
 
   // Auth API
-  doSignInWithGoogle = () =>
-    this.auth.signInWithPopup(this.googleProvider);
+  doSignInWithGoogle = () => signInWithPopup(this.auth.app, this.googleProvider);
 
-  doSignOut = () => this.auth.signOut();
+  doSignOut = () => signOut(this.auth);
 
   // User(s) ref
   get user() {

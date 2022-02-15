@@ -1,4 +1,5 @@
-import { useState, useContext } from 'react'; 
+import { useState, useContext } from 'react';
+import { set, child } from "firebase/database";
 import { FirebaseContext } from '../../../Firebase/index';
 import { useNavigate } from "react-router-dom";
 import './SignIn.css';
@@ -19,18 +20,18 @@ function SignInGoogle() {
   const [error, setError] = useState(null);
  
   const onSubmit = event => {
-    firebase
-      .doSignInWithGoogle()
+    firebase.doSignInWithGoogle()
       .then(socialAuthUser => {
-        if (!firebase.database.ref('users').child(socialAuthUser.user.uid)) {
+        if (!child(firebase.users, socialAuthUser.user.uid)) {
           // Create a user in your Firebase Realtime Database too
-          return firebase
-          .user(socialAuthUser.user.uid)
-          .set({
-            username: socialAuthUser.additionalUserInfo.profile.name,
-            email: socialAuthUser.additionalUserInfo.profile.email,
-            roles: {},
-          });
+          return set(
+            child(firebase.users, socialAuthUser.user.uid),
+            {
+              username: socialAuthUser.additionalUserInfo.profile.name,
+              email: socialAuthUser.additionalUserInfo.profile.email,
+              roles: {},
+            }
+          );
         }
       })
       .then(() => {
