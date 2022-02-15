@@ -31,4 +31,9 @@ export default class Firebase {
   get personalBests() {
     return child(this.user, 'personal-bests');
   } 
+
+  // Speed records ref
+  get speedRecords() {
+    return child(this.user, 'speed-records');
+  } 
 }

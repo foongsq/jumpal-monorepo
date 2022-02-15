@@ -39,7 +39,7 @@ function NewPersonalBestModal() {
 
   // Attach event listener to personal best data of current user
   const pbRef = useRef(firebase.personalBests).current;
-  let pbFormRef = useRef(null);
+  let pbFormRef = null;
 
   useEffect(() => {
     // Get current user from firebase and save to state as user
@@ -47,12 +47,10 @@ function NewPersonalBestModal() {
       if (user) {
         setUser(user);
       } else {
-        // Prompts user to sign in
         alert("Please sign in to continue");
       }
     });
     return () => {    
-      // detach listeners to personal best of current user when component unmounts
       off(pbRef);
       unsubscribe();
     };
@@ -65,7 +63,6 @@ function NewPersonalBestModal() {
     setTime(new Date());
   }
 
-  // New personal best modal methods
   const handleEventChange = (event) => {
     setEventJ(event.target.value);
   }

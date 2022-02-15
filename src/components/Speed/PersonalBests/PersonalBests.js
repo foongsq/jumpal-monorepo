@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState, useRef } from 'react';
 import { FirebaseContext } from '../../../Firebase/index';
-import { onValue, get, child, off } from "firebase/database";
+import { onValue, get, child, off, remove } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 import NewPersonalBestModal from './NewPersonalBestModal';
 import { JumpalSpinner } from '../../CustomComponents/core'
@@ -65,7 +65,7 @@ function PersonalBests() {
     // TODO: Change this to modal/toast
     let result = window.confirm("Are you sure you want to delete?");
     if (user && result) {
-      child(pbRef, event).remove()
+      remove(child(pbRef, event));
     }
   }
 
