@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import routes from '../../routes/routes';
 import { withAuthentication } from '../Session';
 import './App.css';
@@ -23,35 +23,35 @@ import PersonalBests from '../Speed/PersonalBests/PersonalBests';
 import Freestyle from '../Freestyle/Freestyle';
 import Home from '../Home/Home';
 
-class App extends React.Component {
-  render() {
-    return (
-        <div className="app">
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <ThemeProvider theme={theme}>
-              <Router>
-                <div className="navAndcontent">
-                  <Navigation />
-                  <div className="content">
-                    <Route exact path={routes.LANDING}><Redirect to={routes.HOME} /></Route>
-                    <Route path={routes.HOME} component={Home} />
-                    <Route path={routes.SPEED} component={Speed}/>
-                    <Route path={routes.TIMINGTRACKS} component={TimingTracks} />
-                    <Route path={routes.COUNTER} component={Counter} />
-                    <Route path={routes.SPEEDDATA} component={SpeedData} />
-                    <Route path={routes.PERSONALBESTS} component={PersonalBests} />
-                    <Route path={routes.FREESTYLE} component={Freestyle} />
-                    <Route path={routes.PROFILE} component={Profile} />
-                    <Route path={routes.SIGNIN} component={SignInPage} />
-                    <Route path={routes.SIGNOUT} component={SignOut} />
-                  </div>
-                </div>
-              </Router>
-            </ThemeProvider>
-          </LocalizationProvider>
-        </div>
-    );
-  }
+function App() {
+  return (
+    <div className="app">
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <div className="navAndcontent">
+              <Navigation />
+              <div className="content">
+                <Routes>
+                  <Route exact path={routes.LANDING} element={<Navigate to={routes.HOME} />}></Route>
+                  <Route path={routes.HOME} element={<Home />} />
+                  <Route path={routes.SPEED} element={<Speed />}/>
+                  <Route path={routes.TIMINGTRACKS} element={<TimingTracks />} />
+                  <Route path={routes.COUNTER} element={<Counter />} />
+                  <Route path={routes.SPEEDDATA} element={<SpeedData />} />
+                  <Route path={routes.PERSONALBESTS} element={<PersonalBests />} />
+                  <Route path={routes.FREESTYLE} element={<Freestyle />} />
+                  <Route path={routes.PROFILE} element={<Profile />} />
+                  <Route path={routes.SIGNIN} element={<SignInPage />} />
+                  <Route path={routes.SIGNOUT} element={<SignOut />} />
+                </Routes>
+              </div>
+            </div>
+          </Router>
+        </ThemeProvider>
+      </LocalizationProvider>
+    </div>
+  );
 }
 
 export default withAuthentication(App);

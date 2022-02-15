@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'; 
 import { FirebaseContext } from '../../../Firebase/index';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import './SignIn.css';
 import { JumpalButton } from '../../CustomComponents/core';
 
@@ -15,7 +15,7 @@ const SignInPage = () => (
 
 function SignInGoogle() {
   const firebase = useContext(FirebaseContext);
-  let history = useHistory();
+  const navigate = useNavigate();
   const [error, setError] = useState(null);
  
   const onSubmit = event => {
@@ -35,7 +35,7 @@ function SignInGoogle() {
       })
       .then(() => {
         setError(null);
-        history.push('/Home');
+        navigate('/Home');
       })
       .catch(error => {
         setError(error);
