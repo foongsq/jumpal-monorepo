@@ -1,6 +1,7 @@
-import React, { useEffect, useContext, useState, useRef } from 'react';
+import { useEffect, useContext, useState, useRef } from 'react';
 import { FirebaseContext } from '../../../Firebase/index';
-import { onValue, ref, get, child } from "firebase/database";
+import { onValue, get, child, off } from "firebase/database";
+import { onAuthStateChanged } from "firebase/auth";
 import NewPersonalBestModal from './NewPersonalBestModal';
 import { JumpalSpinner } from '../../CustomComponents/core'
 
@@ -10,12 +11,12 @@ import TableRow from '@mui/material/TableRow';
 
 function PersonalBests() {
   const firebase = useContext(FirebaseContext);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(firebase.user);
   const [loading, setLoading] = useState(false);
 
   // Personal best data
   const [personalBests, setPersonalBests] = useState([]);
-  console.log(firebase);
+
   // Attach event listener to personal best data of current user
   const pbRef = useRef(firebase.personalBests).current;
 
@@ -24,7 +25,7 @@ function PersonalBests() {
     onValue(pbRef, onPersonalBestsUpdate); // on value change, call onPersonalBestsUpdate function
     setLoading(true);
      // Get current user from firebase and save to state as user
-     firebase.auth.onAuthStateChanged(async user => {
+     const unsubscribe = onAuthStateChanged(firebase.auth, async user => {
       if (user) {
         // Fetch personal best data associated to current user's uid and set as state
         let personalBests = [];
@@ -46,7 +47,8 @@ function PersonalBests() {
     });
     return () => {
       // detach listeners to personal best of current user when component unmounts
-      pbRef.off()
+      off(pbRef);
+      unsubscribe();
     }
   }, []);
 
