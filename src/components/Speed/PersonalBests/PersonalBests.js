@@ -1,11 +1,16 @@
-import { useEffect, useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext, useState, useRef } from 'react';
 import { FirebaseContext } from '../../../Firebase/index';
-import { onValue, get, child, off, remove } from "firebase/database";
-import { onAuthStateChanged } from "firebase/auth";
+import { onValue, get, child, off, remove } from 'firebase/database';
+import { onAuthStateChanged } from 'firebase/auth';
 import NewPersonalBestModal from './NewPersonalBestModal';
-import { JumpalSpinner } from '../../CustomComponents/core'
+import { JumpalSpinner } from '../../CustomComponents/core';
 
-import { StyledHeaderTableCell, StyledTableCell, StyledTableRow, StyledTableContainer } from '../../CustomComponents/table';
+import {
+  StyledHeaderTableCell,
+  StyledTableCell,
+  StyledTableRow,
+  StyledTableContainer,
+} from '../../CustomComponents/table';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 
@@ -13,22 +18,16 @@ function PersonalBests() {
   const firebase = useContext(FirebaseContext);
   const [user, setUser] = useState(firebase.user);
   const [loading, setLoading] = useState(false);
-
-  // Personal best data
   const [personalBests, setPersonalBests] = useState([]);
-
-  // Attach event listener to personal best data of current user
   const pbRef = useRef(firebase.personalBests).current;
 
-  // Runs once upon component mount
   useEffect(() => {
-    onValue(pbRef, onPersonalBestsUpdate); // on value change, call onPersonalBestsUpdate function
+    onValue(pbRef, onPersonalBestsUpdate);
     setLoading(true);
-     // Get current user from firebase and save to state as user
-     const unsubscribe = onAuthStateChanged(firebase.auth, async user => {
+    // Get current user from firebase and save to state as user
+    const unsubscribe = onAuthStateChanged(firebase.auth, async (user) => {
       if (user) {
-        // Fetch personal best data associated to current user's uid and set as state
-        let personalBests = [];
+        const personalBests = [];
         get(pbRef).then((snapshot) => {
           const value = snapshot.val();
           personalBests.push(value);
@@ -36,38 +35,35 @@ function PersonalBests() {
           setUser(user);
           setLoading(false);
         })
-        .catch((error) => {
-          console.log(error);
-        });
+            .catch((error) => {
+              console.log(error);
+            });
       } else {
-        // Prompts user to sign in
-        alert("Please sign in to continue");
+        alert('Please sign in to continue');
         setLoading(false);
       }
     });
     return () => {
-      // detach listeners to personal best of current user when component unmounts
       off(pbRef);
       unsubscribe();
-    }
+    };
   }, []);
 
-  // This method updates the state with new personalBests data when data in database is updated.
   const onPersonalBestsUpdate = (snapshot) => {
     setLoading(true);
-    let newPersonalBests = [];
+    const newPersonalBests = [];
     newPersonalBests.push(snapshot.val());
     setPersonalBests(newPersonalBests);
     setLoading(false);
-  }
+  };
 
   const handleDelete = (event) => {
     // TODO: Change this to modal/toast
-    let result = window.confirm("Are you sure you want to delete?");
+    const result = window.confirm('Are you sure you want to delete?');
     if (user && result) {
       remove(child(pbRef, event));
     }
-  }
+  };
 
   const renderTableHeader = () => {
     return (
@@ -78,34 +74,34 @@ function PersonalBests() {
         <StyledHeaderTableCell></StyledHeaderTableCell>
       </TableRow>
     );
-  }
+  };
 
   const renderAllData = (records) => {
-    let eventsArr = Object.keys(records[0]);
-    return eventsArr.map(event => {
+    const eventsArr = Object.keys(records[0]);
+    return eventsArr.map((event) => {
       return (
         <StyledTableRow key={event}>
           <StyledTableCell>{event}</StyledTableCell>
           <StyledTableCell>{records[0][event].score}</StyledTableCell>
           <StyledTableCell>{records[0][event].time}</StyledTableCell>
           <StyledTableCell>
-            <button 
-              className="jumpalTableDeleteButton" 
+            <button
+              className="jumpalTableDeleteButton"
               onClick={() => handleDelete(event)}
             >
               <i className="fa fa-trash-o" aria-hidden="true"></i>
             </button></StyledTableCell>
         </StyledTableRow>
-      )
+      );
     });
-  }
+  };
 
   if (loading) {
     return <JumpalSpinner />;
   } else {
-    if (personalBests && personalBests.length !== 0 && personalBests[0]){
-      let records = personalBests;
-      
+    if (personalBests && personalBests.length !== 0 && personalBests[0]) {
+      const records = personalBests;
+
       return (
         <div className="componentContentDiv">
           <NewPersonalBestModal />
@@ -126,7 +122,9 @@ function PersonalBests() {
         <div>
           <NewPersonalBestModal />
           <h2>My Personal Bests</h2>
-            <p className="loading">Start by entering a new personal best record above.</p>
+          <p className="loading">
+            Start by entering a new personal best record above.
+          </p>
         </div>
       );
     }

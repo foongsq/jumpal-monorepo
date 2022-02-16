@@ -1,53 +1,61 @@
-import React from 'react'; 
+import React, { useState } from 'react';
+import useAuth from '../../Auth';
 import './Freestyle.css';
-import Instagram from './Instagram/Instagram';
+// import Instagram from './Instagram/Instagram';
 import SkillList from './SkillList/SkillList';
-import { withFirebase } from '../../Firebase/index';
+import { JumpalSpinner } from '../CustomComponents/core';
 
-class Freestyle extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      openInstagram: false,
-      openSkillList: true,
-    }
-    this.toggleInstagram = this.toggleInstagram.bind(this);
-    this.toggleSkillList = this.toggleSkillList.bind(this);
-  }
 
-  toggleInstagram() {
-    if (this.state.openInstagram) {
-      this.setState({ openInstagram: false });
+function Freestyle() {
+  const [user, loading] = useAuth();
+  const [openInstagram, setOpenInstagram] = useState(false);
+  const [openSkillList, setOpenSkillList] = useState(true);
+
+  const toggleInstagram = () => {
+    if (openInstagram) {
+      setOpenInstagram(false);
     } else {
-      this.setState({ 
-        openInstagram: true,
-        openSkillList: false 
-      });
+      setOpenInstagram(true);
+      setOpenSkillList(false);
     }
-  }
+  };
 
-  toggleSkillList() {
-    if (this.state.openSkillList) {
-      this.setState({ openSkillList: false });
+  const toggleSkillList = () => {
+    if (openSkillList) {
+      setOpenSkillList(false);
     } else {
-      this.setState({ 
-        openSkillList: true,
-        openInstagram: false
-       });
+      setOpenSkillList(true);
+      setOpenInstagram(false);
     }
-  }
+  };
 
-  render() {
-    return (  
+  if (loading) {
+    return <JumpalSpinner />;
+  } else {
+    if (user) {
+      return (
         <div className="freestyle-container">
           <h1>Freestyle</h1>
-          <button className="button" onClick={this.toggleInstagram}>Instagram Inspiration</button>
-          <button className="button" onClick={this.toggleSkillList}>Skill List</button>
-          {this.state.openInstagram ? <Instagram /> : null }
-          {this.state.openSkillList ? <SkillList /> : null }
+          <button
+            className="button"
+            onClick={toggleInstagram}
+          >
+            Instagram Inspiration
+          </button>
+          <button
+            className="button"
+            onClick={toggleSkillList}
+          >
+            Skill List
+          </button>
+          {/* {openInstagram ? <Instagram /> : null } */}
+          {openSkillList ? <SkillList /> : null }
         </div>
-    );
+      );
+    } else {
+      return <JumpalSpinner />;
+    }
   }
 }
 
-export default withFirebase(Freestyle);
+export default Freestyle;

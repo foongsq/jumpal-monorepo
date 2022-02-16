@@ -1,7 +1,7 @@
-import { useEffect, useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext, useState, useRef } from 'react';
 import { FirebaseContext } from '../../../Firebase/index';
-import { onAuthStateChanged } from "firebase/auth";
-import { set, child, off } from "firebase/database";
+import { onAuthStateChanged } from 'firebase/auth';
+import { set, child, off } from 'firebase/database';
 import { JumpalButton } from '../../CustomComponents/core';
 
 import Modal from '@mui/material/Modal';
@@ -36,21 +36,20 @@ function NewPersonalBestModal() {
   const [eventJ, setEventJ] = useState(null);
   const [score, setScore] = useState(null);
   const [time, setTime] = useState(null);
-
-  // Attach event listener to personal best data of current user
   const pbRef = useRef(firebase.personalBests).current;
+  // eslint-disable-next-line no-unused-vars
   let pbFormRef = null;
 
   useEffect(() => {
     // Get current user from firebase and save to state as user
-    const unsubscribe = onAuthStateChanged(firebase.auth, async user => {
+    const unsubscribe = onAuthStateChanged(firebase.auth, async (user) => {
       if (user) {
         setUser(user);
       } else {
-        alert("Please sign in to continue");
+        alert('Please sign in to continue');
       }
     });
-    return () => {    
+    return () => {
       off(pbRef);
       unsubscribe();
     };
@@ -61,28 +60,28 @@ function NewPersonalBestModal() {
     setEventJ(null);
     setScore(null);
     setTime(new Date());
-  }
+  };
 
   const handleEventChange = (event) => {
     setEventJ(event.target.value);
-  }
+  };
 
   const handleScoreChange = (event) => {
     setScore(event.target.value);
-  }
+  };
 
   const handleTimeChange = (time) => {
     setTime(time);
-  } 
+  };
 
   const timeStamp = (time) => {
-    time = new Date(time)
+    time = new Date(time);
     // Create an array with the current month, day and time
-    let date = [ time.getMonth() + 1, time.getDate(), time.getFullYear() ];
+    const date = [time.getMonth() + 1, time.getDate(), time.getFullYear()];
 
     // Return the formatted string
-    return date.join("/");
-  }
+    return date.join('/');
+  };
 
   const saveNewPersonalBest = (event) => {
     event.preventDefault();
@@ -92,15 +91,15 @@ function NewPersonalBestModal() {
     set(currEventPbRef, {
       score: score,
       time: timeStamp(time),
-    })
-    
+    });
+
     // TODO: Change this into a toast
     window.alert('New Personal Best saved successfully!');
     toggleNewPersonalBest();
-  }
+  };
 
   return (
-    <>
+    <div>
       <div className='jumpalCenteredButton'>
         <JumpalButton onClick={toggleNewPersonalBest}>
           Add New Personal Best
@@ -135,7 +134,11 @@ function NewPersonalBestModal() {
                   value={eventJ}
                   onChange={handleEventChange}
                 >
-                  {options.map(event => <MenuItem value={event.value} key={event.value}>{event.label}</MenuItem>)}
+                  {options.map((event) => (
+                    <MenuItem value={event.value} key={event.value}>
+                      {event.label}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </div>
@@ -154,13 +157,17 @@ function NewPersonalBestModal() {
               </FormControl>
             </div>
           </form>
-          {user 
-              ? <JumpalButton onClick={saveNewPersonalBest}>Save</JumpalButton>
-              : <JumpalButton onClick={saveNewPersonalBest} disabled>Save</JumpalButton>
+          {user ?
+            <JumpalButton onClick={saveNewPersonalBest}>
+              Save
+            </JumpalButton> :
+            <JumpalButton onClick={saveNewPersonalBest} disabled>
+              Save
+            </JumpalButton>
           }
         </Box>
       </Modal>
-    </>
+    </div>
   );
 }
 

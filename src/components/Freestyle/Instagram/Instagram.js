@@ -1,3 +1,6 @@
+/* eslint-disable eol-last */
+/* eslint-disable max-len */
+/* eslint-disable no-trailing-spaces */
 // import React from 'react'; 
 // import './Instagram.css';
 // import InstaCollapsible from '../InstaCollapsible/InstaCollapsible';

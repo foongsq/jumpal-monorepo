@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // import React from 'react';
 // import './InstaCollapsible.css';
 // import { withFirebase } from '../../../Firebase';
@@ -47,15 +48,15 @@
 //             <i className="fa fa-trash-o" aria-hidden="true"></i>
 //           </button>
 //         </div>
-//         {this.state.open ? 
-//         <a 
-//           target="_blank" 
+//         {this.state.open ?
+//         <a
+//           target="_blank"
 //           rel="noopener noreferrer" // added for security: https://mathiasbynens.github.io/rel-noopener/
-//           href={this.props.url} 
+//           href={this.props.url}
 //           className="insta-link"
 //         >
 //           <p>{this.props.url}</p>
-//         </a> 
+//         </a>
 //         : null}
 //       </div>
 //     )

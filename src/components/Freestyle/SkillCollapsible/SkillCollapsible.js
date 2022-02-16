@@ -1,158 +1,143 @@
-// import React from 'react';
-// import './SkillCollapsible.css';
-// import { withFirebase } from '../../../Firebase';
-// import EditableText from './EditableText';
-// import EditableLink from './EditableLink';
-// import Progress from '../SkillCollapsible/Progress/Progress';
+import React, { useEffect, useState, useContext, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { FirebaseContext } from '../../../Firebase';
+import { off, child, update } from 'firebase/database';
+import EditableText from './EditableText';
+import Progress from '../SkillCollapsible/Progress/Progress';
+import './SkillCollapsible.css';
 
-// class SkillCollapsible extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.ESCAPE_KEY = 27;
-//     this.ENTER_KEY = 13;
-//     this.state = {
-//       open: false,
-//       openProgress: false,
-//       editText: null,
-//       editing: false,
-//     }
-//     this.handleClick = this.handleClick.bind(this);
-//     this.handleProgressClick = this.handleProgressClick.bind(this);
-//     this.handleDelete = this.handleDelete.bind(this);
-//     this.handleLearnt = this.handleLearnt.bind(this);
-//     this.handleUnlearn = this.handleUnlearn.bind(this);
-//     this.handleChange = this.handleChange.bind(this);
-//     this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
-//     this.handleKeyDown = this.handleKeyDown.bind(this);
-//     this.handleSubmit = this.handleSubmit.bind(this);
-//   }
+const ESCAPE_KEY = 27;
+const ENTER_KEY = 13;
 
-//   handleClick() {
-//     if (this.state.open) {
-//       this.setState({ open: false });
-//     } else {
-//       this.setState({ open: true });
-//     }
-//   }
+SkillCollapsible.propTypes = {
+  id: PropTypes.string,
+  skillName: PropTypes.string,
+  learnt: PropTypes.bool,
+  progress: PropTypes.array,
+  url: PropTypes.string,
+};
 
-//   handleProgressClick() {
-//     if (this.state.openProgress) {
-//       this.setState({ openProgress: false });
-//     } else {
-//       this.setState({ openProgress: true });
-//     }
-//   }
+function SkillCollapsible(props) {
+  const { id, skillName, learnt, progress, url } = props;
+  const firebase = useContext(FirebaseContext);
+  const [open, setOpen] = useState(false);
+  const [openProgress, setOpenProgress] = useState(false);
+  const [editText, setEditText] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const skillRef = useRef(child(firebase.skillList, id)).current;
 
-//   handleDelete() {
-//     this.props.firebase.db.ref('users')
-//       .child(this.props.firebase.auth.currentUser.uid)
-//       .child("freestyle-skills-list")
-//       .child(this.props.id).remove();
-//       window.alert("Skill deleted successfully!")
-//   }
+  useEffect(() => {
+    return () => off(skillRef);
+  }, []);
 
-//   handleLearnt() {
-//     this.props.firebase.db.ref('users')
-//     .child(this.props.firebase.auth.currentUser.uid)
-//     .child("freestyle-skills-list")
-//     .child(this.props.id).update({
-//       learnt: true,
-//     });
-//     window.alert("Congratulations on learning a new skill!");
-//   }
+  const handleClick = () => {
+    setOpen(!open);
+  };
 
-//   handleUnlearn() {
-//     this.props.firebase.db.ref('users')
-//     .child(this.props.firebase.auth.currentUser.uid)
-//     .child("freestyle-skills-list")
-//     .child(this.props.id).update({
-//       learnt: false,
-//     });
-//     window.alert("Oops gonna have to relearn that!");
-//   }
+  const handleProgressClick = () => {
+    setOpenProgress(!openProgress);
+  };
 
-//   handleEditButtonClick() {
-//     if (this.state.editing) {
-//       this.handleSubmit();
-//     } else {
-//       this.setState({
-//         editing: true,
-//       });
-//     }
-//   }  
-  
-//   handleChange (e) {
-//     this.setState({ editText: e.target.value });
-//   }
-  
-//   async handleSubmit (e) {
-//     console.log('called handle submit', e.target)
-//     let val = this.state.editText;
-//     if (val) {
-//       let ref = this.props.firebase.db.ref('users')
-//         .child(this.props.firebase.auth.currentUser.uid)
-//         .child("freestyle-skills-list")
-//         .child(this.props.id)
-//       ref.update({
-//         url: val,
-//       });
-// 		  this.setState({
-//         editing: false,
-//       });
-// 	  } 
-// 	}
-  
-//   handleKeyDown (e) {
-//     if (e.which === this.ESCAPE_KEY) {
-//       this.setState({
-//           editText: this.props.name,
-//           editing: false
-//         });
-//     } else if (e.which === this.ENTER_KEY) {
-//       this.handleSubmit(e);
-//     }
-//   }
+  const handleDelete = () => {
+    remove(skillRef);
+    window.alert('Skill deleted successfully!');
+  };
 
-//   render() {
-//     console.log(this.props)
-//     return (
-//       <div>
-//         <div className="note-and-trash-div">
-//           <button onClick={this.handleClick} className="note-button">
-//             {this.props.skillName}
-//           </button>
-//           <button onClick={this.handleDelete} className="trash-button">
-//             <i className="fa fa-trash-o" aria-hidden="true"></i>
-//           </button>
-//           {this.props.learnt 
-//             ? <button onClick={this.handleUnlearn} className="learnt-button">Unlearn</button> 
-//             : <button onClick={this.handleLearnt} className="learnt-button">Learnt</button>}
-//         </div>
-//         {this.state.open 
-//           ? <div className="skill-content">
-//               <label>Skill Name:<EditableText id={this.props.id} type="skillName" content={this.props.skillName} /></label>
-//               <button id="progress-button" onClick={this.handleProgressClick}><label>Progress:</label></button>
-//               {this.state.openProgress ? <Progress progress={this.props.progress} id={this.props.id} /> : null}
-//               {this.props.url === '-' 
-//                 ? <label>URL: <button onClick={this.handleEditButtonClick} id="add-square"><i className="fa fa-plus-square" aria-hidden="true"></i></button>
-//                   <div className="content-div">
-//                     <div className={this.state.editing ? 'show' : 'hidden'}>
-//                       <p className={this.state.editing ? 'show-p' : 'hidden'}>New URL:</p>
-//                       <input 
-//                         className={this.state.editing ? 'show-input' : 'hidden'} 
-//                         value={this.state.editText} 
-//                         onChange={this.handleChange} 
-//                         onKeyDown={this.handleKeyDown}
-//                       />
-//                     </div>
-//                   </div>
-//                   </label>
-//                 : <label>URL: <EditableLink id={this.props.id} content={this.props.url} /></label> }
-//             </div>
-//           : null}
-//       </div>
-//     )
-//   }
-// }
+  const handleLearnt = () => {
+    update(skillRef, {
+      learnt: true,
+    });
+    window.alert('Congratulations on learning a new skill!');
+  };
 
-// export default withFirebase(SkillCollapsible);
+  const handleUnlearn = () => {
+    update(skillRef, {
+      learnt: false,
+    });
+    window.alert('Oops gonna have to relearn that!');
+  };
+
+  const handleEditButtonClick = () => {
+    if (editing) {
+      handleSubmit();
+    } else {
+      setEditing(true);
+    }
+  };
+
+  const handleChange = (e) => {
+    setEditText(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    const val = editText;
+    if (val) {
+      update(skillRef, {
+        url: val,
+      });
+      setEditing(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.which === ESCAPE_KEY) {
+      setEditText(skillName);
+      setEditing(false);
+    } else if (e.which === ENTER_KEY) {
+      handleSubmit(e);
+    }
+  };
+
+  return (
+    <div>
+      <div className="note-and-trash-div">
+        <button onClick={handleClick} className="note-button">
+          {skillName}
+        </button>
+        <button onClick={handleDelete} className="trash-button">
+          <i className="fa fa-trash-o" aria-hidden="true"></i>
+        </button>
+        {learnt ?
+          <button onClick={handleUnlearn} className="learnt-button">
+            Unlearn
+          </button> :
+          <button onClick={handleLearnt} className="learnt-button">
+            Learnt
+          </button>}
+      </div>
+      {open ?
+        <div className="skill-content">
+          <label>Skill Name:
+            <EditableText id={id} type="skillName" content={skillName} />
+          </label>
+          <button id="progress-button" onClick={handleProgressClick}>
+            <label>Progress:</label>
+          </button>
+          {openProgress ? <Progress progress={progress} id={id} /> : null}
+          {url === '-' ?
+            <label>URL:
+              <button onClick={handleEditButtonClick} id="add-square">
+                <i className="fa fa-plus-square" aria-hidden="true"></i>
+              </button>
+              <div className="content-div">
+                <div className={editing ? 'show' : 'hidden'}>
+                  <p className={editing ? 'show-p' : 'hidden'}>New URL:</p>
+                  <input
+                    className={editing ? 'show-input' : 'hidden'}
+                    value={editText}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                  />
+                </div>
+              </div>
+            </label> :
+            <label>URL:
+              <EditableText id={id} type="url" content={url} />
+            </label> }
+        </div> :
+        null}
+    </div>
+  );
+}
+
+export default SkillCollapsible;

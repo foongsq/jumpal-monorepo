@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from "firebase/auth";
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { getDatabase, ref, child } from "firebase/database";
-import config from "./config";
+import { getAuth } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import { getDatabase, ref, child } from 'firebase/database';
+import config from './config';
 
 const firebase = initializeApp(config);
 
@@ -14,7 +14,8 @@ export default class Firebase {
   }
 
   // Auth API
-  doSignInWithGoogle = () => signInWithPopup(this.auth.app, this.googleProvider);
+  doSignInWithGoogle = () =>
+    signInWithPopup(this.auth.app, this.googleProvider);
 
   doSignOut = () => signOut(this.auth);
 
@@ -30,10 +31,15 @@ export default class Firebase {
   // Personal best ref
   get personalBests() {
     return child(this.user, 'personal-bests');
-  } 
+  }
 
   // Speed records ref
   get speedRecords() {
     return child(this.user, 'speed-records');
-  } 
+  }
+
+  // Freestyle skill list ref
+  get skillList() {
+    return child(this.user, 'freestyle-skills-list');
+  }
 }

@@ -1,5 +1,5 @@
-import React from 'react';
-import { withFirebase } from '../../Firebase';
+import React, { useEffect, useState } from 'react';
+import useAuth from '../../Auth';
 import SpeedData from './SpeedData/SpeedData';
 import TimingTracks from './TimingTracks/TimingTracks';
 import Counter from './Counter/Counter';
@@ -11,174 +11,140 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import './Speed.css';
 import { JumpalSpinner } from '../CustomComponents/core';
 
-const timingTrack = "Timing Track";
-const counter = "Counter";
-const speedData = "Speed Data";
-const personalBest = "Personal Best";
+const timingTrack = 'Timing Track';
+const counter = 'Counter';
+const speedData = 'Speed Data';
+const personalBest = 'Personal Best';
+const buttonNames = [timingTrack, counter, speedData, personalBest];
 
-class Speed extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: null,
-      loading: false,
-      active: personalBest,
-      buttonNames: [timingTrack, counter, speedData, personalBest],
-      buttons: [],
-      openTimingTracks: false,
-      openCounter: false,
-      openSpeedData: false,
-      openPersonalBests: true,
-    }
-    this.updateButtonGroup = this.updateButtonGroup.bind(this);
-    this.toggleTimingTracks = this.toggleTimingTracks.bind(this);
-    this.toggleCounter = this.toggleCounter.bind(this);
-    this.toggleSpeedData = this.toggleSpeedData.bind(this);
-    this.togglePersonalBests = this.togglePersonalBests.bind(this);
-  }
+function Speed() {
+  const [user, loading] = useAuth();
+  const [buttons, setButtons] = useState([]);
+  const [openTimingTracks, setOpenTimingTracks] = useState(false);
+  const [openCounter, setOpenCounter] = useState(false);
+  const [openSpeedData, setOpenSpeedData] = useState(false);
+  const [openPersonalBests, setOpenPersonalBests] = useState(true);
 
-  async componentDidMount() {
-    this.setState({ loading: true });
-    this.updateButtonGroup(personalBest);
-    // Get current user from firebase and save to state as user
-    this.props.firebase.auth.onAuthStateChanged(user => {
-      if (user) {
-        this.setState({
-          user: user,
-          loading: false,
-        })
-      } else {
-        alert("Please sign in to continue");
-        this.setState({
-          loading: false,
-        })
-      }
-    });
-  }
+  useEffect(() => {
+    updateButtonGroup(personalBest);
+  }, []);
 
-  toggleTimingTracks() {
-    if (this.state.openTimingTracks) {
-      this.setState({ openTimingTracks: false });
+  const toggleTimingTracks = () => {
+    if (openTimingTracks) {
+      setOpenTimingTracks(false);
     } else {
-      this.setState({
-        openTimingTracks: true,
-        openPersonalBests: false,
-        openSpeedData: false,
-      });
+      setOpenTimingTracks(true);
+      setOpenPersonalBests(false);
+      setOpenSpeedData(false);
     }
-    this.updateButtonGroup(timingTrack);
-  }
+    updateButtonGroup(timingTrack);
+  };
 
-  toggleCounter() {
-    if (this.state.openCounter) {
-      this.setState({ openCounter: false });
+  const toggleCounter = () => {
+    if (openCounter) {
+      setOpenCounter(false);
     } else {
-      this.setState({
-        openCounter: true,
-        openPersonalBests: false,
-        openSpeedData: false,
-      });
+      setOpenCounter(true);
+      setOpenPersonalBests(false);
+      setOpenSpeedData(false);
     }
-    this.updateButtonGroup(counter);
-  }
+    updateButtonGroup(counter);
+  };
 
-  toggleSpeedData() {
-    if (this.state.openSpeedData) {
-      this.setState({ openSpeedData: false });
+  const toggleSpeedData = () => {
+    if (openSpeedData) {
+      setOpenSpeedData(false);
     } else {
-      this.setState({
-        openSpeedData: true,
-        openTimingTracks: false,
-        openCounter: false,
-        openPersonalBests: false,
-      });
+      setOpenSpeedData(true);
+      setOpenTimingTracks(false);
+      setOpenCounter(false);
+      setOpenPersonalBests(false);
     }
-    this.updateButtonGroup(speedData);
-  }
+    updateButtonGroup(speedData);
+  };
 
-  togglePersonalBests() {
-    if (this.state.openPersonalBests) {
-      this.setState({ openPersonalBests: false });
+  const togglePersonalBests = () => {
+    if (openPersonalBests) {
+      setOpenPersonalBests(false);
     } else {
-      this.setState({
-        openPersonalBests: true,
-        openSpeedData: false,
-        openTimingTracks: false,
-        openCounter: false,
-      });
+      setOpenPersonalBests(true);
+      setOpenSpeedData(false);
+      setOpenTimingTracks(false);
+      setOpenCounter(false);
     }
-    this.updateButtonGroup(personalBest);
-  }
+    updateButtonGroup(personalBest);
+  };
 
-  updateButtonGroup(newActive) {
-    let newButtons = [];
-    for (let i = 0; i < this.state.buttonNames.length; i++) {
+  const updateButtonGroup = (newActive) => {
+    const newButtons = [];
+    for (let i = 0; i < buttonNames.length; i++) {
       let functionToCall = null;
-      switch (this.state.buttonNames[i]) {
+      switch (buttonNames[i]) {
         case timingTrack:
-          functionToCall = this.toggleTimingTracks;
+          functionToCall = toggleTimingTracks;
           break;
         case counter:
-          functionToCall = this.toggleCounter;
+          functionToCall = toggleCounter;
           break;
         case speedData:
-          functionToCall = this.toggleSpeedData;
+          functionToCall = toggleSpeedData;
           break;
         case personalBest:
-          functionToCall = this.togglePersonalBests;
+          functionToCall = togglePersonalBests;
           break;
-        default: 
+        default:
           break;
       }
       newButtons.push(
-        <Button 
-          variant={this.state.buttonNames[i] === newActive 
-            ? "contained" : "outlined"}
-          onClick={functionToCall}
-          key={i}
-        >
-          {this.state.buttonNames[i]}
-        </Button>,
+          <Button
+            variant={buttonNames[i] === newActive ?
+            'contained' : 'outlined'}
+            onClick={functionToCall}
+            key={i}
+          >
+            {buttonNames[i]}
+          </Button>,
       );
     }
-    this.setState({
-      buttons: newButtons,
-      active: newActive,
-    })
-  }
-  
-  render() {
-    if (this.state.loading) {
-      return <JumpalSpinner />;
+    setButtons(newButtons);
+  };
+
+  if (loading) {
+    return <JumpalSpinner />;
+  } else {
+    if (user) {
+      return (
+        <div className="componentContentDiv">
+          <div className="speedPagesButtonsDiv">
+            <ButtonGroup
+              className="speedPagesButtons"
+            >
+              {buttons}
+            </ButtonGroup>
+          </div>
+          {openTimingTracks ? <TimingTracks /> : null }
+          {openCounter ? <Counter /> : null }
+          {openSpeedData ? <SpeedData /> : null }
+          {openPersonalBests ?<PersonalBests /> : null }
+        </div>
+      );
     } else {
-      if (this.state.user) {
-        return (
-          <div className="componentContentDiv">
-            <div className="speedPagesButtonsDiv">
-              <ButtonGroup
-                className="speedPagesButtons"
-              >
-                {this.state.buttons}
-              </ButtonGroup>
-            </div>
-            {this.state.openTimingTracks ? <TimingTracks /> : null }
-            {this.state.openCounter ? <Counter /> : null }
-            {this.state.openSpeedData ? <SpeedData /> : null }
-            {this.state.openPersonalBests ?<PersonalBests /> : null }
-          </div>
-        );
-      } else {
-        return (
-          <div className="componentContentDiv">
-            {this.state.openTimingTracks ? <TimingTracks /> : null }
-            {this.state.openCounter ? <Counter /> : null }
-            {this.state.openSpeedData ? <p style={{color: 'red'}}>Please sign in to see your speed data.</p> : null }
-            {this.state.openPersonalBests ? <p style={{color: 'red'}}>Please sign in to see your personal bests.</p> : null }
-          </div>
-        );
-      }
+      return (
+        <div className="componentContentDiv">
+          {openTimingTracks ? <TimingTracks /> : null }
+          {openCounter ? <Counter /> : null }
+          {openSpeedData ?
+            <p style={{ color: 'red' }}>
+              Please sign in to see your speed data.
+            </p> : null }
+          {openPersonalBests ?
+            <p style={{ color: 'red' }}>
+              Please sign in to see your personal bests.
+            </p> : null }
+        </div>
+      );
     }
   }
 }
 
-export default withFirebase(Speed);
+export default Speed;
