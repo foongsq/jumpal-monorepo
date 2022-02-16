@@ -36,7 +36,7 @@ const Navigation = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{ height: '6vh' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

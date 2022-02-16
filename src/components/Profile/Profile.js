@@ -30,8 +30,8 @@ function ProfilePage() {
   } else {
     if (user != null) {
       return (
-        <div className='componentContentDiv' id='profileContainer'>
-          <Paper elevation={10} id='profileContainer'>
+        <div className='componentContentDiv' id='profileOuterContainer'>
+          <Paper elevation={10} id='profileInnerContainer'>
             <img
               className='profilePic'
               src={user.photoURL}

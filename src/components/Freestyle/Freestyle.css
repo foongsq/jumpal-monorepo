@@ -1,6 +1,7 @@
 .freestyle-container {
   display: block;
   width: 100%;
+  padding: 1rem;
 }
 
 .button-div {
@@ -14,5 +15,5 @@
 
 .form label {
   display: block;
- padding: 0.25rem 0;
+  padding: 0.25rem 0;
 }
