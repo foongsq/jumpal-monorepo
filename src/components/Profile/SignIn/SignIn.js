@@ -2,8 +2,9 @@ import React, { useState, useContext } from 'react';
 import { set, child } from 'firebase/database';
 import { FirebaseContext } from '../../../Firebase/index';
 import { useNavigate } from 'react-router-dom';
-import './SignIn.css';
 import { JumpalButton } from '../../CustomComponents/core';
+import { signInWithPopup } from 'firebase/auth';
+import './SignIn.css';
 
 const SignInPage = () => (
   <div>
@@ -19,29 +20,23 @@ function SignInGoogle() {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
 
-  const onSubmit = (event) => {
-    firebase.doSignInWithGoogle()
-        .then((socialAuthUser) => {
-          if (!child(firebase.users, socialAuthUser.user.uid)) {
-          // Create a user in your Firebase Realtime Database too
-            return set(
-                child(firebase.users, socialAuthUser.user.uid),
-                {
-                  username: socialAuthUser.additionalUserInfo.profile.name,
-                  email: socialAuthUser.additionalUserInfo.profile.email,
-                  roles: {},
-                },
-            );
-          }
-        })
-        .then(() => {
-          setError(null);
-          navigate('/Home');
-        })
-        .catch((error) => {
-          setError(error);
-        });
+  const onSubmit = async (event) => {
     event.preventDefault();
+    const result = await signInWithPopup(
+        firebase.auth, firebase.googleProvider);
+    if (!child(firebase.users, result.user.uid)) {
+      // Create a user in your Firebase Realtime Database too
+      set(
+          child(firebase.users, result.user.uid),
+          {
+            username: result.additionalUserInfo.profile.name,
+            email: result.additionalUserInfo.profile.email,
+            roles: {},
+          },
+      );
+    }
+    setError(null);
+    navigate('/home');
   };
 
   return (

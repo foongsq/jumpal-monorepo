@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { FirebaseContext } from '../../../Firebase/index';
+import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import './SignOut.css';
 import { JumpalButton } from '../../CustomComponents/core';
+import './SignOut.css';
 
 function SignOutButton() {
   const firebase = useContext(FirebaseContext);
@@ -10,7 +11,7 @@ function SignOutButton() {
 
   return (
     <JumpalButton onClick={() =>
-      firebase.doSignOut().then(() => navigate('/Home'))
+      signOut(firebase.auth).then(() => navigate('/'))
     }>
       <i id='signOutIcon' className="fa fa-sign-out" aria-hidden="true"></i>
       Sign Out

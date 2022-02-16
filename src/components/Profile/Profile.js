@@ -1,68 +1,55 @@
-// import React from 'react';
-// import Paper from '@mui/material/Paper';
+import React, { useEffect, useContext, useState } from 'react';
+import Paper from '@mui/material/Paper';
 
-// import { withFirebase } from '../../Firebase/index';
-// import SignOut from './SignOut/SignOut';
-// import SignIn from './SignIn/SignIn';
-// import './Profile.css';
-// import { JumpalSpinner } from '../CustomComponents/core';
+import SignOut from './SignOut/SignOut';
+import SignIn from './SignIn/SignIn';
+import './Profile.css';
+import { JumpalSpinner } from '../CustomComponents/core';
+import { onAuthStateChanged } from 'firebase/auth';
+import { FirebaseContext } from '../../Firebase';
 
-// class ProfilePage extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       loading: false,
-//       user: null,
-//       name: null,
-//       email: null,
-//     };
-//   }
+function ProfilePage() {
+  const firebase = useContext(FirebaseContext);
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
 
-//   async componentDidMount() {
-//     this.setState({ loading: true });
-//     // Get current user from firebase and save to state as user
-//     this.props.firebase.auth.onAuthStateChanged((user) => {
-//       if (user) {
-//         this.setState({
-//           user: user,
-//           loading: false,
-//         });
-//       } else {
-//         alert('Please sign in to continue');
-//         this.setState({
-//           loading: false,
-//         });
-//       }
-//     });
-//   }
+  useEffect(() => {
+    setLoading(true);
+    onAuthStateChanged(firebase.auth, (user) => {
+      if (user) {
+        setUser(user);
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    });
+  }, [firebase]);
 
-//   render() {
-//     if (this.state.loading) {
-//       return <JumpalSpinner />;
-//     } else {
-//       if (this.state.user != null) {
-//         return (
-//           <div className='componentContentDiv' id='profileContainer'>
-//             <Paper elevation={10} id='profileContainer'>
-//               <img
-//                 className='profilePic'
-//                 src={this.state.user.photoURL}
-//                 alt='Profile'
-//               />
-//               <p className='nameDisplay'>{this.state.user.displayName}</p>
-//               <div className='emailDisplay'>
-//                 <p className='emailLabel'>Email:</p>
-//                 <p className='emailValue'>{this.state.user.email}</p>
-//               </div>
-//               <SignOut />
-//             </Paper>
-//           </div>
-//         );
-//       } else {
-//         return <SignIn />;
-//       }
-//     }
-//   }
-// }
+  if (loading) {
+    return <JumpalSpinner />;
+  } else {
+    if (user != null) {
+      return (
+        <div className='componentContentDiv' id='profileContainer'>
+          <Paper elevation={10} id='profileContainer'>
+            <img
+              className='profilePic'
+              src={user.photoURL}
+              alt='Profile'
+            />
+            <p className='nameDisplay'>{user.displayName}</p>
+            <div className='emailDisplay'>
+              <p className='emailLabel'>Email:</p>
+              <p className='emailValue'>{user.email}</p>
+            </div>
+            <SignOut />
+          </Paper>
+        </div>
+      );
+    } else {
+      return <SignIn />;
+    }
+  }
+}
 
-// export default withFirebase(ProfilePage);
+export default ProfilePage;

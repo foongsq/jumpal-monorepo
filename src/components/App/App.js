@@ -17,7 +17,7 @@ import theme from '../../styles/theme';
 
 import Navigation from '../Navigation/Navigation';
 import SignInPage from '../Profile/SignIn/SignIn';
-// import Profile from '../Profile/Profile';
+import Profile from '../Profile/Profile';
 import SignOut from '../Profile/SignOut/SignOut';
 import Speed from '../Speed/Speed';
 import TimingTracks from '../Speed/TimingTracks/TimingTracks';
@@ -26,8 +26,11 @@ import SpeedData from '../Speed/SpeedData/SpeedData';
 import PersonalBests from '../Speed/PersonalBests/PersonalBests';
 import Freestyle from '../Freestyle/Freestyle';
 import Home from '../Home/Home';
+import useAuth from '../../Auth';
 
 function App() {
+  const [user] = useAuth();
+
   return (
     <div className="app">
       <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -39,7 +42,9 @@ function App() {
                 <Routes>
                   <Route
                     exact path={routes.LANDING}
-                    element={<Navigate to={routes.HOME} />}
+                    element={<Navigate to={
+                      user ? routes.HOME : routes.PROFILE}
+                    />}
                   />
                   <Route path={routes.HOME} element={<Home />} />
                   <Route path={routes.SPEED} element={<Speed />}/>
@@ -54,7 +59,7 @@ function App() {
                     element={<PersonalBests />}
                   />
                   <Route path={routes.FREESTYLE} element={<Freestyle />} />
-                  {/* <Route path={routes.PROFILE} element={<Profile />} /> */}
+                  <Route path={routes.PROFILE} element={<Profile />} />
                   <Route path={routes.SIGNIN} element={<SignInPage />} />
                   <Route path={routes.SIGNOUT} element={<SignOut />} />
                 </Routes>
