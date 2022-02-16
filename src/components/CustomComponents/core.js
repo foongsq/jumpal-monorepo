@@ -5,13 +5,13 @@ import { CircularProgress } from '@mui/material';
 import { styles } from './constants.js';
 
 export const JumpalButton = styled(Button)({
-  background: styles.bootstrapGreen,
-  color: 'white',
-  padding: '0.5rem 1rem',
-  margin: '1rem',
+  'background': styles.bootstrapGreen,
+  'color': 'white',
+  'padding': '0.5rem 1rem',
+  'margin': '1rem',
   '&:hover': {
-    background: styles.green500
-  }
+    background: styles.green500,
+  },
 });
 
 export function JumpalSpinner() {

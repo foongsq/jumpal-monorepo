@@ -1,17 +1,22 @@
-import React from 'react';
-import { withFirebase } from '../../../Firebase/index';
-import { useHistory } from 'react-router-dom';
-import './SignOut.css';
+import React, { useContext } from 'react';
+import { FirebaseContext } from '../../../Firebase/index';
+import { signOut } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 import { JumpalButton } from '../../CustomComponents/core';
+import './SignOut.css';
 
-function SignOutButton({ firebase }){
-  const history = useHistory();
+function SignOutButton() {
+  const firebase = useContext(FirebaseContext);
+  const navigate = useNavigate();
+
   return (
-  <JumpalButton onClick={() => firebase.doSignOut().then(() => history.push('/Home'))}>
-    <i id='signOutIcon' className="fa fa-sign-out" aria-hidden="true"></i>
-    Sign Out
-  </JumpalButton>
-);
-  }
- 
-export default withFirebase(SignOutButton);
+    <JumpalButton onClick={() =>
+      signOut(firebase.auth).then(() => navigate('/'))
+    }>
+      <i id='signOutIcon' className="fa fa-sign-out" aria-hidden="true"></i>
+      Sign Out
+    </JumpalButton>
+  );
+}
+
+export default SignOutButton;

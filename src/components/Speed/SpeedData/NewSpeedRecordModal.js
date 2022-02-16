@@ -1,6 +1,7 @@
-import React from 'react';
-import './SpeedData.css';
-import { withFirebase } from '../../../Firebase/index';
+import React, { useEffect, useContext, useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { child, off, push } from 'firebase/database';
+import { FirebaseContext } from '../../../Firebase/index';
 import { JumpalButton } from '../../CustomComponents/core';
 import { styles } from '../../CustomComponents/constants';
 
@@ -13,6 +14,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import './SpeedData.css';
 
 const options = [
   { value: '1x30sec Running Step', label: '1x30sec Running Step' },
@@ -26,73 +28,59 @@ const options = [
   { value: '4x30sec Speed Relay', label: '4x30sec Speed Relay' },
 ];
 
-class NewSpeedRecordModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: null,
-      loading: false,
+function NewSpeedRecordModal() {
+  const firebase = useContext(FirebaseContext);
+  const [user, setUser] = useState(firebase.user);
+  // const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [eventJ, setEventJ] = useState(null);
+  const [score, setScore] = useState(null);
+  const [time, setTime] = useState(null);
+  const srRef = firebase.speedRecords;
+  let srFormRef = null;
 
-      openNewSpeedRecord: false,
-      newSpeedRecordEvent: null,
-      newSpeedRecordScore: null,
-      time: new Date(),
-    }
-    this.toggleNewSpeedRecord = this.toggleNewSpeedRecord.bind(this);
-    this.saveSpeedRecord = this.saveSpeedRecord.bind(this);
-    this.handleEventChange = this.handleEventChange.bind(this);
-    this.handleScoreChange = this.handleScoreChange.bind(this);
-    this.handleTimeChange = this.handleTimeChange.bind(this);
-    this.timeStamp = this.timeStamp.bind(this);
-  }
-
-  async componentDidMount() {
-    this.setState({ loading: true });
+  useEffect(() => {
     // Get current user from firebase and save to state as user
-    this.props.firebase.auth.onAuthStateChanged(async user => {
+    const unsubscribe = onAuthStateChanged(firebase.auth, async (user) => {
       if (user) {
-        this.setState({
-          user: user,
-          loading: false,
-        })
+        setUser(user);
       } else {
-        // Prompts user to sign in
-        alert("Please sign in to continue");
-        this.setState({
-          loading: false,
-        })
+        alert('Please sign in to continue');
       }
     });
-  }
+    return () => {
+      off(srRef);
+      unsubscribe();
+    };
+  }, []);
 
-  toggleNewSpeedRecord() {
-    this.setState({ 
-      openNewSpeedRecord: !this.state.openNewSpeedRecord,
-      newSpeedRecordEvent: null,
-      newSpeedRecordScore: null,
-      time: new Date(),
-    });
-  }
 
-  handleEventChange(event) {
-    this.setState({ newSpeedRecordEvent: event.target.value });
-  }
+  const toggleNewSpeedRecord = () => {
+    setOpen(!open);
+    setEventJ(null);
+    setScore(null);
+    setTime(new Date());
+  };
 
-  handleScoreChange(event) {
-    this.setState({ score: event.target.value });
-  }
+  const handleEventChange = (event) => {
+    setEventJ(event.target.value);
+  };
 
-  handleTimeChange(time) {
-    this.setState({ time: time });
-  } 
+  const handleScoreChange = (event) => {
+    setScore(event.target.value);
+  };
 
-  timeStamp(time) {
+  const handleTimeChange = (time) => {
+    setTime(time);
+  };
+
+  const timeStamp = (time) => {
     // Create an array with the current month, day and time
-    let date = [ time.getMonth() + 1, time.getDate(), time.getFullYear() ];
+    const date = [time.getMonth() + 1, time.getDate(), time.getFullYear()];
     // Create an array with the current hour, minute and second
-    let time2 = [ time.getHours(), time.getMinutes(), time.getSeconds() ];
+    const time2 = [time.getHours(), time.getMinutes(), time.getSeconds()];
     // Determine AM or PM suffix based on the hour
-    let suffix = ( time2[0] < 12 ) ? "AM" : "PM";
+    const suffix = ( time2[0] < 12 ) ? 'AM' : 'PM';
     // Convert hour from military time
     time2[0] = ( time2[0] < 12 ) ? time2[0] : time2[0] - 12;
     // If hour is 0, set it to 12
@@ -100,99 +88,108 @@ class NewSpeedRecordModal extends React.Component {
     // If minutes are less than 10, add a zero
     for ( let i = 1; i < 2; i++ ) {
       if ( time2[i] < 10 ) {
-        time2[i] = "0" + time2[i];
+        time2[i] = '0' + time2[i];
       }
     }
     // Return the formatted string
-    return date.join("/") + " " + time2.join(":") + " " + suffix;
-  }
+    return date.join('/') + ' ' + time2.join(':') + ' ' + suffix;
+  };
 
-  saveSpeedRecord(event) {
-    let today = this.state.time;
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    let yyyy = today.getFullYear();
+  const saveSpeedRecord = (event) => {
+    let today = time;
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
     today = `${yyyy}/${mm}/${dd}`;
 
-    this.props.firebase.user(this.props.firebase.auth.currentUser.uid)
-    .child('speed-records')
-    .child(`${today}`)
-    .push({
-      event: this.state.newSpeedRecordEvent, 
-      score: this.state.score,
-      time: this.timeStamp(this.state.time),
-    });
-    this.myFormRef.reset();
-    event.preventDefault();
-    this.toggleNewSpeedRecord();
-    window.alert("Congratulations! You have successfully saved a new speed record. Keep going!!");
-  }
-
-  render() {
-    return (
-      <>
-        <div className='jumpalCenteredButton'>
-          <JumpalButton onClick={this.toggleNewSpeedRecord}>
-            Add New Speed Record
-          </JumpalButton>
-        </div>
-        <Modal
-          open={this.state.openNewSpeedRecord}
-          onClose={this.toggleNewSpeedRecord}
-        >
-          <Box sx={styles.modalStyle}>
-            <Typography variant="h6" component="h2">
-              New Speed Record
-            </Typography>
-            <form className='jumpalForm' ref={(el) => this.myFormRef = el}>
-              <div className='modalInput'>
-                <FormControl fullWidth>
-                  {/* Time Input */}
-                  <DateTimePicker
-                    renderInput={(props) => <TextField {...props} />}
-                    label="Time"
-                    value={this.state.time}
-                    onChange={this.handleTimeChange}
-                  />
-                </FormControl>
-              </div>
-              <div className='modalInput'>
-                <FormControl fullWidth>
-                  {/* Event Input */}
-                  <InputLabel>Event</InputLabel>
-                  <Select
-                    label="Event"
-                    value={this.state.newSpeedRecordEvent}
-                    onChange={this.handleEventChange}
-                  >
-                    {options.map(event => <MenuItem value={event.value}>{event.label}</MenuItem>)}
-                  </Select>
-                </FormControl>
-              </div>
-              <div className='modalInput'>
-                <FormControl fullWidth>
-                  {/* Score Input */}
-                  <TextField
-                    label="Score"
-                    type="number"
-                    placeholder="Score"
-                    onChange={this.handleScoreChange}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </FormControl>
-              </div>
-            </form>
-            {this.state.user 
-                ? <JumpalButton onClick={this.saveSpeedRecord}>Save</JumpalButton>
-                : <JumpalButton onClick={this.saveSpeedRecord} disabled>Save</JumpalButton>
-            }
-          </Box>
-        </Modal>
-      </>
+    push(
+        child(srRef, `${today}`),
+        {
+          event: eventJ,
+          score: score,
+          time: timeStamp(time),
+        },
     );
-  }
+    srFormRef.reset();
+    event.preventDefault();
+    toggleNewSpeedRecord();
+    window.alert(
+        `Congratulations! You have successfully saved a 
+        new speed record. Keep going!!`,
+    );
+  };
+
+  return (
+    <>
+      <div className='jumpalCenteredButton'>
+        <JumpalButton onClick={toggleNewSpeedRecord}>
+          Add New Speed Record
+        </JumpalButton>
+      </div>
+      <Modal
+        open={open}
+        onClose={toggleNewSpeedRecord}
+      >
+        <Box sx={styles.modalStyle}>
+          <Typography variant="h6" component="h2">
+            New Speed Record
+          </Typography>
+          <form className='jumpalForm' ref={(el) => srFormRef = el}>
+            <div className='modalInput'>
+              <FormControl fullWidth>
+                {/* Time Input */}
+                <DateTimePicker
+                  renderInput={(props) => <TextField {...props} />}
+                  label="Time"
+                  value={time}
+                  onChange={handleTimeChange}
+                />
+              </FormControl>
+            </div>
+            <div className='modalInput'>
+              <FormControl fullWidth>
+                {/* Event Input */}
+                <InputLabel id="event-label">Event</InputLabel>
+                <Select
+                  labelId='event-label'
+                  label="Event"
+                  value={eventJ}
+                  onChange={handleEventChange}
+                >
+                  {options.map(
+                      (event) =>
+                        <MenuItem value={event.value} key={event.value}>
+                          {event.label}
+                        </MenuItem>,
+                  )}
+                </Select>
+              </FormControl>
+            </div>
+            <div className='modalInput'>
+              <FormControl fullWidth>
+                {/* Score Input */}
+                <TextField
+                  label="Score"
+                  type="number"
+                  placeholder="Score"
+                  onChange={handleScoreChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </FormControl>
+            </div>
+          </form>
+          {user ?
+              <JumpalButton onClick={saveSpeedRecord}>Save</JumpalButton> :
+              <JumpalButton onClick={saveSpeedRecord} disabled>
+                Save
+              </JumpalButton>
+          }
+        </Box>
+      </Modal>
+    </>
+  );
 }
 
-export default withFirebase(NewSpeedRecordModal);
+export default NewSpeedRecordModal;

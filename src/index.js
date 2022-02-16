@@ -7,12 +7,12 @@ import FirebaseContext from './Firebase/context';
 import Firebase from './Firebase/Firebase';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <FirebaseContext.Provider value={new Firebase()}>
-      <App />
-    </FirebaseContext.Provider>
- </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+      <FirebaseContext.Provider value={new Firebase()}>
+        <App />
+      </FirebaseContext.Provider>
+    </React.StrictMode>,
+    document.getElementById('root'),
 );
 
 serviceWorker.unregister();

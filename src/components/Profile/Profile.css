@@ -1,11 +1,17 @@
-#profileContainer {
+#profileOuterContainer {
   width: 100%;
+  height: 94vh;
   padding: 2rem;
   background-image: url('../../images/cloudy-sky.jpg');
   background-repeat: repeat-y;
 }
 
-
+#profileInnerContainer {
+  width: 100%;
+  padding: 2rem;
+  background-image: url('../../images/cloudy-sky.jpg');
+  background-repeat: repeat-y;
+}
 
 .profilePic {
   display: block;

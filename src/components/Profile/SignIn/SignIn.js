@@ -1,8 +1,10 @@
-import { useState, useContext } from 'react'; 
+import React, { useState, useContext } from 'react';
+import { set, child } from 'firebase/database';
 import { FirebaseContext } from '../../../Firebase/index';
-import { useHistory } from "react-router-dom";
-import './SignIn.css';
+import { useNavigate } from 'react-router-dom';
 import { JumpalButton } from '../../CustomComponents/core';
+import { signInWithPopup } from 'firebase/auth';
+import './SignIn.css';
 
 const SignInPage = () => (
   <div>
@@ -15,34 +17,28 @@ const SignInPage = () => (
 
 function SignInGoogle() {
   const firebase = useContext(FirebaseContext);
-  let history = useHistory();
+  const navigate = useNavigate();
   const [error, setError] = useState(null);
- 
-  const onSubmit = event => {
-    firebase
-      .doSignInWithGoogle()
-      .then(socialAuthUser => {
-        if (!firebase.database.ref('users').child(socialAuthUser.user.uid)) {
-          // Create a user in your Firebase Realtime Database too
-          return firebase
-          .user(socialAuthUser.user.uid)
-          .set({
-            username: socialAuthUser.additionalUserInfo.profile.name,
-            email: socialAuthUser.additionalUserInfo.profile.email,
-            roles: {},
-          });
-        }
-      })
-      .then(() => {
-        setError(null);
-        history.push('/Home');
-      })
-      .catch(error => {
-        setError(error);
-      });
+
+  const onSubmit = async (event) => {
     event.preventDefault();
+    const result = await signInWithPopup(
+        firebase.auth, firebase.googleProvider);
+    if (!child(firebase.users, result.user.uid)) {
+      // Create a user in your Firebase Realtime Database too
+      set(
+          child(firebase.users, result.user.uid),
+          {
+            username: result.additionalUserInfo.profile.name,
+            email: result.additionalUserInfo.profile.email,
+            roles: {},
+          },
+      );
+    }
+    setError(null);
+    navigate('/home');
   };
- 
+
   return (
     <form onSubmit={onSubmit}>
       <JumpalButton type='submit' className='signInButton'>

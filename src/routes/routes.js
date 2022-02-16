@@ -10,4 +10,4 @@ export default {
   PROFILE: '/profile',
   SIGNIN: '/signin',
   SIGNOUT: '/signout',
-}
+};
