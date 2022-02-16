@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useAuth from '../../Auth';
 import './Freestyle.css';
-// import Instagram from './Instagram/Instagram';
+import Instagram from './Instagram/Instagram';
 import SkillList from './SkillList/SkillList';
 import { JumpalSpinner } from '../CustomComponents/core';
 
@@ -48,7 +48,7 @@ function Freestyle() {
           >
             Skill List
           </button>
-          {/* {openInstagram ? <Instagram /> : null } */}
+          {openInstagram ? <Instagram /> : null }
           {openSkillList ? <SkillList /> : null }
         </div>
       );

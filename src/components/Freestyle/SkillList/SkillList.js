@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { off } from 'firebase/database';
 import { get, push, onValue } from 'firebase/database';
@@ -15,7 +15,7 @@ function SkillList() {
   const [url, setUrl] = useState('-');
   const [skillsData, setSkillsData] = useState([]);
   let skillForm = null;
-  const slRef = useRef(firebase.skillList).current;
+  const slRef = firebase.skillList;
 
   useEffect(() => {
     onValue(slRef, onSkillListDataChange);
@@ -133,15 +133,6 @@ function SkillList() {
               }
             </div>
           </form>
-          {/* {user ?
-            <button
-              onClick={readDatafromDB}
-              id="refresh-button"
-              className="button"
-            >
-              Refresh
-            </button> : null
-          } */}
           {skillsData && skillsData.length !== 0 && user ?
             <div>
               <h2>Skills I want to learn</h2>

@@ -1,135 +1,128 @@
-/* eslint-disable eol-last */
-/* eslint-disable max-len */
-/* eslint-disable no-trailing-spaces */
-// import React from 'react'; 
-// import './Instagram.css';
-// import InstaCollapsible from '../InstaCollapsible/InstaCollapsible';
-// import { withFirebase } from '../../../Firebase/index';
-// import ReactLoading from 'react-loading';
+import React, { useEffect, useState, useContext } from 'react';
+import './Instagram.css';
+import InstaCollapsible from '../InstaCollapsible/InstaCollapsible';
+import { FirebaseContext } from '../../../Firebase/index';
+import { onAuthStateChanged } from 'firebase/auth';
+import { off, get } from 'firebase/database';
+import { JumpalSpinner } from '../../CustomComponents/core';
+import useAuth from '../../../Auth';
+import { onValue, push } from 'firebase/database';
 
-// class Instagram extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       url: null,
-//       note: null,
-//       dataFromDB: [],
-//       isDataLoaded: false,
-//     }
-//     this.handleURLChange = this.handleURLChange.bind(this);
-//     this.handleNoteChange = this.handleNoteChange.bind(this);
-//     this.addInstaPost = this.addInstaPost.bind(this);
-//     // this.readDatafromDB = this.readDatafromDB.bind(this);
-//     this.onInstagramDataChange = this.onInstagramDataChange.bind(this);
+function Instagram() {
+  const firebase = useContext(FirebaseContext);
+  const [user] = useAuth();
+  const [url, setUrl] = useState(null);
+  const [note, setNote] = useState(null);
+  const [igData, setIgData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const igsRef = firebase.igs;
+  let igForm = null;
 
-//     this.authListener = this.props.firebase.auth.onAuthStateChanged(
-//       (authUser) => {
-//         if(authUser) {
-//           this.ref = this.props.firebase.db.ref('users')
-//             .child(this.props.firebase.auth.currentUser.uid)
-//             .child("freestyle-saved-insta-urls");
-//           this.ref.on('value', this.onInstagramDataChange)
-//         }
-//       })
-//   }
+  useEffect(() => {
+    onValue(igsRef, onInstagramDataChange);
+    const unsubscribe = onAuthStateChanged(firebase.auth, async (user) => {
+      if (user) {
+        const dataFromDB = [];
+        get(igsRef).then((snapshot) => {
+          const value = snapshot.val();
+          if (value) {
+            dataFromDB.push(value);
+          }
+          setIgData(dataFromDB);
+          setLoading(false);
+        })
+            .catch((error) => {
+              console.log(error);
+            });
+      } else {
+        alert('Please sign in to continue');
+        setLoading(false);
+      }
+    });
+    return () => {
+      off(igsRef);
+      unsubscribe();
+    };
+  }, []);
 
-//   onInstagramDataChange(snapshot) {
-//     let dataFromDB = [];
-//     dataFromDB.push(snapshot.val());
-//     this.setState({ dataFromDB: dataFromDB });
-//   }
+  const onInstagramDataChange = (snapshot) => {
+    const dataFromDB = [];
+    dataFromDB.push(snapshot.val());
+    setIgData(dataFromDB);
+  };
 
-//   handleURLChange(event) {
-//     this.setState({ url: event.target.value });
-//   }
+  const handleURLChange = (event) => {
+    setUrl(event.target.value);
+  };
 
-//   handleNoteChange(event) {
-//     this.setState({ note: event.target.value });
-//   }
+  const handleNoteChange = (event) => {
+    setNote(event.target.value);
+  };
 
-//   addInstaPost(event) { //saves url to database
-//     let url = this.state.url;
-//     let note = this.state.note;
-//     let ref = this.props.firebase.db.ref('users')
-//       .child(this.props.firebase.auth.currentUser.uid)
-//       .child("freestyle-saved-insta-urls");
-//     ref.push({
-//       url: url,
-//       note: note,
-//     })
-//     window.alert("Instagram post saved successfully!")
-//     this.freestyleform.reset();
-//     event.preventDefault();
-//   }
+  const addInstaPost = (event) => {
+    event.preventDefault();
+    push(igsRef, {
+      url: url,
+      note: note,
+    });
+    window.alert('Instagram post saved successfully!');
+    igForm.reset();
+  };
 
-//   async componentDidMount() {
-//     let dataFromDB = [];
-//     if (this.props.firebase.auth.currentUser) {
-//       let ref = this.props.firebase.db.ref('users')
-//       .child(this.props.firebase.auth.currentUser.uid)
-//       .child("freestyle-saved-insta-urls");
-//       let snapshot = await ref.once("value");
-//       let value = snapshot.val();
-//       if (value) {
-//         dataFromDB.push(value);
-//       }
-//       console.log(dataFromDB)
-//       this.setState({ 
-//         dataFromDB: dataFromDB,
-//         isDataLoaded: true 
-//       });
-//     }
-//   }
+  const data = [];
+  if (loading) {
+    return <JumpalSpinner />;
+  } else {
+    if (igData && igData.length !== 0) {
+      const dataValues = Object.values(igData[0]).reverse();
+      const keys = Object.keys(igData[0]).reverse();
+      for (let i = 0; i < dataValues.length; i++) {
+        data[i] = [keys[i], dataValues[i]];
+      }
+    }
+    return (
+      <div className="instagram-container">
+        <form ref={(el) => igForm = el} className="form">
+          <label>Instagram URL:
+            <input
+              className="input"
+              type="text"
+              onChange={handleURLChange}
+              placeholder="Enter Instagram URL here"
+            />
+          </label>
+          <label>Note:
+            <input
+              className="input"
+              type="text"
+              onChange={handleNoteChange}
+              placeholder="Enter note here"
+            />
+          </label>
+          <div className="button-div">{user ?
+            <input type="submit" onClick={addInstaPost} className="button" /> :
+            <input type="submit" disabled /> }</div>
+        </form>
+        <div className="collapsible-div">
+          {igData && igData.length !== 0 ?
+              data.map((object, index) => {
+                return (
+                  <div key={index}>
+                    <InstaCollapsible
+                      id={object[0]}
+                      content={object[1].note}
+                      url={object[1].url}
+                    />
+                  </div>
+                );
+              }) :
+            <p>
+              Nothing to display, you could start by adding some posts above.
+            </p>}
+        </div>
+      </div>
+    );
+  }
+}
 
-//   // async readDatafromDB() {
-//   //   let dataFromDB = [];
-//   //   let ref = this.props.firebase.db.ref('users')
-//   //   .child(this.props.firebase.auth.currentUser.uid)
-//   //   .child("freestyle-saved-insta-urls");
-//   //   let snapshot = await ref.once("value");
-//   //   let value = snapshot.val();
-//   //   if (value) {
-//   //     dataFromDB.push(value);
-//   //   }
-//   //   console.log(dataFromDB)
-//   //   this.setState({ dataFromDB: dataFromDB });
-//   // }
-
-//   render() {
-//     let data = [];
-//     if (this.state.isDataLoaded) {
-//       if (this.state.dataFromDB && this.state.dataFromDB.length !== 0) {
-//         data = Object.values(this.state.dataFromDB[0]).reverse();
-//       }
-//       return (  
-//           <div className="instagram-container">
-//             <form ref={(el) => this.freestyleform = el} className="form">
-//               <label>Instagram URL:<input className="input" type="text" onChange={this.handleURLChange} placeholder="Enter Instagram URL here"/></label>
-//               <label>Note:<input className="input" type="text" onChange={this.handleNoteChange} placeholder="Enter note here"/></label>
-//               <div className="button-div">{this.props.firebase.auth.currentUser 
-//               ? <input type="submit" onClick={this.addInstaPost} className="button" />
-//               : <input type="submit" disabled /> }</div>
-//             </form>
-           
-//             {/* {this.props.firebase.auth.currentUser 
-//               ? <button onClick={this.readDatafromDB} id="refresh-button" className="button">Refresh</button>
-//               : null } */}
-//             <div className="collapsible-div">
-//               {this.state.dataFromDB && this.state.dataFromDB.length !== 0 ? 
-//                 data.map(object => {
-//                   return (
-//                     <div>
-//                       <InstaCollapsible content={object.note} url={object.url} />
-//                     </div>
-//                   )})
-//               : <p>Nothing to display, you could start by adding some posts above.</p>}
-//             </div>
-//           </div>
-//       );
-//     } else {
-//       return <ReactLoading type='spin' color='white' height={'5%'} width={'5%'} />
-//     }
-//   }
-// }
-
-// export default withFirebase(Instagram);
+export default Instagram;

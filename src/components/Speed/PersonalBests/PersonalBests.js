@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { FirebaseContext } from '../../../Firebase/index';
 import { onValue, get, child, off, remove } from 'firebase/database';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -19,7 +19,7 @@ function PersonalBests() {
   const [user, setUser] = useState(firebase.user);
   const [loading, setLoading] = useState(false);
   const [personalBests, setPersonalBests] = useState([]);
-  const pbRef = useRef(firebase.personalBests).current;
+  const pbRef = firebase.personalBests;
 
   useEffect(() => {
     onValue(pbRef, onPersonalBestsUpdate);

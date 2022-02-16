@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { onValue, get, child, off, remove } from 'firebase/database';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -22,7 +22,7 @@ function SpeedData() {
   const [loading, setLoading] = useState(false);
   const [speedRecords, setSpeedRecords] = useState([]);
   const [showToday, setShowToday] = useState(false);
-  const srRef = useRef(firebase.speedRecords).current;
+  const srRef = firebase.speedRecords;
 
   console.log('speed records', speedRecords);
   useEffect(() => {

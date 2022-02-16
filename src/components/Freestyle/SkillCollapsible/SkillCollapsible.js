@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FirebaseContext } from '../../../Firebase';
 import { off, child, update } from 'firebase/database';
@@ -24,7 +24,7 @@ function SkillCollapsible(props) {
   const [openProgress, setOpenProgress] = useState(false);
   const [editText, setEditText] = useState(null);
   const [editing, setEditing] = useState(false);
-  const skillRef = useRef(child(firebase.skillList, id)).current;
+  const skillRef = child(firebase.skillList, id);
 
   useEffect(() => {
     return () => off(skillRef);

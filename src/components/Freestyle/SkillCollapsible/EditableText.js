@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FirebaseContext } from '../../../Firebase';
 import './EditableText.css';
@@ -18,7 +18,7 @@ function EditableText(props) {
   const firebase = useContext(FirebaseContext);
   const [editText, setEditText] = useState(content);
   const [editing, setEditing] = useState(false);
-  const skillRef = useRef(child(firebase.skillList, id)).current;
+  const skillRef = child(firebase.skillList, id);
 
   useEffect(() => {
     return () => off(skillRef);

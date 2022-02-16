@@ -42,4 +42,9 @@ export default class Firebase {
   get skillList() {
     return child(this.user, 'freestyle-skills-list');
   }
+
+  // IG URL list ref
+  get igs() {
+    return child(this.user, 'freestyle-saved-insta-urls');
+  }
 }

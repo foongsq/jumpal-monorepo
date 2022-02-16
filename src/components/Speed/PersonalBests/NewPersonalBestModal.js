@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { FirebaseContext } from '../../../Firebase/index';
 import { onAuthStateChanged } from 'firebase/auth';
 import { set, child, off } from 'firebase/database';
@@ -36,7 +36,7 @@ function NewPersonalBestModal() {
   const [eventJ, setEventJ] = useState(null);
   const [score, setScore] = useState(null);
   const [time, setTime] = useState(null);
-  const pbRef = useRef(firebase.personalBests).current;
+  const pbRef = firebase.personalBests;
   // eslint-disable-next-line no-unused-vars
   let pbFormRef = null;
 

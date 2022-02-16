@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { child, off, push } from 'firebase/database';
 import { FirebaseContext } from '../../../Firebase/index';
@@ -36,7 +36,7 @@ function NewSpeedRecordModal() {
   const [eventJ, setEventJ] = useState(null);
   const [score, setScore] = useState(null);
   const [time, setTime] = useState(null);
-  const srRef = useRef(firebase.speedRecords).current;
+  const srRef = firebase.speedRecords;
   let srFormRef = null;
 
   useEffect(() => {

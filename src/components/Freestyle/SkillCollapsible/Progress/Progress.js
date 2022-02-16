@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FirebaseContext } from '../../../../Firebase';
 import { off, child, update, get } from 'firebase/database';
@@ -17,7 +17,7 @@ function Progress(props) {
   const firebase = useContext(FirebaseContext);
   const [editText, setEditText] = useState('');
   const [editing, setEditing] = useState(false);
-  const skillRef = useRef(child(firebase.skillList, id)).current;
+  const skillRef = child(firebase.skillList, id);
 
   console.log('progress', progress);
 
