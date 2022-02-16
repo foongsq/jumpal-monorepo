@@ -25,17 +25,17 @@ export default class TimingTracks extends React.Component {
     super(props);
     this.state = {
       track: null,
-      selectColor: 'gray'
-    }
+      selectColor: 'gray',
+    };
     this.handleTrackChange = this.handleTrackChange.bind(this);
   }
 
   handleTrackChange(event) {
-    console.log(event)
-    this.setState({ 
+    console.log(event);
+    this.setState({
       track: event.value,
-      selectColor: '#383838'
-     });
+      selectColor: '#383838',
+    });
   }
 
   render() {
@@ -65,7 +65,11 @@ export default class TimingTracks extends React.Component {
               label="Select timing track"
               onChange={this.state.handleTrackChange}
             >
-              {options.map((option) => (<MenuItem value={option}>option</MenuItem>))}
+              {options.map(
+                  (option) => (
+                    <MenuItem value={option} key={option}>option</MenuItem>
+                  ),
+              )}
             </Select>
           </FormControl>
           <audio className="timing-track-audio" src={src} controls></audio>

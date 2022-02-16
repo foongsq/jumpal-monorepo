@@ -6,19 +6,19 @@ export default class Counter extends React.Component {
     super(props);
     this.state = {
       count: 0,
-    }
+    };
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
     this.reset = this.reset.bind(this);
   }
 
   increment() {
-    let count = this.state.count;
+    const count = this.state.count;
     this.setState({ count: count + 1 });
   }
 
   decrement() {
-    let count = this.state.count;
+    const count = this.state.count;
     this.setState({ count: count - 1 });
   }
 
