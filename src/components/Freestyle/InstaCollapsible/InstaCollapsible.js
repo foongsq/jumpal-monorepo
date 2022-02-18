@@ -6,7 +6,8 @@ import {
   child,
 } from 'firebase/database';
 import { FirebaseContext } from '../../../Firebase';
-import { Collapse } from '@mui/material';
+import { Collapse, Paper } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import './InstaCollapsible.css';
 
 InstaCollapsible.propTypes = {
@@ -40,22 +41,25 @@ function InstaCollapsible(props) {
   return (
     <div className="insta-collapsible-container">
       <div className="note-and-trash-div">
-        <button onClick={handleClick} className="note-button">
+        <button onClick={handleClick}
+          className={open ? 'noteActive' : 'note-button'}>
           {content}
         </button>
-        <button onClick={handleDelete} className="trash-button">
-          <i className="fa fa-trash-o" aria-hidden="true"></i>
+        <button onClick={handleDelete} className="fs-trash-button">
+          <DeleteIcon color="action"/>
         </button>
       </div>
       <Collapse in={open}>
-        <a
-          target="_blank"
-          rel="noopener noreferrer" // added for security: https://mathiasbynens.github.io/rel-noopener/
-          href={url}
-          className="insta-link"
-        >
-          <p>{url}</p>
-        </a>
+        <Paper className='skillItem' elevation={5}>
+          <a
+            target="_blank"
+            rel="noopener noreferrer" // added for security: https://mathiasbynens.github.io/rel-noopener/
+            href={url}
+            className="insta-link"
+          >
+            <p>{url}</p>
+          </a>
+        </Paper>
       </Collapse>
     </div>
   );

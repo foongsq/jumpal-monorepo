@@ -1,3 +1,13 @@
+.progress-container {
+  border: 1px solid grey;
+  border-top: none;
+  margin: 0;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
 .datetime-div {
   display: flex;
 }
@@ -8,59 +18,27 @@
   width: 100%;
 }
 
-.show-p {
-  font-size: 1rem;
-  display: flex;
-}
 
-#add-square {
-  padding: 0 0.5rem;
-  background-color: #dedede;
+.addNewProgress {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: inherit;
   outline: none;
   border: none;
   border-radius: 5px;
   float: right;
 }
 
-#add-square:hover {
+.addNewProgress p {
+  margin: 0;
+  margin-left: 0.5rem;
+}
+
+.addNewProgress:hover {
   background-color: #ebebeb;
 }
 
-.progress-container {
-  box-sizing: border-box;
-}
-
-.content-div {
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.hidden {
-  display: none;
-}
-
-.show-label {
-  display: flex;
-}
-
-.show-input {
-  box-sizing: border-box;
-  font-size: 1rem;
-  display: flex;
-  background-color: #dedede;
-  outline: none;
-  border: 1px solid grey;
-  border-radius: 3px;
-  width: 100%;
-}
-
-.show {
-  display: flex;
-  padding: 0.5rem;
-  background-color: #ebebeb;
-  border-radius: 5px;
-}
-
-.show p{
- color: #4e7ede;
+.newProgressEntry {
+  padding: 0.5rem 0;
 }

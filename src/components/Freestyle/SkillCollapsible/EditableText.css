@@ -4,37 +4,26 @@
   justify-content: space-between;
 }
 
-.content-div {
+.skillNameDiv {
+  border-bottom: 1px solid gray;
+}
+
+.editButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-}
-.hidden {
-  display: none;
-}
-
-.show-p {
-  font-size: 1rem;
-  display: flex;
-}
-
-.show-input {
-  font-size: 1rem;
-  display: flex;
-  background-color: #dedede;
-  outline: none;
-  border: 1px solid grey;
-  border-radius: 3px;
-}
-
-.edit-button {
-  padding: 0;
+  padding: 0.5rem;
   border: none;
   outline: none;
   border-radius: 5px;
-  background-color: #dedede;
+  background-color: inherit;
+  border-bottom: 1px solid gray;
 }
 
-.edit-button:hover {
+.editButton:hover {
   cursor: pointer;
+  background-color: #ebebeb;
 }
 
 .datetime-div {

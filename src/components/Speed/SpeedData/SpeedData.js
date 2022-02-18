@@ -13,6 +13,9 @@ import {
 } from '../../CustomComponents/table';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
+import DeleteIcon from '@mui/icons-material/Delete';
+import TagFacesIcon from '@mui/icons-material/TagFaces';
+
 import NewSpeedRecordModal from './NewSpeedRecordModal';
 import './SpeedData.css';
 
@@ -113,7 +116,7 @@ function SpeedData() {
               className="jumpalTableDeleteButton"
               onClick={() => handleDelete(event, score, time)}
             >
-              <i className="fa fa-trash-o" aria-hidden="true"></i>
+              <DeleteIcon color="action" />
             </button></StyledTableCell>
         </StyledTableRow>
       );
@@ -140,7 +143,7 @@ function SpeedData() {
                 className="jumpalTableDeleteButton"
                 onClick={() => handleDelete(event, score, time)}
               >
-                <i className="fa fa-trash-o" aria-hidden="true"></i>
+                <DeleteIcon color="action" />
               </button></StyledTableCell>
           </StyledTableRow>
         );
@@ -181,7 +184,7 @@ function SpeedData() {
             <h2>My Speed Records</h2>
             {showToday ?
               <JumpalButton onClick={handleAll} className="button">
-                <i className="fa fa-smile-o" aria-hidden="true"></i>
+                <TagFacesIcon color="action" />
                 All data
               </JumpalButton> :
               <JumpalButton
@@ -189,7 +192,7 @@ function SpeedData() {
                 onClick={handleToday}
                 className="button"
               >
-                <i className="fa fa-smile-o" aria-hidden="true"></i>
+                <TagFacesIcon color="action" />
                 Today
               </JumpalButton>}
           </div>

@@ -3,6 +3,7 @@ import { FirebaseContext } from '../../../Firebase/index';
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { JumpalButton } from '../../CustomComponents/core';
+import LogoutIcon from '@mui/icons-material/Logout';
 import './SignOut.css';
 
 function SignOutButton() {
@@ -13,7 +14,7 @@ function SignOutButton() {
     <JumpalButton onClick={() =>
       signOut(firebase.auth).then(() => navigate('/'))
     }>
-      <i id='signOutIcon' className="fa fa-sign-out" aria-hidden="true"></i>
+      <LogoutIcon color="action" />
       Sign Out
     </JumpalButton>
   );

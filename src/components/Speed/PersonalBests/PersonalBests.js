@@ -13,6 +13,7 @@ import {
 } from '../../CustomComponents/table';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function PersonalBests() {
   const firebase = useContext(FirebaseContext);
@@ -89,7 +90,7 @@ function PersonalBests() {
               className="jumpalTableDeleteButton"
               onClick={() => handleDelete(event)}
             >
-              <i className="fa fa-trash-o" aria-hidden="true"></i>
+              <DeleteIcon color="action" />
             </button></StyledTableCell>
         </StyledTableRow>
       );

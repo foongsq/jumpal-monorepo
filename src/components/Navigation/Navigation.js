@@ -91,7 +91,7 @@ const Navigation = () => {
                 onClick={() => handleNavigate(page)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {mapPageName(page)}
               </Button>
             ))}
           </Box>
