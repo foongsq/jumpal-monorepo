@@ -15,7 +15,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 import { styles } from '../../CustomComponents/constants';
-import './NewPersonalBestModal.css';
 
 const options = [
   { value: '1x30sec Running Step', label: '1x30sec Running Step' },
@@ -113,7 +112,7 @@ function NewPersonalBestModal() {
           <Typography variant="h6" component="h2">
             New Personal Best
           </Typography>
-          <form className='jumpalForm' ref={(el) => pbFormRef = el}>
+          <form ref={(el) => pbFormRef = el}>
             <div className='modalInput'>
               <FormControl fullWidth>
                 {/* Time Input */}

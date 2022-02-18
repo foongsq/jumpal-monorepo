@@ -83,7 +83,7 @@ function NewSkillModal() {
           <Typography variant="h6" component="h2">
             New Freestyle Skill
           </Typography>
-          <form className='jumpalForm'>
+          <form>
             <div className='modalInput'>
               <FormControl fullWidth>
                 <TextField

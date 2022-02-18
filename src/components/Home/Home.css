@@ -1,9 +1,3 @@
-/* To vertically center the buttons */
-.homeContainerDiv {
-  height: 100%;
-  display: flex;
-}
-
 /* To display buttons side by side and vertically center them */
 .speedFreestyleDiv {
   display: flex;

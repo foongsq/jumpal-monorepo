@@ -8,7 +8,6 @@ import {
 import routes from '../../routes/routes';
 import './App.css';
 import './JumpalTableStyles.css';
-import './JumpalFormStyles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';

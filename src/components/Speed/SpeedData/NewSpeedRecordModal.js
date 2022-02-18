@@ -134,7 +134,7 @@ function NewSpeedRecordModal() {
           <Typography variant="h6" component="h2">
             New Speed Record
           </Typography>
-          <form className='jumpalForm' ref={(el) => srFormRef = el}>
+          <form ref={(el) => srFormRef = el}>
             <div className='modalInput'>
               <FormControl fullWidth>
                 {/* Time Input */}
