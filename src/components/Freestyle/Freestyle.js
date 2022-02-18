@@ -18,7 +18,9 @@ function Freestyle() {
   const [component, setComponent] = useState(skillsList);
 
   const toggleComponent = (event, newComponent) => {
-    setComponent(newComponent);
+    if (newComponent) {
+      setComponent(newComponent);
+    }
   };
 
   if (loading) {

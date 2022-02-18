@@ -26,7 +26,9 @@ function Speed() {
     useState(component.PERSONALBEST);
 
   const toggleComponent = (event, newComponent) => {
-    setComponentRendered(newComponent);
+    if (newComponent) {
+      setComponentRendered(newComponent);
+    }
   };
 
   if (loading) {

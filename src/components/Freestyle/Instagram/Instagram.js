@@ -12,7 +12,7 @@ import NewIgModal from './NewIgModal';
 function Instagram() {
   const firebase = useContext(FirebaseContext);
   const [user] = useAuth();
-  const [igData, setIgData] = useState([]);
+  const [igData, setIgData] = useState(null);
   const [loading, setLoading] = useState(false);
   const igsRef = firebase.igs;
 
@@ -60,7 +60,7 @@ function Instagram() {
   };
 
 
-  if (loading) {
+  if (loading || !igData) {
     return <JumpalSpinner />;
   } else {
     if (user) {
