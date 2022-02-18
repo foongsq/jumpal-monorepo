@@ -1,19 +1,6 @@
-.freestyle-container {
-  display: block;
-  width: 100%;
-  padding: 1rem;
-}
-
-.button-div {
+.freestyleButtonDiv {
+  padding-top: 1rem;
   display: flex;
-  justify-content: flex-end;
-}
-
-.collapsible-div {
-  margin: 1rem 0;
-}
-
-.form label {
-  display: block;
-  padding: 0.25rem 0;
+  justify-content: center;
+  width: 100%;
 }

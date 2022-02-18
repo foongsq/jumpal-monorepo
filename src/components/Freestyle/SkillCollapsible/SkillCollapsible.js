@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FirebaseContext } from '../../../Firebase';
-import { off, child, update } from 'firebase/database';
+import { off, child, update, remove } from 'firebase/database';
 import EditableText from './EditableText';
 import Progress from '../SkillCollapsible/Progress/Progress';
 import './SkillCollapsible.css';
+import { Collapse } from '@mui/material';
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -105,7 +106,8 @@ function SkillCollapsible(props) {
             Learnt
           </button>}
       </div>
-      {open ?
+
+      <Collapse in={open}>
         <div className="skill-content">
           <label>Skill Name:
             <EditableText id={id} type="skillName" content={skillName} />
@@ -115,27 +117,27 @@ function SkillCollapsible(props) {
           </button>
           {openProgress ? <Progress progress={progress} id={id} /> : null}
           {url === '-' ?
-            <label>URL:
-              <button onClick={handleEditButtonClick} id="add-square">
-                <i className="fa fa-plus-square" aria-hidden="true"></i>
-              </button>
-              <div className="content-div">
-                <div className={editing ? 'show' : 'hidden'}>
-                  <p className={editing ? 'show-p' : 'hidden'}>New URL:</p>
-                  <input
-                    className={editing ? 'show-input' : 'hidden'}
-                    value={editText}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyDown}
-                  />
+              <label>URL:
+                <button onClick={handleEditButtonClick} id="add-square">
+                  <i className="fa fa-plus-square" aria-hidden="true"></i>
+                </button>
+                <div className="content-div">
+                  <div className={editing ? 'show' : 'hidden'}>
+                    <p className={editing ? 'show-p' : 'hidden'}>New URL:</p>
+                    <input
+                      className={editing ? 'show-input' : 'hidden'}
+                      value={editText}
+                      onChange={handleChange}
+                      onKeyDown={handleKeyDown}
+                    />
+                  </div>
                 </div>
-              </div>
-            </label> :
-            <label>URL:
-              <EditableText id={id} type="url" content={url} />
-            </label> }
-        </div> :
-        null}
+              </label> :
+              <label>URL:
+                <EditableText id={id} type="url" content={url} />
+              </label> }
+        </div>
+      </Collapse>
     </div>
   );
 }

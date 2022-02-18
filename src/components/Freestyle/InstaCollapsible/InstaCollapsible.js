@@ -6,6 +6,7 @@ import {
   child,
 } from 'firebase/database';
 import { FirebaseContext } from '../../../Firebase';
+import { Collapse } from '@mui/material';
 import './InstaCollapsible.css';
 
 InstaCollapsible.propTypes = {
@@ -24,21 +25,16 @@ function InstaCollapsible(props) {
     return () => off(igRef);
   }, []);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [id]);
-
   const handleClick = () => {
     setOpen(!open);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     remove(igRef);
     window.alert(
         `Instagram post deleted successfully!
         (Please refresh to see your updated list)`,
     );
-    setOpen(false);
   };
 
   return (
@@ -51,16 +47,16 @@ function InstaCollapsible(props) {
           <i className="fa fa-trash-o" aria-hidden="true"></i>
         </button>
       </div>
-      {open ?
-      <a
-        target="_blank"
-        rel="noopener noreferrer" // added for security: https://mathiasbynens.github.io/rel-noopener/
-        href={url}
-        className="insta-link"
-      >
-        <p>{url}</p>
-      </a> :
-      null}
+      <Collapse in={open}>
+        <a
+          target="_blank"
+          rel="noopener noreferrer" // added for security: https://mathiasbynens.github.io/rel-noopener/
+          href={url}
+          className="insta-link"
+        >
+          <p>{url}</p>
+        </a>
+      </Collapse>
     </div>
   );
 }

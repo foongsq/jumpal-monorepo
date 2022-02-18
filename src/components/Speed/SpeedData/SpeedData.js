@@ -24,7 +24,6 @@ function SpeedData() {
   const [showToday, setShowToday] = useState(false);
   const srRef = firebase.speedRecords;
 
-  console.log('speed records', speedRecords);
   useEffect(() => {
     onValue(srRef, onSpeedDataUpdate);
     setLoading(true);

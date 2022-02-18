@@ -76,3 +76,7 @@ body {
     justify-content: center;
     align-items: center;
   }
+
+  .centeredText {
+    text-align: center;
+  }
