@@ -4,6 +4,8 @@ import { FirebaseContext } from '../../../Firebase/index';
 import { useNavigate } from 'react-router-dom';
 import { JumpalButton } from '../../CustomComponents/core';
 import { signInWithPopup } from 'firebase/auth';
+import GoogleIcon from '@mui/icons-material/Google';
+
 import './SignIn.css';
 
 const SignInPage = () => (
@@ -42,7 +44,7 @@ function SignInGoogle() {
   return (
     <form onSubmit={onSubmit}>
       <JumpalButton type='submit' className='signInButton'>
-        <i id='googleIcon' className="fa fa-google"></i>Sign In with Google
+        <GoogleIcon color="action" />Sign In with Google
       </JumpalButton>
       {error && <p>{error.message}</p>}
     </form>

@@ -1,20 +1,19 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { off } from 'firebase/database';
-import { get, push, onValue } from 'firebase/database';
+import { get, onValue } from 'firebase/database';
 import { FirebaseContext } from '../../../Firebase';
 import { JumpalSpinner } from '../../CustomComponents/core';
 import SkillCollapsible from '../SkillCollapsible/SkillCollapsible';
+import NewSkillModal from './NewSkillModal';
+
+import './SkillList.css';
 
 function SkillList() {
   const firebase = useContext(FirebaseContext);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [skillName, setSkillName] = useState('-');
-  const [progress, setProgress] = useState([['-', new Date().toString()]]);
-  const [url, setUrl] = useState('-');
   const [skillsData, setSkillsData] = useState([]);
-  let skillForm = null;
   const slRef = firebase.skillList;
 
   useEffect(() => {
@@ -51,31 +50,6 @@ function SkillList() {
     setSkillsData(skillsDataFromDb);
   };
 
-  const handleSkillNameChange = (event) => {
-    setSkillName(event.target.value);
-  };
-
-  const handleProgressChange = (event) => {
-    setProgress([[event.target.value, new Date().toString()]]);
-  };
-
-  const handleURLChange = (event) => {
-    setUrl(event.target.value);
-  };
-
-  const submitEntry = (event) => {
-    event.preventDefault();
-    console.log('call submit entry');
-    push(slRef, {
-      skillName: skillName,
-      progress: progress,
-      url: url,
-      learnt: false,
-    });
-    window.alert('New skill saved successfully!');
-    skillForm.reset();
-  };
-
   if (loading) {
     return <JumpalSpinner />;
   } else {
@@ -96,83 +70,51 @@ function SkillList() {
       }
       return (
         <div>
-          <h1>Skill List</h1>
-          <form ref={(el) => skillForm = el} className="form">
-            <label>Skill Name:
-              <input
-                className="input"
-                onChange={handleSkillNameChange}
-                type="text"
-                placeholder="Enter freestyle skill name here"
-              />
-            </label>
-            <label>Progress: (as of {new Date().toDateString()})
-              <input
-                className="input"
-                onChange={handleProgressChange}
-                type="text"
-                placeholder="Enter progress here"
-              />
-            </label>
-            <label>Instagram URL:
-              <input
-                className="input"
-                type="text"
-                onChange={handleURLChange}
-                placeholder="Enter Instagram URL here"
-              />
-            </label>
-            <div className="button-div">
-              {user ?
-                <input
-                  type="submit"
-                  onClick={submitEntry}
-                  className="button"
-                /> :
-                <input type="submit" disabled />
-              }
-            </div>
-          </form>
+          <NewSkillModal />
           {skillsData && skillsData.length !== 0 && user ?
             <div>
-              <h2>Skills I want to learn</h2>
-              {notLearntData.length > 0 ?
-                notLearntData.map((object) => {
-                  return (
-                    <SkillCollapsible
-                      skillName={object[1].skillName}
-                      description={object[1].description}
-                      progress={object[1].progress}
-                      url={object[1].url}
-                      id={object[0]}
-                      learnt={false}
-                      key={object[0]}
-                    />
-                  );
-                }) :
-                <p style={{ textAlign: 'center' }}>
-                  No skills to learn... Add some above !
-                </p>
-              }
-              <h2>Skills I have learnt</h2>
-              {learntData.length > 0 ?
-                learntData.map((object) => {
-                  return (
-                    <SkillCollapsible
-                      skillName={object[1].skillName}
-                      description={object[1].description}
-                      progress={object[1].progress}
-                      url={object[1].url}
-                      id={object[0]}
-                      learnt={true}
-                      key={object[0]}
-                    />
-                  );
-                }) :
-                <p style={{ textAlign: 'center' }}>
-                  Have not learnt any skills, jiayou!
-                </p>
-              }
+              <div className='skillsToLearn'>
+                <h2>Skills I want to learn</h2>
+                {notLearntData.length > 0 ?
+                  notLearntData.map((object) => {
+                    return (
+                      <SkillCollapsible
+                        key={object[0]}
+                        id={object[0]}
+                        skillName={object[1].skillName}
+                        description={object[1].description}
+                        progress={object[1].progress}
+                        url={object[1].url}
+                        learnt={false}
+                      />
+                    );
+                  }) :
+                  <p className='centeredText'>
+                    No skills to learn... Add some above !
+                  </p>
+                }
+              </div>
+              <div className='learntSkills'>
+                <h2>Skills I have learnt</h2>
+                {learntData.length > 0 ?
+                  learntData.map((object) => {
+                    return (
+                      <SkillCollapsible
+                        key={object[0]}
+                        id={object[0]}
+                        skillName={object[1].skillName}
+                        description={object[1].description}
+                        progress={object[1].progress}
+                        url={object[1].url}
+                        learnt={true}
+                      />
+                    );
+                  }) :
+                  <p className='centeredText'>
+                    Have not learnt any skills, jiayou!
+                  </p>
+                }
+              </div>
             </div> :
             <p>
               Nothing to display, you could start by adding some skills above.

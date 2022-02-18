@@ -1,10 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FirebaseContext } from '../../../Firebase';
-import { off, child, update } from 'firebase/database';
+import { off, child, update, remove } from 'firebase/database';
 import EditableText from './EditableText';
 import Progress from '../SkillCollapsible/Progress/Progress';
 import './SkillCollapsible.css';
+import { Collapse, Paper } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -75,8 +80,8 @@ function SkillCollapsible(props) {
       update(skillRef, {
         url: val,
       });
-      setEditing(false);
     }
+    setEditing(false);
   };
 
   const handleKeyDown = (e) => {
@@ -91,11 +96,12 @@ function SkillCollapsible(props) {
   return (
     <div>
       <div className="note-and-trash-div">
-        <button onClick={handleClick} className="note-button">
+        <button onClick={handleClick}
+          className={open ? 'noteActive' : 'note-button'}>
           {skillName}
         </button>
-        <button onClick={handleDelete} className="trash-button">
-          <i className="fa fa-trash-o" aria-hidden="true"></i>
+        <button onClick={handleDelete} className="s-trash-button">
+          <DeleteIcon color="action" />
         </button>
         {learnt ?
           <button onClick={handleUnlearn} className="learnt-button">
@@ -105,37 +111,53 @@ function SkillCollapsible(props) {
             Learnt
           </button>}
       </div>
-      {open ?
-        <div className="skill-content">
-          <label>Skill Name:
+
+      <Collapse in={open}>
+        <Paper className='skillItem' elevation={5}>
+          <div className='skillItemInnerCompDiv'>
+            <p>Skill Name:</p>
             <EditableText id={id} type="skillName" content={skillName} />
-          </label>
-          <button id="progress-button" onClick={handleProgressClick}>
-            <label>Progress:</label>
-          </button>
-          {openProgress ? <Progress progress={progress} id={id} /> : null}
+          </div>
           {url === '-' ?
-            <label>URL:
-              <button onClick={handleEditButtonClick} id="add-square">
-                <i className="fa fa-plus-square" aria-hidden="true"></i>
-              </button>
-              <div className="content-div">
-                <div className={editing ? 'show' : 'hidden'}>
-                  <p className={editing ? 'show-p' : 'hidden'}>New URL:</p>
-                  <input
-                    className={editing ? 'show-input' : 'hidden'}
-                    value={editText}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyDown}
-                  />
-                </div>
-              </div>
-            </label> :
-            <label>URL:
-              <EditableText id={id} type="url" content={url} />
-            </label> }
-        </div> :
-        null}
+              <div className='skillItemProgress'>
+                <button id={editing ?
+                  'progressActive' : 'progress-button'}
+                onClick={handleEditButtonClick}
+                >
+                  <label>URLs:</label>
+                  <AddCircleOutlineIcon color="action" />
+                </button>
+                <Collapse in={editing}>
+                  <div className='url-container'>
+                    <div className='show'>
+                      <p className='show-p'>New URL:</p>
+                      <input
+                        className='show-input'
+                        value={editText}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                      />
+                    </div>
+                  </div>
+                </Collapse>
+              </div> :
+              <div className='skillItemInnerCompDiv'>
+                <p>URL:</p>
+                <EditableText id={id} type="url" content={url} />
+              </div>}
+          <div className='skillItemProgress'>
+            <button id={openProgress ? 'progressActive' : 'progress-button'}
+              onClick={handleProgressClick}>
+              <label>Progress:</label>
+              {openProgress ? <ArrowDropUpIcon color="action" /> :
+                <ArrowDropDownIcon color="action" />}
+            </button>
+          </div>
+          <Collapse in={openProgress}>
+            <Progress progress={progress} id={id} />
+          </Collapse>
+        </Paper>
+      </Collapse>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FirebaseContext } from '../../../Firebase';
 import './EditableText.css';
 import { off, child, update } from 'firebase/database';
+import EditIcon from '@mui/icons-material/Edit';
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -73,30 +74,35 @@ function EditableText(props) {
     <div className="editable-text-container">
       <div className="content-div">
         {type === 'url' ?
-        <div className="insta-link">
-          <a
-            href={editText}
-            target='_blank'
-            rel="noopener noreferrer" // added for security: https://mathiasbynens.github.io/rel-noopener/
-            className={editing ? 'hidden' : 'insta-link'}
-          >
-            {editText}
-          </a>
-        </div>:
-          <p className={editing ? 'hidden' : 'show-p'}>
-            {editText}
-          </p>}
+          <button className={editing ? 'hidden' : 'editButton'}
+            onClick={handleEditButtonClick}>
+            <a
+              href={editText}
+              target='_blank'
+              rel="noopener noreferrer" // added for security: https://mathiasbynens.github.io/rel-noopener/
+              className={editing ? 'hidden' : 'insta-link'}
+            >
+              {editText}
+            </a>
+            <EditIcon color="action" />
+          </button> :
+          <button className={editing ? 'hidden' : 'editButton'}
+            onClick={handleEditButtonClick}>
+            <p className={editing ? 'hidden' : 'show-p'}>
+              {editText}
+            </p>
+            <EditIcon color="action" />
+          </button>}
         <input
+          ref={(input) => input && input.focus()}
           className={editing ? 'show-input' : 'hidden'}
           value={editText}
           onChange={handleChange}
           onBlur={handleSubmit}
           onKeyDown={handleKeyDown}
+          autoFocus
         />
       </div>
-      <button className="edit-button" onClick={handleEditButtonClick}>
-        <i className="fa fa-pencil" aria-hidden="true"></i>
-      </button>
     </div>
   );
 }

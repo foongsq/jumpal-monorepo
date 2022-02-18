@@ -76,3 +76,33 @@ body {
     justify-content: center;
     align-items: center;
   }
+
+  .centeredText {
+    text-align: center;
+  }
+
+  #hidden {
+    display: none;
+  }
+  
+  .hidden {
+    display: none;
+  }
+
+  .content-div {
+    width: 100%;
+  }
+
+  .show-p {
+    width: 100%;
+    margin: 0;
+  }
+  
+  .show-input {
+    outline: none;
+    border: 1px solid grey;
+    border-radius: 5px;
+    width: 100%;
+    padding: 0.5rem;
+  }
+  

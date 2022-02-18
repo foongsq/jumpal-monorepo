@@ -29,7 +29,7 @@ import Home from '../Home/Home';
 import useAuth from '../../Auth';
 
 function App() {
-  const [user] = useAuth();
+  const [user, loading] = useAuth();
 
   return (
     <div className="app">
@@ -43,7 +43,7 @@ function App() {
                   <Route
                     exact path={routes.LANDING}
                     element={<Navigate to={
-                      user ? routes.HOME : routes.PROFILE}
+                      !loading && !user ? routes.PROFILE : routes.HOME}
                     />}
                   />
                   <Route path={routes.HOME} element={<Home />} />

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { withFirebase } from '../../Firebase/index';
 import routes from '../../routes/routes';
 import './Navigation.css';
 import AppBar from '@mui/material/AppBar';
@@ -16,6 +15,18 @@ import MenuItem from '@mui/material/MenuItem';
 
 const pages = [routes.HOME, routes.SPEED, routes.FREESTYLE, routes.PROFILE];
 
+const mapPageName = (page) => {
+  switch (page) {
+    case routes.HOME:
+      return 'Home';
+    case routes.SPEED:
+      return 'Speed';
+    case routes.FREESTYLE:
+      return 'Freestyle';
+    case routes.PROFILE:
+      return 'Profile';
+  }
+};
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -26,7 +37,6 @@ const Navigation = () => {
   };
 
   const handleNavigate = (page) => {
-    console.log(page);
     navigate(page);
     handleCloseNavMenu();
   };
@@ -36,7 +46,7 @@ const Navigation = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{ height: '6vh' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -67,7 +77,9 @@ const Navigation = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={() => handleNavigate(page)}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography textAlign="center">
+                    {mapPageName(page)}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -79,7 +91,7 @@ const Navigation = () => {
                 onClick={() => handleNavigate(page)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {mapPageName(page)}
               </Button>
             ))}
           </Box>
@@ -89,4 +101,4 @@ const Navigation = () => {
   );
 };
 
-export default withFirebase(Navigation);
+export default Navigation;
