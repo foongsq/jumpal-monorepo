@@ -66,12 +66,32 @@ function Speed() {
     } else {
       return (
         <div className="componentContentDiv">
+          <ToggleButtonGroup
+            exclusive
+            value={componentRendered}
+            onChange={toggleComponent}
+            color='primary'
+            className='speedPagesButtonsDiv'
+          >
+            <ToggleButton value={component.PERSONALBEST}>
+              {component.PERSONALBEST}
+            </ToggleButton>
+            <ToggleButton value={component.SPEEDDATA}>
+              {component.SPEEDDATA}
+            </ToggleButton>
+            <ToggleButton value={component.TIMING}>
+              {component.TIMING}
+            </ToggleButton>
+            <ToggleButton value={component.COUNTER}>
+              {component.COUNTER}
+            </ToggleButton>
+          </ToggleButtonGroup>
           {componentRendered === component.PERSONALBEST ?
-            <p style={{ color: 'red' }}>
+            <p className="centeredText" style={{ color: 'red' }}>
               Please sign in to see your personal bests.
             </p> :
             componentRendered === component.SPEEDDATA ?
-            <p style={{ color: 'red' }}>
+            <p className="centeredText" style={{ color: 'red' }}>
               Please sign in to see your speed data.
             </p> :
             componentRendered === component.TIMING ? <TimingTracks /> :
