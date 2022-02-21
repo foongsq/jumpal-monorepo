@@ -7,6 +7,10 @@ import { off, get } from 'firebase/database';
 import { JumpalSpinner } from '../../CustomComponents/core';
 import useAuth from '../../../Auth';
 import { onValue } from 'firebase/database';
+import
+AlertFeedback,
+{ alertSeverity }
+  from '../../CustomComponents/AlertFeedback';
 import NewIgModal from './NewIgModal';
 
 function Instagram() {
@@ -14,6 +18,7 @@ function Instagram() {
   const [user] = useAuth();
   const [igData, setIgData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(null);
   const igsRef = firebase.igs;
 
   useEffect(() => {
@@ -41,6 +46,10 @@ function Instagram() {
     };
   }, []);
 
+  const onAction = (msg) => {
+    setSuccess(msg);
+  };
+
   const onInstagramDataChange = (snapshot) => {
     const dataFromDB = [];
     dataFromDB.push(snapshot.val());
@@ -59,7 +68,6 @@ function Instagram() {
     return data;
   };
 
-
   if (loading || !igData) {
     return <JumpalSpinner />;
   } else {
@@ -70,6 +78,12 @@ function Instagram() {
       const data = processData(isIgDataPopulated);
       return (
         <div className="instagram-container">
+          <AlertFeedback
+            msg={success}
+            severity={alertSeverity.SUCCESS}
+            onClose={() => setSuccess(null)}
+            global
+          />
           <NewIgModal />
           <div className="collapsible-div">
             {isIgDataPopulated ?
@@ -80,6 +94,7 @@ function Instagram() {
                       id={object[0]}
                       content={object[1].note}
                       url={object[1].url}
+                      onAction={onAction}
                     />
                   );
                 }) :

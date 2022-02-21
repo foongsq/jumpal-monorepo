@@ -3,6 +3,10 @@ import { FirebaseContext } from '../../../Firebase/index';
 import { onAuthStateChanged } from 'firebase/auth';
 import { off, push } from 'firebase/database';
 import { JumpalButton } from '../../CustomComponents/core';
+import
+AlertFeedback,
+{ alertSeverity }
+  from '../../CustomComponents/AlertFeedback';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -12,7 +16,6 @@ import FormControl from '@mui/material/FormControl';
 
 import { styles } from '../../CustomComponents/constants';
 
-
 function NewSkillModal() {
   const firebase = useContext(FirebaseContext);
   const [user, setUser] = useState(null);
@@ -20,6 +23,9 @@ function NewSkillModal() {
   const [skillName, setSkillName] = useState('-');
   const [progress, setProgress] = useState([['-', new Date().toString()]]);
   const [url, setUrl] = useState('-');
+  const [success, setSuccess] = useState(null);
+  const [warn, setWarn] = useState(null);
+  const [error, setError] = useState(null);
   const slRef = firebase.skillList;
 
   useEffect(() => {
@@ -28,7 +34,7 @@ function NewSkillModal() {
       if (user) {
         setUser(user);
       } else {
-        alert('Please sign in to continue');
+        setWarn('Please sign in to continue');
       }
     });
     return () => {
@@ -58,18 +64,34 @@ function NewSkillModal() {
 
   const submitEntry = (event) => {
     event.preventDefault();
-    push(slRef, {
-      skillName: skillName,
-      progress: progress,
-      url: url,
-      learnt: false,
-    });
-    window.alert('New skill saved successfully!');
-    toggleNewSkill();
+    if (skillName === '-' || skillName.length === 0) {
+      setError('Invalid skill name, please try again.');
+    } else {
+      push(slRef, {
+        skillName: skillName,
+        progress: progress,
+        url: url,
+        learnt: false,
+      });
+      setSuccess('New skill saved successfully!');
+      toggleNewSkill();
+    }
   };
 
   return (
     <div>
+      <AlertFeedback
+        msg={success}
+        severity={alertSeverity.SUCCESS}
+        onClose={() => setSuccess(null)}
+        global
+      />
+      <AlertFeedback
+        msg={warn}
+        severity={alertSeverity.WARN}
+        onClose={() => setWarn(null)}
+        global
+      />
       <div className='jumpalCenteredButton'>
         <JumpalButton onClick={toggleNewSkill}>
           Add New Skill
@@ -130,6 +152,11 @@ function NewSkillModal() {
               Save
             </JumpalButton>
           }
+          <AlertFeedback
+            msg={error}
+            severity={alertSeverity.ERROR}
+            onClose={() => setError(null)}
+          />
         </Box>
       </Modal>
     </div>

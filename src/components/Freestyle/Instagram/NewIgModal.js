@@ -3,6 +3,10 @@ import { FirebaseContext } from '../../../Firebase/index';
 import { onAuthStateChanged } from 'firebase/auth';
 import { off, push } from 'firebase/database';
 import { JumpalButton } from '../../CustomComponents/core';
+import
+AlertFeedback,
+{ alertSeverity }
+  from '../../CustomComponents/AlertFeedback';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -12,13 +16,13 @@ import FormControl from '@mui/material/FormControl';
 
 import { styles } from '../../CustomComponents/constants';
 
-
 function NewIgModal() {
   const firebase = useContext(FirebaseContext);
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
   const [note, setNote] = useState('');
   const [url, setUrl] = useState('');
+  const [success, setSuccess] = useState(null);
   const igsRef = firebase.igs;
 
   useEffect(() => {
@@ -56,12 +60,18 @@ function NewIgModal() {
       note: note,
       url: url,
     });
-    window.alert('Instagram post saved successfully!');
+    setSuccess('Instagram post saved successfully!');
     toggleNewIg();
   };
 
   return (
     <div>
+      <AlertFeedback
+        msg={success}
+        severity={alertSeverity.SUCCESS}
+        onClose={() => setSuccess(null)}
+        global
+      />
       <div className='jumpalCenteredButton'>
         <JumpalButton onClick={toggleNewIg}>
           Add New Instagram Reference

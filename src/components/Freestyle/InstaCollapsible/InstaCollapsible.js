@@ -14,11 +14,12 @@ InstaCollapsible.propTypes = {
   id: PropTypes.string,
   url: PropTypes.string,
   content: PropTypes.string,
+  onAction: PropTypes.func,
 };
 
 function InstaCollapsible(props) {
   const firebase = useContext(FirebaseContext);
-  const { id, url, content } = props;
+  const { id, url, content, onAction } = props;
   const [open, setOpen] = useState(false);
   const igRef = child(firebase.igs, id);
 
@@ -32,10 +33,7 @@ function InstaCollapsible(props) {
 
   const handleDelete = () => {
     remove(igRef);
-    window.alert(
-        `Instagram post deleted successfully!
-        (Please refresh to see your updated list)`,
-    );
+    onAction('Instagram post deleted successfully!');
   };
 
   return (

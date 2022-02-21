@@ -20,14 +20,15 @@ SkillCollapsible.propTypes = {
   learnt: PropTypes.bool,
   progress: PropTypes.array,
   url: PropTypes.string,
+  onAction: PropTypes.func,
 };
 
 function SkillCollapsible(props) {
-  const { id, skillName, learnt, progress, url } = props;
+  const { id, skillName, learnt, progress, url, onAction } = props;
   const firebase = useContext(FirebaseContext);
   const [open, setOpen] = useState(false);
   const [openProgress, setOpenProgress] = useState(false);
-  const [editText, setEditText] = useState(null);
+  const [editText, setEditText] = useState('');
   const [editing, setEditing] = useState(false);
   const skillRef = child(firebase.skillList, id);
 
@@ -45,21 +46,21 @@ function SkillCollapsible(props) {
 
   const handleDelete = () => {
     remove(skillRef);
-    window.alert('Skill deleted successfully!');
+    onAction('Skill deleted successfully!');
   };
 
   const handleLearnt = () => {
     update(skillRef, {
       learnt: true,
     });
-    window.alert('Congratulations on learning a new skill!');
+    onAction('Congratulations on learning a new skill!');
   };
 
   const handleUnlearn = () => {
     update(skillRef, {
       learnt: false,
     });
-    window.alert('Oops gonna have to relearn that!');
+    onAction('Oops gonna have to relearn that!');
   };
 
   const handleEditButtonClick = () => {

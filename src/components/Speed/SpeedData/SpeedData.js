@@ -211,6 +211,7 @@ function SpeedData() {
     } else {
       return (
         <div>
+          <NewSpeedRecordModal />
           <p className="loading">Start by entering a new speed record above.</p>
         </div>
       );

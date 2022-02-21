@@ -14,6 +14,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import
+AlertFeedback,
+{ alertSeverity }
+  from '../../CustomComponents/AlertFeedback';
 import './SpeedData.css';
 
 const options = [
@@ -31,11 +35,11 @@ const options = [
 function NewSpeedRecordModal() {
   const firebase = useContext(FirebaseContext);
   const [user, setUser] = useState(firebase.user);
-  // const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [eventJ, setEventJ] = useState(null);
   const [score, setScore] = useState(null);
   const [time, setTime] = useState(null);
+  const [success, setSuccess] = useState(null);
   const srRef = firebase.speedRecords;
   let srFormRef = null;
 
@@ -113,14 +117,17 @@ function NewSpeedRecordModal() {
     srFormRef.reset();
     event.preventDefault();
     toggleNewSpeedRecord();
-    window.alert(
-        `Congratulations! You have successfully saved a 
-        new speed record. Keep going!!`,
-    );
+    setSuccess('New speed record successfully saved!');
   };
 
   return (
     <>
+      <AlertFeedback
+        msg={success}
+        severity={alertSeverity.SUCCESS}
+        onClose={() => setSuccess(null)}
+        global
+      />
       <div className='jumpalCenteredButton'>
         <JumpalButton onClick={toggleNewSpeedRecord}>
           Add New Speed Record
