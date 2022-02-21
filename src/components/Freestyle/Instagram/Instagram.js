@@ -47,9 +47,9 @@ function Instagram() {
     setIgData(dataFromDB);
   };
 
-  const processData = () => {
+  const processData = (isIgDataPopulated) => {
     const data = [];
-    if (igData && igData.length !== 0) {
+    if (isIgDataPopulated) {
       const dataValues = Object.values(igData[0]).reverse();
       const keys = Object.keys(igData[0]).reverse();
       for (let i = 0; i < dataValues.length; i++) {
@@ -64,12 +64,15 @@ function Instagram() {
     return <JumpalSpinner />;
   } else {
     if (user) {
-      const data = processData();
+      const isIgDataPopulated = igData && igData.length !== 0 &&
+        !(igData.length === 1 &&
+        (igData[0] === null || igData[0] === undefined));
+      const data = processData(isIgDataPopulated);
       return (
         <div className="instagram-container">
           <NewIgModal />
           <div className="collapsible-div">
-            {igData && igData.length !== 0 ?
+            {isIgDataPopulated ?
                 data.map((object) => {
                   return (
                     <InstaCollapsible

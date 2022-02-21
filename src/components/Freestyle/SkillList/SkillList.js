@@ -57,7 +57,10 @@ function SkillList() {
       let dataValues = [];
       const notLearntData = [];
       const learntData = [];
-      if (skillsData && skillsData.length !== 0) {
+      const isSkillsPopulated = skillsData && skillsData.length !== 0 &&
+          !(skillsData.length == 1 &&
+          (skillsData[0] == null || skillsData[0] == undefined));
+      if (isSkillsPopulated) {
         dataValues = Object.values(skillsData[0]).reverse();
         const keys = Object.keys(skillsData[0]).reverse();
         for (let i = 0; i < dataValues.length; i++) {
