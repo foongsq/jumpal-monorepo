@@ -18,7 +18,6 @@
   width: 100%;
 }
 
-
 .addNewProgress {
   display: flex;
   align-items: center;
@@ -41,4 +40,10 @@
 
 .newProgressEntry {
   padding: 0.5rem 0;
+}
+
+.progressEntryText {
+  width: 100%;
+  margin: 0;
+  word-break: break-word;
 }

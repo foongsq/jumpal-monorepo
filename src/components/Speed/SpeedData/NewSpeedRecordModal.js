@@ -14,6 +14,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import
+AlertFeedback,
+{ alertSeverity }
+  from '../../CustomComponents/AlertFeedback';
 import './SpeedData.css';
 
 const options = [
@@ -28,14 +32,14 @@ const options = [
   { value: '4x30sec Speed Relay', label: '4x30sec Speed Relay' },
 ];
 
-function NewSpeedRecordModal() {
+function NewSpeedRecordModal(props) {
   const firebase = useContext(FirebaseContext);
   const [user, setUser] = useState(firebase.user);
-  // const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [eventJ, setEventJ] = useState(null);
   const [score, setScore] = useState(null);
   const [time, setTime] = useState(null);
+  const [success, setSuccess] = useState(null);
   const srRef = firebase.speedRecords;
   let srFormRef = null;
 
@@ -53,7 +57,6 @@ function NewSpeedRecordModal() {
       unsubscribe();
     };
   }, []);
-
 
   const toggleNewSpeedRecord = () => {
     setOpen(!open);
@@ -112,15 +115,18 @@ function NewSpeedRecordModal() {
     );
     srFormRef.reset();
     event.preventDefault();
+    setSuccess('New speed record successfully saved!');
     toggleNewSpeedRecord();
-    window.alert(
-        `Congratulations! You have successfully saved a 
-        new speed record. Keep going!!`,
-    );
   };
 
   return (
     <>
+      <AlertFeedback
+        msg={success}
+        severity={alertSeverity.SUCCESS}
+        onClose={() => setSuccess(null)}
+        global
+      />
       <div className='jumpalCenteredButton'>
         <JumpalButton onClick={toggleNewSpeedRecord}>
           Add New Speed Record
@@ -134,7 +140,7 @@ function NewSpeedRecordModal() {
           <Typography variant="h6" component="h2">
             New Speed Record
           </Typography>
-          <form className='jumpalForm' ref={(el) => srFormRef = el}>
+          <form ref={(el) => srFormRef = el}>
             <div className='modalInput'>
               <FormControl fullWidth>
                 {/* Time Input */}
@@ -172,6 +178,7 @@ function NewSpeedRecordModal() {
                   label="Score"
                   type="number"
                   placeholder="Score"
+                  value={score}
                   onChange={handleScoreChange}
                   InputLabelProps={{
                     shrink: true,

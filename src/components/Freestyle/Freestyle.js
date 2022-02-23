@@ -18,7 +18,9 @@ function Freestyle() {
   const [component, setComponent] = useState(skillsList);
 
   const toggleComponent = (event, newComponent) => {
-    setComponent(newComponent);
+    if (newComponent) {
+      setComponent(newComponent);
+    }
   };
 
   if (loading) {
@@ -46,7 +48,32 @@ function Freestyle() {
         </div>
       );
     } else {
-      return <JumpalSpinner />;
+      return (
+        <div className='componentContentDiv'>
+          <ToggleButtonGroup
+            exclusive
+            value={component}
+            onChange={toggleComponent}
+            color='primary'
+            className='freestyleButtonDiv'
+          >
+            <ToggleButton value={skillsList}>
+              {skillsList}
+            </ToggleButton>
+            <ToggleButton value={igInspo}>
+              {igInspo}
+            </ToggleButton>
+          </ToggleButtonGroup>
+          {component === igInspo ?
+            <p className="centeredText" style={{ color: 'red' }}>
+              Please sign in to see your Instagram inspiration
+            </p> :
+          component === skillsList ?
+            <p className="centeredText" style={{ color: 'red' }}>
+              Please sign in to see your freestyle skills
+            </p> : null }
+        </div>
+      );
     }
   }
 }

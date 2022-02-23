@@ -88,9 +88,7 @@ function EditableText(props) {
           </button> :
           <button className={editing ? 'hidden' : 'editButton'}
             onClick={handleEditButtonClick}>
-            <p className={editing ? 'hidden' : 'show-p'}>
-              {editText}
-            </p>
+            {editText}
             <EditIcon color="action" />
           </button>}
         <input

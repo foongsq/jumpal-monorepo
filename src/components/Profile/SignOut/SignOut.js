@@ -4,7 +4,6 @@ import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { JumpalButton } from '../../CustomComponents/core';
 import LogoutIcon from '@mui/icons-material/Logout';
-import './SignOut.css';
 
 function SignOutButton() {
   const firebase = useContext(FirebaseContext);

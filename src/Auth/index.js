@@ -15,6 +15,7 @@ function useAuth() {
           setLoading(false);
         } else {
           setAuthUser(null);
+          setLoading(false);
         };
       },
   );

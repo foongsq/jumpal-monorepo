@@ -102,7 +102,7 @@ function Progress(props) {
       {displayProgress.map((progressEntry) => {
         return (
           <div className='progress-entry-div' key={progressEntry[1]}>
-            <p className='show-p'>{progressEntry[0]}</p>
+            <p className='progressEntryText'>{progressEntry[0]}</p>
             <div className="datetime-div">
               <p className='show-p'>
                 {new Date(progressEntry[1]).toLocaleDateString()}

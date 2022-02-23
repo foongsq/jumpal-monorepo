@@ -49,10 +49,6 @@ body {
   touch-action: manipulation;
 }
 
-.jumpalButton {
-  background-color: var(--bootstrapGreen);
-}
-
 /* To center and add padding to button */
 .jumpalCenteredButton {
   padding: 1rem;
@@ -60,17 +56,12 @@ body {
   justify-content: center;
 }
 
-.jumpalToast {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-}
-
 /* Division to render spinner:
   - make height of box 50% so that spinner can be in
   middle of page (but closer to top)
   - center spinner horizontally and vertically */
   .jumpalSpinnerDiv {
+    padding-top: 1rem;
     height: 50%;
     display: flex;
     justify-content: center;
@@ -79,10 +70,6 @@ body {
 
   .centeredText {
     text-align: center;
-  }
-
-  #hidden {
-    display: none;
   }
   
   .hidden {
@@ -106,3 +93,6 @@ body {
     padding: 0.5rem;
   }
   
+  .modalInput {
+    margin: 1rem 0;
+  }

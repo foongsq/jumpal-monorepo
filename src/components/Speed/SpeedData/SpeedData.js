@@ -21,7 +21,7 @@ import './SpeedData.css';
 
 function SpeedData() {
   const firebase = useContext(FirebaseContext);
-  const [user, setUser] = useState(firebase.user);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [speedRecords, setSpeedRecords] = useState([]);
   const [showToday, setShowToday] = useState(false);
@@ -56,6 +56,7 @@ function SpeedData() {
   }, []);
 
   const onSpeedDataUpdate = (snapshot) => {
+    console.log('on speed data update');
     setLoading(true);
     const speedRecords = [];
     speedRecords.push(snapshot.val());
@@ -211,6 +212,7 @@ function SpeedData() {
     } else {
       return (
         <div>
+          <NewSpeedRecordModal />
           <p className="loading">Start by entering a new speed record above.</p>
         </div>
       );

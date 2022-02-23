@@ -7,13 +7,18 @@ import { off, get } from 'firebase/database';
 import { JumpalSpinner } from '../../CustomComponents/core';
 import useAuth from '../../../Auth';
 import { onValue } from 'firebase/database';
+import
+AlertFeedback,
+{ alertSeverity }
+  from '../../CustomComponents/AlertFeedback';
 import NewIgModal from './NewIgModal';
 
 function Instagram() {
   const firebase = useContext(FirebaseContext);
   const [user] = useAuth();
-  const [igData, setIgData] = useState([]);
+  const [igData, setIgData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(null);
   const igsRef = firebase.igs;
 
   useEffect(() => {
@@ -41,15 +46,19 @@ function Instagram() {
     };
   }, []);
 
+  const onAction = (msg) => {
+    setSuccess(msg);
+  };
+
   const onInstagramDataChange = (snapshot) => {
     const dataFromDB = [];
     dataFromDB.push(snapshot.val());
     setIgData(dataFromDB);
   };
 
-  const processData = () => {
+  const processData = (isIgDataPopulated) => {
     const data = [];
-    if (igData && igData.length !== 0) {
+    if (isIgDataPopulated) {
       const dataValues = Object.values(igData[0]).reverse();
       const keys = Object.keys(igData[0]).reverse();
       for (let i = 0; i < dataValues.length; i++) {
@@ -59,17 +68,25 @@ function Instagram() {
     return data;
   };
 
-
-  if (loading) {
+  if (loading || !igData) {
     return <JumpalSpinner />;
   } else {
     if (user) {
-      const data = processData();
+      const isIgDataPopulated = igData && igData.length !== 0 &&
+        !(igData.length === 1 &&
+        (igData[0] === null || igData[0] === undefined));
+      const data = processData(isIgDataPopulated);
       return (
         <div className="instagram-container">
+          <AlertFeedback
+            msg={success}
+            severity={alertSeverity.SUCCESS}
+            onClose={() => setSuccess(null)}
+            global
+          />
           <NewIgModal />
           <div className="collapsible-div">
-            {igData && igData.length !== 0 ?
+            {isIgDataPopulated ?
                 data.map((object) => {
                   return (
                     <InstaCollapsible
@@ -77,6 +94,7 @@ function Instagram() {
                       id={object[0]}
                       content={object[1].note}
                       url={object[1].url}
+                      onAction={onAction}
                     />
                   );
                 }) :

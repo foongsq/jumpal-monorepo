@@ -9,8 +9,3 @@
   display: flex;
   justify-content: center;
 }
-
-/* Add margin around Google icon */
-#googleIcon {
-  margin: 0.5rem;
-}
