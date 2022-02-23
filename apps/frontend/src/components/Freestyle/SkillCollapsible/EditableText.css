@@ -1,0 +1,26 @@
+.editable-text-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.editButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  background-color: inherit;
+  border-bottom: 1px solid gray;
+  white-space: normal;
+  word-break: break-word;
+  text-align: left;
+}
+
+.editButton:hover {
+  cursor: pointer;
+  background-color: #ebebeb;
+}

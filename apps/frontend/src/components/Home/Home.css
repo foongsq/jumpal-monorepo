@@ -1,0 +1,72 @@
+/* To display buttons side by side and vertically center them */
+.speedFreestyleDiv {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  width: 100%;
+  height: 50%;
+}
+
+/* Buttons:
+  - Add margin around them
+  - round corners of button
+  - set green background color
+  - set width to 40%
+  - remove black border */
+.speedFreestyleButton {
+  margin: 1rem;
+  border-radius: 10px;
+  background-color: var(--bootstrapGreen);
+  width: 40%;
+  border: none;
+  box-shadow: 5px 5px 5px var(--shadow);
+}
+
+/* When hovering over button:
+  - change background color to lighter green
+  - remove underline */
+.speedFreestyleButton:hover {
+  background-color: var(--green500);
+  text-decoration: none;
+  transition: all 1s ease;
+  box-shadow: 15px 15px 15px var(--shadow);
+}
+
+/* Test inside button:
+  - increase text font size
+  - change text color to white
+  - bold text
+  - horizontally and verticallyalign text to center
+  - add shadow on text */
+.speedFreestyleButton p {
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  position: relative;
+  top: 40%;
+  text-shadow: 2px 2px var(--shadow);
+}
+
+/* On hover: 
+  - add transition to increase font size */
+.speedFreestyleButton:hover p {
+  font-size: 1.75rem;
+  transition: all 1s ease;
+}
+
+/* On screens that are 1000px or less, display the images vertically */
+@media screen and (max-width: 700px) {
+  .speedFreestyleDiv {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+  }
+
+  .speedFreestyleButton {
+    width: auto;
+    height: 50%;
+  }
+}

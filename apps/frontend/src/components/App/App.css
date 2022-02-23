@@ -1,0 +1,98 @@
+:root {
+  --green50: #F1F8E9;
+  --green100: #DCEDC8;
+  --green200: #C5E1A5;
+  --green300: #AED581;
+  --green400: #9CCC65;
+  --green500: #8BC34A;
+  --green600: #7CB342;
+  --green700: #689F38;
+  --green800: #558B2F;
+  --green900: #33691E;
+  --greenA100: #CCFF90;
+  --greenA200: #B2FF59;
+  --greenA400: #76FF03;
+  --greenA700: #64DD17;
+  --bootstrapGreen: #28a745;
+  --red: #C62828;
+  --shadow: #888888;
+  --borderRadius: 5px;
+  --blueInputFocus: rgba(0, 127, 255, 0.25);
+  --inputBorderColor: rgba(0, 0, 0, 0.15);
+  --reactSelectOptionColor: #383838;
+}
+
+body {
+  font-family: Roboto, Arial;
+  color:#383838;
+  height: 100vh;
+}
+
+.app {
+  background-color: white;
+  margin: 0 auto;
+  max-width: 1000px;
+  height: 100vh;
+}
+
+/* For padding entire content component */
+.componentContentDiv {
+  padding: 0 1rem 1rem 1rem;
+  height: 90%;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.disable-dbl-tap-zoom {
+  touch-action: manipulation;
+}
+
+/* To center and add padding to button */
+.jumpalCenteredButton {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Division to render spinner:
+  - make height of box 50% so that spinner can be in
+  middle of page (but closer to top)
+  - center spinner horizontally and vertically */
+  .jumpalSpinnerDiv {
+    padding-top: 1rem;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .centeredText {
+    text-align: center;
+  }
+  
+  .hidden {
+    display: none;
+  }
+
+  .content-div {
+    width: 100%;
+  }
+
+  .show-p {
+    width: 100%;
+    margin: 0;
+  }
+  
+  .show-input {
+    outline: none;
+    border: 1px solid grey;
+    border-radius: 5px;
+    width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .modalInput {
+    margin: 1rem 0;
+  }

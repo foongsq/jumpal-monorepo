@@ -1,0 +1,49 @@
+.progress-container {
+  border: 1px solid grey;
+  border-top: none;
+  margin: 0;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.datetime-div {
+  display: flex;
+}
+
+.progress-entry-div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.addNewProgress {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: inherit;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  float: right;
+}
+
+.addNewProgress p {
+  margin: 0;
+  margin-left: 0.5rem;
+}
+
+.addNewProgress:hover {
+  background-color: #ebebeb;
+}
+
+.newProgressEntry {
+  padding: 0.5rem 0;
+}
+
+.progressEntryText {
+  width: 100%;
+  margin: 0;
+  word-break: break-word;
+}

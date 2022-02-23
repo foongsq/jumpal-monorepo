@@ -1,0 +1,8 @@
+Font: Lemonada
+skill list collapsible background color: #dedede
+hover button: #ebebeb
+Navigation bar blue background: #38c4ff
+Navigation bar blue hover: #8adcff
+Submit button light green: #88fcb3
+Dark text color: #383838;
+blue text color: #4e7ede
