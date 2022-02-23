@@ -32,7 +32,7 @@ const options = [
   { value: '4x30sec Speed Relay', label: '4x30sec Speed Relay' },
 ];
 
-function NewSpeedRecordModal() {
+function NewSpeedRecordModal(props) {
   const firebase = useContext(FirebaseContext);
   const [user, setUser] = useState(firebase.user);
   const [open, setOpen] = useState(false);
@@ -57,7 +57,6 @@ function NewSpeedRecordModal() {
       unsubscribe();
     };
   }, []);
-
 
   const toggleNewSpeedRecord = () => {
     setOpen(!open);
@@ -116,8 +115,8 @@ function NewSpeedRecordModal() {
     );
     srFormRef.reset();
     event.preventDefault();
-    toggleNewSpeedRecord();
     setSuccess('New speed record successfully saved!');
+    toggleNewSpeedRecord();
   };
 
   return (
@@ -179,6 +178,7 @@ function NewSpeedRecordModal() {
                   label="Score"
                   type="number"
                   placeholder="Score"
+                  value={score}
                   onChange={handleScoreChange}
                   InputLabelProps={{
                     shrink: true,

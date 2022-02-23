@@ -17,7 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function PersonalBests() {
   const firebase = useContext(FirebaseContext);
-  const [user, setUser] = useState(firebase.user);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [personalBests, setPersonalBests] = useState([]);
   const pbRef = firebase.personalBests;
@@ -51,6 +51,7 @@ function PersonalBests() {
   }, []);
 
   const onPersonalBestsUpdate = (snapshot) => {
+    console.log('on pb update');
     setLoading(true);
     const newPersonalBests = [];
     newPersonalBests.push(snapshot.val());

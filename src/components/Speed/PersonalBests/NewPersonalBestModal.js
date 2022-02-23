@@ -13,7 +13,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import
+AlertFeedback,
+{ alertSeverity }
+  from '../../CustomComponents/AlertFeedback';
 import { styles } from '../../CustomComponents/constants';
 
 const options = [
@@ -35,9 +38,8 @@ function NewPersonalBestModal() {
   const [eventJ, setEventJ] = useState(null);
   const [score, setScore] = useState(null);
   const [time, setTime] = useState(null);
+  const [success, setSuccess] = useState(null);
   const pbRef = firebase.personalBests;
-  // eslint-disable-next-line no-unused-vars
-  let pbFormRef = null;
 
   useEffect(() => {
     // Get current user from firebase and save to state as user
@@ -92,13 +94,18 @@ function NewPersonalBestModal() {
       time: timeStamp(time),
     });
 
-    // TODO: Change this into a toast
-    window.alert('New Personal Best saved successfully!');
+    setSuccess('New Personal Best saved successfully!');
     toggleNewPersonalBest();
   };
 
   return (
     <div>
+      <AlertFeedback
+        msg={success}
+        severity={alertSeverity.SUCCESS}
+        onClose={() => setSuccess(null)}
+        global
+      />
       <div className='jumpalCenteredButton'>
         <JumpalButton onClick={toggleNewPersonalBest}>
           Add New Personal Best
@@ -112,7 +119,7 @@ function NewPersonalBestModal() {
           <Typography variant="h6" component="h2">
             New Personal Best
           </Typography>
-          <form ref={(el) => pbFormRef = el}>
+          <form>
             <div className='modalInput'>
               <FormControl fullWidth>
                 {/* Time Input */}
