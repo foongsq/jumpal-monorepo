@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { FirebaseContext } from '../../../Firebase';
+import { FirebaseContext } from '../../../../../Firebase';
 import './EditableText.css';
 import { off, child, update } from 'firebase/database';
 import EditIcon from '@mui/icons-material/Edit';

@@ -1,5 +1,3 @@
-/* eslint linebreak-style: ["error", "unix"] */
-
 module.exports = {
   'env': {
     'browser': true,
@@ -33,5 +31,6 @@ module.exports = {
         'FunctionExpression': false,
       },
     }],
+    'react/jsx-key': 0,
   },
 };

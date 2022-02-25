@@ -1,23 +1,41 @@
 import React, { useState } from 'react';
-import useAuth from '../../Auth';
-
+import useAuth from '../../auth';
 import SpeedData from './SpeedData/SpeedData';
 import TimingTracks from './TimingTracks/TimingTracks';
 import Counter from './Counter/Counter';
 import PersonalBests from './PersonalBests/PersonalBests';
-import { JumpalSpinner } from '../CustomComponents/core';
-
+import JumpalSpinner from '../Custom/JumpalSpinner';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
 import './Speed.css';
-
 
 const component = {
   TIMING: 'Timing Track',
   COUNTER: 'Counter',
   SPEEDDATA: 'Speed Data',
   PERSONALBEST: 'Personal Best',
+};
+
+const toggleButtonNames = [component.PERSONALBEST, component.SPEEDDATA,
+  component.TIMING, component.COUNTER];
+
+function SpeedToggleButtons(props) {
+  const { value, toggle } = props;
+  return (
+    <ToggleButtonGroup
+      exclusive
+      value={value}
+      onChange={toggle}
+      color='primary'
+      className='speedPagesButtonsDiv'
+    >
+      {toggleButtonNames.map((buttonValue) => (
+        <ToggleButton key={buttonValue} value={buttonValue}>
+          {buttonValue}
+        </ToggleButton>
+      ))}
+    </ToggleButtonGroup>
+  );
 };
 
 function Speed() {
@@ -37,26 +55,10 @@ function Speed() {
     if (user) {
       return (
         <div className="componentContentDiv">
-          <ToggleButtonGroup
-            exclusive
+          <SpeedToggleButtons
             value={componentRendered}
-            onChange={toggleComponent}
-            color='primary'
-            className='speedPagesButtonsDiv'
-          >
-            <ToggleButton value={component.PERSONALBEST}>
-              {component.PERSONALBEST}
-            </ToggleButton>
-            <ToggleButton value={component.SPEEDDATA}>
-              {component.SPEEDDATA}
-            </ToggleButton>
-            <ToggleButton value={component.TIMING}>
-              {component.TIMING}
-            </ToggleButton>
-            <ToggleButton value={component.COUNTER}>
-              {component.COUNTER}
-            </ToggleButton>
-          </ToggleButtonGroup>
+            toggle={toggleComponent}
+          />
           {componentRendered === component.PERSONALBEST ? <PersonalBests /> :
             componentRendered === component.SPEEDDATA ? <SpeedData /> :
             componentRendered === component.TIMING ? <TimingTracks /> :
@@ -66,26 +68,10 @@ function Speed() {
     } else {
       return (
         <div className="componentContentDiv">
-          <ToggleButtonGroup
-            exclusive
+          <SpeedToggleButtons
             value={componentRendered}
-            onChange={toggleComponent}
-            color='primary'
-            className='speedPagesButtonsDiv'
-          >
-            <ToggleButton value={component.PERSONALBEST}>
-              {component.PERSONALBEST}
-            </ToggleButton>
-            <ToggleButton value={component.SPEEDDATA}>
-              {component.SPEEDDATA}
-            </ToggleButton>
-            <ToggleButton value={component.TIMING}>
-              {component.TIMING}
-            </ToggleButton>
-            <ToggleButton value={component.COUNTER}>
-              {component.COUNTER}
-            </ToggleButton>
-          </ToggleButtonGroup>
+            toggle={toggleComponent}
+          />
           {componentRendered === component.PERSONALBEST ?
             <p className="centeredText" style={{ color: 'red' }}>
               Please sign in to see your personal bests.

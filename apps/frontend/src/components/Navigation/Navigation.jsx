@@ -27,7 +27,7 @@ const mapPageName = (page) => {
   }
 };
 
-const Navigation = () => {
+function Navigation() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 

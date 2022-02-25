@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper';
 import SignOut from './SignOut/SignOut';
 import SignIn from './SignIn/SignIn';
 import './Profile.css';
-import { JumpalSpinner } from '../CustomComponents/core';
+import JumpalSpinner from '../Custom/JumpalSpinner';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FirebaseContext } from '../../Firebase';
 

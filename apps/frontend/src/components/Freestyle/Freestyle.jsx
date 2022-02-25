@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import useAuth from '../../Auth';
-
+import useAuth from '../../auth';
 import Instagram from './Instagram/Instagram';
 import SkillList from './SkillList/SkillList';
-import { JumpalSpinner } from '../CustomComponents/core';
-
+import JumpalSpinner from '../Custom/JumpalSpinner';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
 import './Freestyle.css';
 
 const igInspo = 'Instagram Inspiration';

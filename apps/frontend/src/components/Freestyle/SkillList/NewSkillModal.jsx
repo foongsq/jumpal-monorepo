@@ -2,11 +2,11 @@ import React, { useEffect, useContext, useState } from 'react';
 import { FirebaseContext } from '../../../Firebase/index';
 import { onAuthStateChanged } from 'firebase/auth';
 import { off, push } from 'firebase/database';
-import { JumpalButton } from '../../CustomComponents/core';
+import JumpalButton from '../../Custom/JumpalButton';
 import
 AlertFeedback,
 { alertSeverity }
-  from '../../CustomComponents/AlertFeedback';
+  from '../../Custom/AlertFeedback';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 
-import { styles } from '../../CustomComponents/constants';
+import { styles } from '../../Custom/constants';
 
 function NewSkillModal() {
   const firebase = useContext(FirebaseContext);

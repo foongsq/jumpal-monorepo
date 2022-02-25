@@ -5,7 +5,7 @@ import {
   remove,
   child,
 } from 'firebase/database';
-import { FirebaseContext } from '../../../Firebase';
+import { FirebaseContext } from '../../../../Firebase';
 import { Collapse, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './InstaCollapsible.css';

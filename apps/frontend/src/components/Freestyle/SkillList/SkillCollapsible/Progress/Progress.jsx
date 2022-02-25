@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FirebaseContext } from '../../../../Firebase';
+import { FirebaseContext } from '../../../../../Firebase';
 import { off, child, update, get } from 'firebase/database';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 

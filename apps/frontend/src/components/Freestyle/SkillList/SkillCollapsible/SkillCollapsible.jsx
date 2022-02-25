@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { FirebaseContext } from '../../../Firebase';
+import { FirebaseContext } from '../../../../Firebase';
 import { off, child, update, remove } from 'firebase/database';
-import EditableText from './EditableText';
-import Progress from '../SkillCollapsible/Progress/Progress';
+import EditableText from './EditableText/EditableText';
+import Progress from './Progress/Progress';
 import './SkillCollapsible.css';
 import { Collapse, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';

@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom';
 import routes from '../../routes/routes';
 import './App.css';
-import './JumpalTableStyles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -25,7 +24,7 @@ import SpeedData from '../Speed/SpeedData/SpeedData';
 import PersonalBests from '../Speed/PersonalBests/PersonalBests';
 import Freestyle from '../Freestyle/Freestyle';
 import Home from '../Home/Home';
-import useAuth from '../../Auth';
+import useAuth from '../../auth';
 
 function App() {
   const [user, loading] = useAuth();

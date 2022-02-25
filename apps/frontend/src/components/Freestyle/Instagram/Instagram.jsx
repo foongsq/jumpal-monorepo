@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
 import './Instagram.css';
-import InstaCollapsible from '../InstaCollapsible/InstaCollapsible';
+import InstaCollapsible from './InstaCollapsible/InstaCollapsible';
 import { FirebaseContext } from '../../../Firebase/index';
 import { onAuthStateChanged } from 'firebase/auth';
 import { off, get } from 'firebase/database';
-import { JumpalSpinner } from '../../CustomComponents/core';
-import useAuth from '../../../Auth';
+import JumpalSpinner from '../../Custom/JumpalSpinner';
+import useAuth from '../../../auth';
 import { onValue } from 'firebase/database';
 import
 AlertFeedback,
 { alertSeverity }
-  from '../../CustomComponents/AlertFeedback';
+  from '../../Custom/AlertFeedback';
 import NewIgModal from './NewIgModal';
 
 function Instagram() {

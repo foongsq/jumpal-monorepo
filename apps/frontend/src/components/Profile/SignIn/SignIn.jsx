@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { set, child } from 'firebase/database';
 import { FirebaseContext } from '../../../Firebase/index';
 import { useNavigate } from 'react-router-dom';
-import { JumpalButton } from '../../CustomComponents/core';
+import JumpalButton from '../../Custom/JumpalButton';
 import { signInWithPopup } from 'firebase/auth';
 import GoogleIcon from '@mui/icons-material/Google';
 

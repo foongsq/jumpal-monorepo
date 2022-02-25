@@ -3,14 +3,13 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { off } from 'firebase/database';
 import { get, onValue } from 'firebase/database';
 import { FirebaseContext } from '../../../Firebase';
-import { JumpalSpinner } from '../../CustomComponents/core';
+import JumpalSpinner from '../../Custom/JumpalSpinner';
 import
 AlertFeedback,
 { alertSeverity }
-  from '../../CustomComponents/AlertFeedback';
-import SkillCollapsible from '../SkillCollapsible/SkillCollapsible';
+  from '../../Custom/AlertFeedback';
+import SkillCollapsible from './SkillCollapsible/SkillCollapsible';
 import NewSkillModal from './NewSkillModal';
-
 import './SkillList.css';
 
 function SkillList() {

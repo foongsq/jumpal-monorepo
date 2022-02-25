@@ -61,11 +61,7 @@ body {
   middle of page (but closer to top)
   - center spinner horizontally and vertically */
   .jumpalSpinnerDiv {
-    padding-top: 1rem;
-    height: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
   }
 
   .centeredText {
@@ -96,3 +92,21 @@ body {
   .modalInput {
     margin: 1rem 0;
   }
+
+  /* Delete button:
+  - no borders
+  - inherit background color
+  - rounded corners */
+.jumpalTableDeleteButton {
+  border: none;
+  background-color: inherit;
+  border-radius: 5px;
+}
+
+/* When hovering delete button:
+    - trash icon turns white
+    - background color turns red */
+.jumpalTableDeleteButton:hover {
+  color: white;
+  background-color: var(--red);
+}

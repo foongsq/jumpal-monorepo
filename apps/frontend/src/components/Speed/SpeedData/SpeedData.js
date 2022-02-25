@@ -3,14 +3,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { onValue, get, child, off, remove } from 'firebase/database';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FirebaseContext } from '../../../Firebase/index';
-import { JumpalButton, JumpalSpinner } from '../../CustomComponents/core';
-
+import JumpalButton from '../../Custom/JumpalButton';
+import JumpalSpinner from '../../Custom/JumpalSpinner';
 import {
   StyledHeaderTableCell,
   StyledTableCell,
   StyledTableRow,
   StyledTableContainer,
-} from '../../CustomComponents/table';
+} from '../../Custom/table';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import DeleteIcon from '@mui/icons-material/Delete';
