@@ -118,7 +118,7 @@ function PersonalBests() {
             Start by entering a new personal best record above.
           </p>
         </div>
-      });
+      }
     </JumpalSpinnerWrapper>
   );
 }
