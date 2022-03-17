@@ -34,3 +34,14 @@ export const styles = {
     p: 4,
   },
 };
+
+export const messages = {
+  PB_NOT_SIGNED_IN: 'Please sign in to see your personal bests.',
+  SD_NOT_SIGNED_IN: 'Please sign in to see your speed data.',
+  SKILL_NOT_SIGNED_IN: 'Please sign in to see your freestyle skills.',
+  IG_NOT_SIGNED_IN: 'Please sign in to see your Instagram inspiration.',
+  NOTLEARNT_SKILLS_EMPTY: 'No skills to learn... Add some above!',
+  LEARNT_SKILLS_EMPTY: 'Have not learnt any skills, jiayou!',
+  SKILLS_EMPTY: `Nothing to display, you could start by adding some 
+    skills above.`,
+};

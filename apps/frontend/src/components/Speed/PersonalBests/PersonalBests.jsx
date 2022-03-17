@@ -3,8 +3,6 @@ import { FirebaseContext } from '../../../Firebase/index';
 import { onValue, get, child, off, remove } from 'firebase/database';
 import { onAuthStateChanged } from 'firebase/auth';
 import NewPersonalBestModal from './NewPersonalBestModal';
-import JumpalSpinner from '../../Custom/JumpalSpinner';
-
 import {
   StyledHeaderTableCell,
   StyledTableCell,
@@ -14,6 +12,7 @@ import {
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import DeleteIcon from '@mui/icons-material/Delete';
+import JumpalSpinnerWrapper from '../../Custom/JumpalSpinnerWrapper';
 
 function PersonalBests() {
   const firebase = useContext(FirebaseContext);
@@ -97,14 +96,9 @@ function PersonalBests() {
       );
     });
   };
-
-  if (loading) {
-    return <JumpalSpinner />;
-  } else {
-    if (personalBests && personalBests.length !== 0 && personalBests[0]) {
-      const records = personalBests;
-
-      return (
+  return (
+    <JumpalSpinnerWrapper loading={loading}>
+      {(personalBests && personalBests.length !== 0 && personalBests[0]) ?
         <div className="componentContentDiv">
           <NewPersonalBestModal />
           <h2>My Personal Bests</h2>
@@ -112,15 +106,11 @@ function PersonalBests() {
             <Table>
               <tbody>
                 {renderTableHeader()}
-                {renderAllData(records)}
+                {renderAllData(personalBests)}
               </tbody>
             </Table>
           </StyledTableContainer>
-        </div>
-      );
-    } else {
-      // User doesn't have any personal best records yet
-      return (
+        </div> :
         <div>
           <NewPersonalBestModal />
           <h2>My Personal Bests</h2>
@@ -128,9 +118,9 @@ function PersonalBests() {
             Start by entering a new personal best record above.
           </p>
         </div>
-      );
-    }
-  }
+      });
+    </JumpalSpinnerWrapper>
+  );
 }
 
 export default PersonalBests;

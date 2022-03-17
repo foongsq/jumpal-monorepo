@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/system';
 import { Alert, Collapse } from '@mui/material';
 
-AlertFeedback.propTypes = {
+JumpalAlertFeedback.propTypes = {
   msg: PropTypes.string,
   onClose: PropTypes.func,
   severity: PropTypes.string,
   global: PropTypes.bool,
 };
 
-function AlertFeedback(props) {
+function JumpalAlertFeedback(props) {
   const { msg, onClose, severity, global } = props;
 
   useEffect(() => {
@@ -48,4 +48,4 @@ const StyledAlert = styled(Alert)({
   marginTop: '1rem',
 });
 
-export default AlertFeedback;
+export default JumpalAlertFeedback;

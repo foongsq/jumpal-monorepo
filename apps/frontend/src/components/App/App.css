@@ -56,47 +56,39 @@ body {
   justify-content: center;
 }
 
-/* Division to render spinner:
-  - make height of box 50% so that spinner can be in
-  middle of page (but closer to top)
-  - center spinner horizontally and vertically */
-  .jumpalSpinnerDiv {
+.centeredText {
+  text-align: center;
+}
 
-  }
+.hidden {
+  display: none;
+}
 
-  .centeredText {
-    text-align: center;
-  }
-  
-  .hidden {
-    display: none;
-  }
+.content-div {
+  width: 100%;
+}
 
-  .content-div {
-    width: 100%;
-  }
+.show-p {
+  width: 100%;
+  margin: 0;
+}
 
-  .show-p {
-    width: 100%;
-    margin: 0;
-  }
-  
-  .show-input {
-    outline: none;
-    border: 1px solid grey;
-    border-radius: 5px;
-    width: 100%;
-    padding: 0.5rem;
-  }
-  
-  .modalInput {
-    margin: 1rem 0;
-  }
+.show-input {
+  outline: none;
+  border: 1px solid grey;
+  border-radius: 5px;
+  width: 100%;
+  padding: 0.5rem;
+}
 
-  /* Delete button:
-  - no borders
-  - inherit background color
-  - rounded corners */
+.modalInput {
+  margin: 1rem 0;
+}
+
+/* Delete button:
+- no borders
+- inherit background color
+- rounded corners */
 .jumpalTableDeleteButton {
   border: none;
   background-color: inherit;

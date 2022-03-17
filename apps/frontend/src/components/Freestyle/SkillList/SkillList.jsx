@@ -3,18 +3,19 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { off } from 'firebase/database';
 import { get, onValue } from 'firebase/database';
 import { FirebaseContext } from '../../../Firebase';
-import JumpalSpinner from '../../Custom/JumpalSpinner';
+import JumpalSpinnerWrapper from '../../Custom/JumpalSpinnerWrapper';
 import
-AlertFeedback,
+JumpalAlertFeedback,
 { alertSeverity }
-  from '../../Custom/AlertFeedback';
+  from '../../Custom/JumpalAlertFeedback';
 import SkillCollapsible from './SkillCollapsible/SkillCollapsible';
 import NewSkillModal from './NewSkillModal';
 import './SkillList.css';
+import JumpalPossiblyEmpty from '../../Custom/JumpalPossiblyEmpty';
+import { messages } from '../../Custom/constants';
 
 function SkillList() {
   const firebase = useContext(FirebaseContext);
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [skillsData, setSkillsData] = useState([]);
   const [success, setSuccess] = useState(null);
@@ -31,7 +32,6 @@ function SkillList() {
           const value = snapshot.val();
           skillsDataFromDb.push(value);
           setSkillsData(skillsDataFromDb);
-          setUser(user);
           setLoading(false);
         })
             .catch((error) => {
@@ -58,64 +58,78 @@ function SkillList() {
     setSkillsData(skillsDataFromDb);
   };
 
-  if (loading) {
-    return <JumpalSpinner />;
-  } else {
-    if (user) {
-      let dataValues = [];
-      const notLearntData = [];
-      const learntData = [];
-      const isSkillsPopulated = skillsData && skillsData.length !== 0 &&
-          !(skillsData.length == 1 &&
-          (skillsData[0] == null || skillsData[0] == undefined));
-      if (isSkillsPopulated) {
-        dataValues = Object.values(skillsData[0]).reverse();
-        const keys = Object.keys(skillsData[0]).reverse();
-        for (let i = 0; i < dataValues.length; i++) {
-          if (dataValues[i].learnt) {
-            learntData[i] = [keys[i], dataValues[i]];
-          } else {
-            notLearntData[i] = [keys[i], dataValues[i]];
-          }
+  const processData = () => {
+    console.log('skillsData', skillsData);
+    const notLearntData = [];
+    const learntData = [];
+    const isSkillsPopulated = skillsData && skillsData.length !== 0 &&
+      !skillsData[0];
+    if (isSkillsPopulated) {
+      const dataValues = Object.values(skillsData[0]).reverse();
+      const keys = Object.keys(skillsData[0]).reverse();
+      for (let i = 0; i < dataValues.length; i++) {
+        if (dataValues[i].learnt) {
+          learntData.push([keys[i], dataValues[i]]);
+        } else {
+          notLearntData.push([keys[i], dataValues[i]]);
         }
       }
-      return (
-        <div>
-          <AlertFeedback
-            msg={success}
-            severity={alertSeverity.SUCCESS}
-            onClose={() => setSuccess(null)}
-            global
-          />
-          <NewSkillModal />
-          {skillsData && skillsData.length !== 0 && user ?
-            <div>
-              <div className='skillsToLearn'>
-                <h2>Skills I want to learn</h2>
-                {notLearntData.length > 0 ?
-                  notLearntData.map((object) => {
-                    return (
-                      <SkillCollapsible
-                        key={object[0]}
-                        id={object[0]}
-                        skillName={object[1].skillName}
-                        description={object[1].description}
-                        progress={object[1].progress}
-                        url={object[1].url}
-                        learnt={false}
-                        onAction={onAction}
-                      />
-                    );
-                  }) :
-                  <p className='centeredText'>
-                    No skills to learn... Add some above !
-                  </p>
-                }
-              </div>
-              <div className='learntSkills'>
-                <h2>Skills I have learnt</h2>
-                {learntData.length > 0 ?
-                  learntData.map((object) => {
+    }
+    console.log('notLearntdata', notLearntData);
+    return {
+      learnt: learntData,
+      notLearnt: notLearntData,
+    };
+  };
+
+  return (
+    <JumpalSpinnerWrapper loading={loading}>
+      <div>
+        <JumpalAlertFeedback
+          msg={success}
+          severity={alertSeverity.SUCCESS}
+          onClose={() => setSuccess(null)}
+          global
+        />
+        <NewSkillModal />
+        <JumpalPossiblyEmpty
+          msg={messages.SKILLS_EMPTY}
+          isPopulated={skillsData && skillsData.length >= 0 &&
+            !skillsData[0]}
+        >
+          <div>
+            <div className='skillsToLearn'>
+              <h2>Skills I want to learn</h2>
+              {console.log('(processData().notLearnt))',
+                  (processData().notLearnt))}
+              <JumpalPossiblyEmpty
+                msg={messages.NOTLEARNT_SKILLS_EMPTY}
+                isPopulated={processData().notLearnt.length > 0}
+              >
+                <div>
+                  {processData().notLearnt.map((object) => (
+                    <SkillCollapsible
+                      key={object[0]}
+                      id={object[0]}
+                      skillName={object[1].skillName}
+                      description={object[1].description}
+                      progress={object[1].progress}
+                      url={object[1].url}
+                      learnt={false}
+                      onAction={onAction}
+                    />
+                  ))}
+                </div>
+              </JumpalPossiblyEmpty>
+            </div>
+            <div className='learntSkills'>
+              <h2>Skills I have learnt</h2>
+              <JumpalPossiblyEmpty
+                msg={messages.LEARNT_SKILLS_EMPTY}
+                isPopulated={processData().learnt.length > 0}
+              >
+                <div>
+                  {processData().learnt.map((object) => {
                     return (
                       <SkillCollapsible
                         key={object[0]}
@@ -128,23 +142,15 @@ function SkillList() {
                         onAction={onAction}
                       />
                     );
-                  }) :
-                  <p className='centeredText'>
-                    Have not learnt any skills, jiayou!
-                  </p>
-                }
-              </div>
-            </div> :
-            <p>
-              Nothing to display, you could start by adding some skills above.
-            </p>
-          }
-        </div>
-      );
-    } else {
-      return <JumpalSpinner />;
-    }
-  }
+                  })}
+                </div>
+              </JumpalPossiblyEmpty>
+            </div>
+          </div>
+        </JumpalPossiblyEmpty>
+      </div>
+    </JumpalSpinnerWrapper>
+  );
 }
 
 export default SkillList;

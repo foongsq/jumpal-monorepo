@@ -4,18 +4,16 @@ import InstaCollapsible from './InstaCollapsible/InstaCollapsible';
 import { FirebaseContext } from '../../../Firebase/index';
 import { onAuthStateChanged } from 'firebase/auth';
 import { off, get } from 'firebase/database';
-import JumpalSpinner from '../../Custom/JumpalSpinner';
-import useAuth from '../../../auth';
 import { onValue } from 'firebase/database';
 import
-AlertFeedback,
+JumpalAlertFeedback,
 { alertSeverity }
-  from '../../Custom/AlertFeedback';
+  from '../../Custom/JumpalAlertFeedback';
 import NewIgModal from './NewIgModal';
+import JumpalSpinnerWrapper from '../../Custom/JumpalSpinnerWrapper';
 
 function Instagram() {
   const firebase = useContext(FirebaseContext);
-  const [user] = useAuth();
   const [igData, setIgData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
@@ -56,58 +54,47 @@ function Instagram() {
     setIgData(dataFromDB);
   };
 
-  const processData = (isIgDataPopulated) => {
+  const processData = () => {
     const data = [];
-    if (isIgDataPopulated) {
-      const dataValues = Object.values(igData[0]).reverse();
-      const keys = Object.keys(igData[0]).reverse();
-      for (let i = 0; i < dataValues.length; i++) {
-        data[i] = [keys[i], dataValues[i]];
-      }
+    const dataValues = Object.values(igData[0]).reverse();
+    const keys = Object.keys(igData[0]).reverse();
+    for (let i = 0; i < dataValues.length; i++) {
+      data[i] = [keys[i], dataValues[i]];
     }
     return data;
   };
 
-  if (loading || !igData) {
-    return <JumpalSpinner />;
-  } else {
-    if (user) {
-      const isIgDataPopulated = igData && igData.length !== 0 &&
-        !(igData.length === 1 &&
-        (igData[0] === null || igData[0] === undefined));
-      const data = processData(isIgDataPopulated);
-      return (
-        <div className="instagram-container">
-          <AlertFeedback
-            msg={success}
-            severity={alertSeverity.SUCCESS}
-            onClose={() => setSuccess(null)}
-            global
-          />
-          <NewIgModal />
-          <div className="collapsible-div">
-            {isIgDataPopulated ?
-                data.map((object) => {
-                  return (
-                    <InstaCollapsible
-                      key={object[0]}
-                      id={object[0]}
-                      content={object[1].note}
-                      url={object[1].url}
-                      onAction={onAction}
-                    />
-                  );
-                }) :
-              <p>
-                Nothing to display, you could start by adding some posts above.
-              </p>}
-          </div>
+  return (
+    <JumpalSpinnerWrapper loading={loading || !igData}>
+      <div className="instagram-container">
+        <JumpalAlertFeedback
+          msg={success}
+          severity={alertSeverity.SUCCESS}
+          onClose={() => setSuccess(null)}
+          global
+        />
+        <NewIgModal />
+        <div className="collapsible-div">
+          {igData && igData.length >= 0 && igData[0] ?
+            processData().map((object) => {
+              return (
+                <InstaCollapsible
+                  key={object[0]}
+                  id={object[0]}
+                  content={object[1].note}
+                  url={object[1].url}
+                  onAction={onAction}
+                />
+              );
+            }) :
+            <p>
+              Nothing to display, you could start by adding some posts above.
+            </p>
+          }
         </div>
-      );
-    } else {
-      return <JumpalSpinner />;
-    }
-  }
+      </div>
+    </JumpalSpinnerWrapper>
+  );
 }
 
 export default Instagram;

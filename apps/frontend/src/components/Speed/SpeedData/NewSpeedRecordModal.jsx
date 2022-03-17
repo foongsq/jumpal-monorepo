@@ -15,9 +15,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import
-AlertFeedback,
+JumpalAlertFeedback,
 { alertSeverity }
-  from '../../Custom/AlertFeedback';
+  from '../../Custom/JumpalAlertFeedback';
 import './SpeedData.css';
 
 const options = [
@@ -121,7 +121,7 @@ function NewSpeedRecordModal(props) {
 
   return (
     <>
-      <AlertFeedback
+      <JumpalAlertFeedback
         msg={success}
         severity={alertSeverity.SUCCESS}
         onClose={() => setSuccess(null)}

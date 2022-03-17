@@ -4,9 +4,9 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { off, push } from 'firebase/database';
 import JumpalButton from '../../Custom/JumpalButton';
 import
-AlertFeedback,
+JumpalAlertFeedback,
 { alertSeverity }
-  from '../../Custom/AlertFeedback';
+  from '../../Custom/JumpalAlertFeedback';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -66,7 +66,7 @@ function NewIgModal() {
 
   return (
     <div>
-      <AlertFeedback
+      <JumpalAlertFeedback
         msg={success}
         severity={alertSeverity.SUCCESS}
         onClose={() => setSuccess(null)}

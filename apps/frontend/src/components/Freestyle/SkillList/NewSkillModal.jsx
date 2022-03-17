@@ -4,9 +4,9 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { off, push } from 'firebase/database';
 import JumpalButton from '../../Custom/JumpalButton';
 import
-AlertFeedback,
+JumpalAlertFeedback,
 { alertSeverity }
-  from '../../Custom/AlertFeedback';
+  from '../../Custom/JumpalAlertFeedback';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -80,13 +80,13 @@ function NewSkillModal() {
 
   return (
     <div>
-      <AlertFeedback
+      <JumpalAlertFeedback
         msg={success}
         severity={alertSeverity.SUCCESS}
         onClose={() => setSuccess(null)}
         global
       />
-      <AlertFeedback
+      <JumpalAlertFeedback
         msg={warn}
         severity={alertSeverity.WARN}
         onClose={() => setWarn(null)}
@@ -152,7 +152,7 @@ function NewSkillModal() {
               Save
             </JumpalButton>
           }
-          <AlertFeedback
+          <JumpalAlertFeedback
             msg={error}
             severity={alertSeverity.ERROR}
             onClose={() => setError(null)}
