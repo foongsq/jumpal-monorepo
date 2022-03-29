@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import useAuth from '../../auth';
-import SpeedData from './SpeedData/SpeedData';
-import TimingTracks from './TimingTracks/TimingTracks';
-import Counter from '../../pages/Speed/components/Counter/Counter';
-import PersonalBests from './PersonalBests/PersonalBests';
-import JumpalToggleButtons from '../Custom/JumpalToggleButtons';
-import JumpalErrorText from '../Custom/JumpalErrorText';
-import { messages } from '../Custom/constants';
-import JumpalSpinnerWrapper from '../Custom/JumpalSpinnerWrapper';
+import SpeedData from './components/SpeedData/SpeedData';
+import TimingTracks from './components/TimingTracks/TimingTracks';
+import Counter from './components/Counter/Counter';
+import PersonalBests from './components/PersonalBests/PersonalBests';
+import JumpalToggleButtons from '../../components/JumpalToggleButtons';
+import JumpalErrorText from '../../components/JumpalErrorText';
+import { messages } from '../../components/constants';
+import JumpalSpinnerWrapper from '../../components/JumpalSpinnerWrapper';
 
 const component = {
   TIMING: 'Timing Track',
