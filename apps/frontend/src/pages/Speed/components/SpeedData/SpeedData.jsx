@@ -3,8 +3,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import { onValue, get, child, off, remove } from 'firebase/database';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FirebaseContext } from '../../../../Firebase/index';
-import JumpalButton from '../../../../components/JumpalButton';
-import JumpalSpinner from '../../../../components/JumpalSpinner';
+import {
+  JumpalButton,
+  JumpalSpinnerWrapper,
+  JumpalPossiblyEmpty } from '../../../../components';
 import {
   StyledHeaderTableCell,
   StyledTableCell,
@@ -16,6 +18,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import TagFacesIcon from '@mui/icons-material/TagFaces';
 import NewSpeedRecordModal from './NewSpeedRecordModal';
 import './SpeedData.css';
+import { messages } from '../../../../constants';
+import { isDataPopulated } from '../../../../utils';
 
 function SpeedData() {
   const firebase = useContext(FirebaseContext);
@@ -102,35 +106,9 @@ function SpeedData() {
   };
 
   const renderAllData = (records) => {
-    return records.reverse().map((record) => {
-      const { event, score, time } = record;
-      return (
-        <StyledTableRow key={time}>
-          <StyledTableCell>{event}</StyledTableCell>
-          <StyledTableCell>{score}</StyledTableCell>
-          <StyledTableCell>{time}</StyledTableCell>
-          <StyledTableCell>
-            <button
-              className="jumpalTableDeleteButton"
-              onClick={() => handleDelete(event, score, time)}
-            >
-              <DeleteIcon color="action" />
-            </button></StyledTableCell>
-        </StyledTableRow>
-      );
-    });
-  };
-
-  const renderTodayData = (records) => {
-    let today = new Date();
-    const dd = String(today.getDate());
-    const mm = String(today.getMonth() + 1); // January is 0!
-    const yyyy = today.getFullYear();
-    today = `${mm}/${dd}/${yyyy}`;
-    return records.reverse().map((record) => {
-      const { event, score, time } = record; // destructuring
-      const splitTime = time.split(' ');
-      if (splitTime[0] === today) {
+    if (isDataPopulated(records)) {
+      return records.reverse().map((record) => {
+        const { event, score, time } = record;
         return (
           <StyledTableRow key={time}>
             <StyledTableCell>{event}</StyledTableCell>
@@ -141,48 +119,80 @@ function SpeedData() {
                 className="jumpalTableDeleteButton"
                 onClick={() => handleDelete(event, score, time)}
               >
-                <DeleteIcon color="action" />
+                <DeleteIcon />
               </button></StyledTableCell>
           </StyledTableRow>
         );
-      } else {
-        return null;
-      }
-    });
+      });
+    }
+  };
+
+  const renderTodayData = (records) => {
+    if (isDataPopulated(records)) {
+      let today = new Date();
+      const dd = String(today.getDate());
+      const mm = String(today.getMonth() + 1); // January is 0!
+      const yyyy = today.getFullYear();
+      today = `${mm}/${dd}/${yyyy}`;
+      return records.reverse().map((record) => {
+        const { event, score, time } = record; // destructuring
+        const splitTime = time.split(' ');
+        if (splitTime[0] === today) {
+          return (
+            <StyledTableRow key={time}>
+              <StyledTableCell>{event}</StyledTableCell>
+              <StyledTableCell>{score}</StyledTableCell>
+              <StyledTableCell>{time}</StyledTableCell>
+              <StyledTableCell>
+                <button
+                  className="jumpalTableDeleteButton"
+                  onClick={() => handleDelete(event, score, time)}
+                >
+                  <DeleteIcon />
+                </button></StyledTableCell>
+            </StyledTableRow>
+          );
+        } else {
+          return null;
+        }
+      });
+    }
   };
 
   const parseTime = (records) => {
-    const consolidated = [];
-    const years = Object.keys(records[0]);
-    years.forEach((year) => {
-      const months = Object.keys(records[0][year]);
-      months.forEach((month) => {
-        const days = Object.keys(records[0][year][month]);
-        days.forEach((day) => {
-          Object.values(records[0][year][month][day]).forEach((record) => {
-            consolidated.push(record);
+    if (isDataPopulated(records)) {
+      const consolidated = [];
+      const years = Object.keys(records[0]);
+      years.forEach((year) => {
+        const months = Object.keys(records[0][year]);
+        months.forEach((month) => {
+          const days = Object.keys(records[0][year][month]);
+          days.forEach((day) => {
+            Object.values(records[0][year][month][day]).forEach((record) => {
+              consolidated.push(record);
+            });
           });
         });
       });
-    });
-    // Sort records in ascending order according to time
-    return consolidated.sort(
-        (a, b) => (new Date(a.time) > new Date(b.time)) ? 1 : -1);
+      // Sort records in ascending order according to time
+      return consolidated.sort(
+          (a, b) => (new Date(a.time) > new Date(b.time)) ? 1 : -1);
+    }
   };
 
-  if (loading) {
-    return <JumpalSpinner />;
-  } else {
-    if (speedRecords && speedRecords.length !== 0 && speedRecords[0]) {
-      const parsedRecords = parseTime(speedRecords);
-      return (
+  return (
+    <JumpalSpinnerWrapper loading={loading}>
+      <JumpalPossiblyEmpty
+        msg={messages.SD_EMPTY}
+        isPopulated={isDataPopulated(speedRecords)}
+      >
         <div className="componentContentDiv">
           <NewSpeedRecordModal />
           <div className="titleAndButtonDiv">
             <h2>My Speed Records</h2>
             {showToday ?
               <JumpalButton onClick={handleAll} className="button">
-                <TagFacesIcon color="action" />
+                <TagFacesIcon className='icon' />
                 All data
               </JumpalButton> :
               <JumpalButton
@@ -190,7 +200,7 @@ function SpeedData() {
                 onClick={handleToday}
                 className="button"
               >
-                <TagFacesIcon color="action" />
+                <TagFacesIcon className='icon' />
                 Today
               </JumpalButton>}
           </div>
@@ -199,22 +209,15 @@ function SpeedData() {
               <tbody>
                 {renderTableHeader()}
                 {showToday ?
-                  renderTodayData(parsedRecords) :
-                  renderAllData(parsedRecords)}
+                  renderTodayData(parseTime(speedRecords)) :
+                  renderAllData(parseTime(speedRecords))}
               </tbody>
             </Table>
           </StyledTableContainer>
         </div>
-      );
-    } else {
-      return (
-        <div>
-          <NewSpeedRecordModal />
-          <p className="loading">Start by entering a new speed record above.</p>
-        </div>
-      );
-    }
-  }
+      </JumpalPossiblyEmpty>
+    </JumpalSpinnerWrapper>
+  );
 }
 
 export default SpeedData;

@@ -3,14 +3,16 @@ import './Instagram.css';
 import InstaCollapsible from './InstaCollapsible';
 import { FirebaseContext } from '../../../../Firebase/index';
 import { onAuthStateChanged } from 'firebase/auth';
-import { off, get } from 'firebase/database';
-import { onValue } from 'firebase/database';
-import
-JumpalAlertFeedback,
-{ alertSeverity }
-  from '../../../../components/JumpalAlertFeedback';
+import { off, get, onValue } from 'firebase/database';
+import {
+  JumpalAlertFeedback,
+  alertSeverity,
+  JumpalSpinnerWrapper,
+  JumpalPossiblyEmpty,
+} from '../../../../components';
 import NewIgModal from './NewIgModal';
-import JumpalSpinnerWrapper from '../../../../components/JumpalSpinnerWrapper';
+import { messages } from '../../../../constants';
+import { isDataPopulated } from '../../../../utils';
 
 function Instagram() {
   const firebase = useContext(FirebaseContext);
@@ -56,10 +58,12 @@ function Instagram() {
 
   const processData = () => {
     const data = [];
-    const dataValues = Object.values(igData[0]).reverse();
-    const keys = Object.keys(igData[0]).reverse();
-    for (let i = 0; i < dataValues.length; i++) {
-      data[i] = [keys[i], dataValues[i]];
+    if (isDataPopulated(igData)) {
+      const dataValues = Object.values(igData[0]).reverse();
+      const keys = Object.keys(igData[0]).reverse();
+      for (let i = 0; i < dataValues.length; i++) {
+        data[i] = [keys[i], dataValues[i]];
+      }
     }
     return data;
   };
@@ -75,22 +79,23 @@ function Instagram() {
         />
         <NewIgModal />
         <div className="collapsible-div">
-          {igData && igData.length >= 0 && igData[0] ?
-            processData().map((object) => {
-              return (
-                <InstaCollapsible
-                  key={object[0]}
-                  id={object[0]}
-                  content={object[1].note}
-                  url={object[1].url}
-                  onAction={onAction}
-                />
-              );
-            }) :
-            <p>
-              Nothing to display, you could start by adding some posts above.
-            </p>
-          }
+          <JumpalPossiblyEmpty
+            msg={messages.IG_EMPTY}
+            isPopulated={isDataPopulated(igData)}>
+            <div>
+              {processData().map((object) => {
+                return (
+                  <InstaCollapsible
+                    key={object[0]}
+                    id={object[0]}
+                    content={object[1].note}
+                    url={object[1].url}
+                    onAction={onAction}
+                  />
+                );
+              })}
+            </div>
+          </JumpalPossiblyEmpty>
         </div>
       </div>
     </JumpalSpinnerWrapper>

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { TableCell, TableRow, TableContainer } from '@mui/material';
-import { styles } from './constants.js';
+import { styles } from '../constants.js';
 
 const StyledTableContainer = styled(TableContainer)({
   borderRadius: '10px',

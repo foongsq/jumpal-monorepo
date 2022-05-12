@@ -2,8 +2,11 @@ import React, { useEffect, useContext, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { child, off, push } from 'firebase/database';
 import { FirebaseContext } from '../../../../Firebase/index';
-import JumpalButton from '../../../../components/JumpalButton';
-import { styles } from '../../../../components/constants';
+import {
+  JumpalButton,
+  JumpalAlertFeedback,
+  alertSeverity } from '../../../../components';
+import { styles } from '../../../../constants';
 import {
   Modal,
   Box,
@@ -15,10 +18,6 @@ import {
   Select,
 } from '@mui/material';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-import
-JumpalAlertFeedback,
-{ alertSeverity }
-  from '../../../../components/JumpalAlertFeedback';
 import './SpeedData.css';
 
 const options = [

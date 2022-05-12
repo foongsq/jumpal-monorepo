@@ -2,13 +2,12 @@ import React, { useEffect, useContext, useState } from 'react';
 import { FirebaseContext } from '../../../../Firebase/index';
 import { onAuthStateChanged } from 'firebase/auth';
 import { off, push } from 'firebase/database';
-import JumpalButton from '../../../../components/JumpalButton';
-import
-JumpalAlertFeedback,
-{ alertSeverity }
-  from '../../../../components/JumpalAlertFeedback';
+import {
+  JumpalButton,
+  JumpalAlertFeedback,
+  alertSeverity } from '../../../../components';
 import { Modal, Box, Typography, TextField, FormControl } from '@mui/material';
-import { styles } from '../../../../components/constants';
+import { styles } from '../../../../constants';
 
 function NewIgModal() {
   const firebase = useContext(FirebaseContext);

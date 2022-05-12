@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import useAuth from '../../auth';
 import Instagram from './components/Instagram/Instagram';
 import SkillList from './components/SkillList/SkillList';
-import JumpalToggleButtons from '../../components/JumpalToggleButtons';
-import JumpalErrorText from '../../components/JumpalErrorText';
-import { messages } from '../../components/constants';
-import JumpalSpinnerWrapper from '../../components/JumpalSpinnerWrapper';
+import {
+  JumpalToggleButtons,
+  JumpalErrorText,
+  JumpalSpinnerWrapper } from '../../components';
+import { messages } from '../../constants';
 import './Freestyle.css';
 
 const component = {

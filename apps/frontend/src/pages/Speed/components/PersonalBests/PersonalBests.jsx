@@ -11,7 +11,11 @@ import {
 } from '../../../../components/table';
 import { Table, TableRow } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import JumpalSpinnerWrapper from '../../../../components/JumpalSpinnerWrapper';
+import {
+  JumpalSpinnerWrapper,
+  JumpalPossiblyEmpty } from '../../../../components';
+import { messages } from '../../../../constants';
+import { isDataPopulated } from '../../../../utils';
 
 function PersonalBests() {
   const firebase = useContext(FirebaseContext);
@@ -76,30 +80,34 @@ function PersonalBests() {
   };
 
   const renderAllData = (records) => {
-    const eventsArr = Object.keys(records[0]);
-    return eventsArr.map((event) => {
-      return (
-        <StyledTableRow key={event}>
-          <StyledTableCell>{event}</StyledTableCell>
-          <StyledTableCell>{records[0][event].score}</StyledTableCell>
-          <StyledTableCell>{records[0][event].time}</StyledTableCell>
-          <StyledTableCell>
-            <button
-              className="jumpalTableDeleteButton"
-              onClick={() => handleDelete(event)}
-            >
-              <DeleteIcon color="action" />
-            </button></StyledTableCell>
-        </StyledTableRow>
-      );
-    });
+    if (isDataPopulated(records)) {
+      const eventsArr = Object.keys(records[0]);
+      return eventsArr.map((event) => {
+        return (
+          <StyledTableRow key={event}>
+            <StyledTableCell>{event}</StyledTableCell>
+            <StyledTableCell>{records[0][event].score}</StyledTableCell>
+            <StyledTableCell>{records[0][event].time}</StyledTableCell>
+            <StyledTableCell>
+              <button
+                className="jumpalTableDeleteButton"
+                onClick={() => handleDelete(event)}
+              >
+                <DeleteIcon />
+              </button></StyledTableCell>
+          </StyledTableRow>
+        );
+      });
+    }
   };
   return (
     <JumpalSpinnerWrapper loading={loading}>
-      {(personalBests && personalBests.length !== 0 && personalBests[0]) ?
-        <div className="componentContentDiv">
-          <NewPersonalBestModal />
-          <h2>My Personal Bests</h2>
+      <div className="componentContentDiv">
+        <NewPersonalBestModal />
+        <h2>My Personal Bests</h2>
+        <JumpalPossiblyEmpty
+          msg={messages.PB_EMPTY}
+          isPopulated={isDataPopulated(personalBests)}>
           <StyledTableContainer>
             <Table>
               <tbody>
@@ -108,15 +116,8 @@ function PersonalBests() {
               </tbody>
             </Table>
           </StyledTableContainer>
-        </div> :
-        <div>
-          <NewPersonalBestModal />
-          <h2>My Personal Bests</h2>
-          <p className="loading">
-            Start by entering a new personal best record above.
-          </p>
-        </div>
-      }
+        </JumpalPossiblyEmpty>
+      </div>
     </JumpalSpinnerWrapper>
   );
 }

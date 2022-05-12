@@ -2,7 +2,10 @@ import React, { useEffect, useContext, useState } from 'react';
 import { FirebaseContext } from '../../../../Firebase/index';
 import { onAuthStateChanged } from 'firebase/auth';
 import { set, child, off } from 'firebase/database';
-import JumpalButton from '../../../../components/JumpalButton';
+import {
+  JumpalButton,
+  JumpalAlertFeedback,
+  alertSeverity } from '../../../../components';
 import {
   Modal,
   Box,
@@ -14,11 +17,7 @@ import {
   Select,
 } from '@mui/material';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-import
-JumpalAlertFeedback,
-{ alertSeverity }
-  from '../../../../components/JumpalAlertFeedback';
-import { styles } from '../../../../components/constants';
+import { styles } from '../../../../constants';
 
 const options = [
   { value: '1x30sec Running Step', label: '1x30sec Running Step' },

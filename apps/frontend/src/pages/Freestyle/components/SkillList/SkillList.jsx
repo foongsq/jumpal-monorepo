@@ -3,16 +3,17 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { off } from 'firebase/database';
 import { get, onValue } from 'firebase/database';
 import { FirebaseContext } from '../../../../Firebase';
-import JumpalSpinnerWrapper from '../../../../components/JumpalSpinnerWrapper';
-import
-JumpalAlertFeedback,
-{ alertSeverity }
-  from '../../../../components/JumpalAlertFeedback';
+import {
+  JumpalSpinnerWrapper,
+  JumpalAlertFeedback,
+  alertSeverity,
+  JumpalPossiblyEmpty,
+} from '../../../../components';
 import SkillCollapsible from './SkillCollapsible';
 import NewSkillModal from './NewSkillModal';
 import './SkillList.css';
-import JumpalPossiblyEmpty from '../../../../components/JumpalPossiblyEmpty';
-import { messages } from '../../../../components/constants';
+import { messages } from '../../../../constants';
+import { isDataPopulated } from '../../../../utils';
 
 function SkillList() {
   const firebase = useContext(FirebaseContext);
@@ -61,9 +62,7 @@ function SkillList() {
   const processData = () => {
     const notLearntData = [];
     const learntData = [];
-    const isSkillsPopulated = skillsData && skillsData.length !== 0 &&
-      !skillsData[0];
-    if (isSkillsPopulated) {
+    if (isDataPopulated(skillsData)) {
       const dataValues = Object.values(skillsData[0]).reverse();
       const keys = Object.keys(skillsData[0]).reverse();
       for (let i = 0; i < dataValues.length; i++) {
@@ -92,8 +91,7 @@ function SkillList() {
         <NewSkillModal />
         <JumpalPossiblyEmpty
           msg={messages.SKILLS_EMPTY}
-          isPopulated={skillsData && skillsData.length >= 0 &&
-            !skillsData[0]}
+          isPopulated={isDataPopulated(skillsData)}
         >
           <div>
             <div className='skillsToLearn'>

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Button from '@mui/material/Button';
-import { styles } from './constants.js';
+import { styles } from '../constants.js';
 
 const JumpalButton = styled(Button)({
   'background': styles.bootstrapGreen,

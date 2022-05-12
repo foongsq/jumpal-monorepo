@@ -13,7 +13,7 @@ function SignOutButton() {
     <JumpalButton onClick={() =>
       signOut(firebase.auth).then(() => navigate('/'))
     }>
-      <LogoutIcon color="action" />
+      <LogoutIcon className='icon' />
       Sign Out
     </JumpalButton>
   );

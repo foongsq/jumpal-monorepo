@@ -42,6 +42,8 @@ export const messages = {
   IG_NOT_SIGNED_IN: 'Please sign in to see your Instagram inspiration.',
   NOTLEARNT_SKILLS_EMPTY: 'No skills to learn... Add some above!',
   LEARNT_SKILLS_EMPTY: 'Have not learnt any skills, jiayou!',
-  SKILLS_EMPTY: `Nothing to display, you could start by adding some 
-    skills above.`,
+  PB_EMPTY: 'Nothing to display, start by entering a new speed record above.',
+  SD_EMPTY: 'Nothing to display, start by entering a new personal best above.',
+  SKILLS_EMPTY: 'Nothing to display, start by adding some skills above.',
+  IG_EMPTY: 'Nothing to display, start by adding some posts above.',
 };

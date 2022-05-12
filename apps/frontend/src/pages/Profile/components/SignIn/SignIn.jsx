@@ -44,7 +44,7 @@ function SignInGoogle() {
   return (
     <form onSubmit={onSubmit}>
       <JumpalButton type='submit' className='signInButton'>
-        <GoogleIcon color="action" />Sign In with Google
+        <GoogleIcon className='icon' />Sign In with Google
       </JumpalButton>
       {error && <p>{error.message}</p>}
     </form>
