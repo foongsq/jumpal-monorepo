@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
   JumpalButton,
   JumpalSpinnerWrapper,
-  JumpalPossiblyEmpty } from '../../../../components';
+  JumpalPossiblyEmpty,
+  useJumpalToast } from '../../../../components';
 import {
   StyledHeaderTableCell,
   StyledTableCell,
@@ -19,6 +20,7 @@ import { isDataPopulated } from '../../../../utils';
 import { useSdDb } from '../../../../hooks';
 
 function SpeedData() {
+  const Toast = useJumpalToast();
   const [sd, loading, getSd, addSd, delSd] = useSdDb();
   const [showToday, setShowToday] = useState(false);
 
@@ -29,7 +31,11 @@ function SpeedData() {
   const handleDelete = async (event, score, time) => {
     const result = window.confirm('Are you sure you want to delete?');
     if (result) {
-      await delSd(event, score, time);
+      if (await delSd(event, score, time)) {
+        Toast.succes('Speed record deleted successfully!');
+      } else {
+        Toast.error('An error occured :(');
+      }
     }
   };
 

@@ -1,37 +1,23 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { FirebaseContext } from '../../../../Firebase/index';
-import { onAuthStateChanged } from 'firebase/auth';
-import { off, push } from 'firebase/database';
+import React, { useState } from 'react';
 import {
   JumpalButton,
-  JumpalAlertFeedback,
-  alertSeverity } from '../../../../components';
+  useJumpalToast } from '../../../../components';
 import { Modal, Box, Typography, TextField, FormControl } from '@mui/material';
 import { styles } from '../../../../constants';
+import PropTypes from 'prop-types';
+import { useAuth } from '../../../../hooks';
 
-function NewIgModal() {
-  const firebase = useContext(FirebaseContext);
-  const [user, setUser] = useState(null);
+NewIgModal.propTypes = {
+  addIg: PropTypes.func.isRequired,
+};
+
+function NewIgModal(props) {
+  const { addIg } = props;
+  const Toast = useJumpalToast();
+  const [user] = useAuth();
   const [open, setOpen] = useState(false);
   const [note, setNote] = useState('');
   const [url, setUrl] = useState('');
-  const [success, setSuccess] = useState(null);
-  const igsRef = firebase.igs;
-
-  useEffect(() => {
-    // Get current user from firebase and save to state as user
-    const unsubscribe = onAuthStateChanged(firebase.auth, async (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        alert('Please sign in to continue');
-      }
-    });
-    return () => {
-      off(igsRef);
-      unsubscribe();
-    };
-  }, []);
 
   const toggleNewIg = () => {
     setOpen(!open);
@@ -47,24 +33,19 @@ function NewIgModal() {
     setUrl(event.target.value);
   };
 
-  const submitEntry = (event) => {
+  const submitEntry = async (event) => {
     event.preventDefault();
-    push(igsRef, {
-      note: note,
-      url: url,
-    });
-    setSuccess('Instagram post saved successfully!');
-    toggleNewIg();
+    const res = await addIg(note, url);
+    if (res) {
+      Toast.success('Instagram post saved successfully!');
+      toggleNewIg();
+    } else {
+      Toast.error('An error occured :(');
+    }
   };
 
   return (
     <div>
-      <JumpalAlertFeedback
-        msg={success}
-        severity={alertSeverity.SUCCESS}
-        onClose={() => setSuccess(null)}
-        global
-      />
       <div className='jumpalCenteredButton'>
         <JumpalButton onClick={toggleNewIg}>
           Add New Instagram Reference

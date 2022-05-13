@@ -1,10 +1,9 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { FirebaseContext } from '../../../../Firebase';
-import { off, child, update, get } from 'firebase/database';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-
 import './Progress.css';
+import { SkillsApi } from './context';
+import { useJumpalToast } from '../../../../components';
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -15,15 +14,11 @@ Progress.propTypes = {
 };
 
 function Progress(props) {
+  const api = useContext(SkillsApi);
+  const Toast = useJumpalToast();
   const { id, progress } = props;
-  const firebase = useContext(FirebaseContext);
   const [editText, setEditText] = useState('');
   const [editing, setEditing] = useState(false);
-  const skillRef = child(firebase.skillList, id);
-
-  useEffect(() => {
-    return () => off(skillRef);
-  }, []);
 
   const handleEditButtonClick = () => {
     if (editing) {
@@ -40,22 +35,23 @@ function Progress(props) {
   const handleSubmit = async () => {
     const val = editText;
     if (val) {
-      get(skillRef).then((snapshot) => {
-        const value = snapshot.val();
-        let newProgress = null;
-        if (value) {
-          newProgress = value.progress;
-          newProgress.push([val, new Date().toString()]);
-        }
-        update(skillRef, {
-          progress: newProgress,
-        });
+      const skill = await api.getSkill(id);
+      const currProgress = skill.progress;
+      const newProgress = [...currProgress, [val, new Date().toString()]];
+      const res = await api.updateSkill(id, {
+        progress: newProgress,
+      });
+      if (res) {
         setEditText('');
         setEditing(false);
-      });
+        Toast.success('Progress updated successfully!');
+      } else {
+        Toast.error('An error occured :(');
+      }
     } else {
       setEditText('');
       setEditing(false);
+      Toast.error('An error occured :(');
     }
   };
 

@@ -10,12 +10,14 @@ import { Table, TableRow } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   JumpalSpinnerWrapper,
-  JumpalPossiblyEmpty } from '../../../../components';
+  JumpalPossiblyEmpty,
+  useJumpalToast } from '../../../../components';
 import { messages } from '../../../../constants';
 import { isDataPopulated } from '../../../../utils';
 import { usePbDb } from '../../../../hooks';
 
 function PersonalBests() {
+  const Toast = useJumpalToast();
   const [pb, loading, getPb, addPb, delPb] = usePbDb();
 
   useEffect(() => {
@@ -25,7 +27,11 @@ function PersonalBests() {
   const handleDelete = async (event) => {
     const result = window.confirm('Are you sure you want to delete?');
     if (result) {
-      await delPb(event);
+      if (await delPb(event)) {
+        Toast.success('Personal best deleted successfully!');
+      } else {
+        Toast.error('An error occured :(');
+      }
     }
   };
 

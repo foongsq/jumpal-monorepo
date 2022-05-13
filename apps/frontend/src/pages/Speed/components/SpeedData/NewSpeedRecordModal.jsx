@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import {
   JumpalButton,
-  JumpalAlertFeedback,
-  alertSeverity } from '../../../../components';
+  useJumpalToast } from '../../../../components';
 import { styles } from '../../../../constants';
 import {
   Modal,
@@ -38,11 +37,11 @@ NewSpeedRecordModal.propTypes = {
 function NewSpeedRecordModal(props) {
   const { addSd } = props;
   const [user] = useAuth();
+  const Toast = useJumpalToast();
   const [open, setOpen] = useState(false);
   const [eventJ, setEventJ] = useState(null);
   const [score, setScore] = useState(null);
   const [time, setTime] = useState(null);
-  const [success, setSuccess] = useState(null);
 
   const toggleNewSpeedRecord = () => {
     setOpen(!open);
@@ -66,20 +65,16 @@ function NewSpeedRecordModal(props) {
   const saveSpeedRecord = async (event) => {
     const res = await addSd(eventJ, score, time);
     if (res) {
-      setSuccess('New speed record successfully saved!');
+      Toast.success('New speed record successfully saved!');
       toggleNewSpeedRecord();
+    } else {
+      Toast.error('An error occured :(');
     }
     event.preventDefault();
   };
 
   return (
     <>
-      <JumpalAlertFeedback
-        msg={success}
-        severity={alertSeverity.SUCCESS}
-        onClose={() => setSuccess(null)}
-        global
-      />
       <div className='jumpalCenteredButton'>
         <JumpalButton onClick={toggleNewSpeedRecord}>
           Add New Speed Record

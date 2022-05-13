@@ -1,7 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { FirebaseContext } from '../../../../Firebase';
-import { off, child, update, remove } from 'firebase/database';
 import EditableText from '../EditableText';
 import Progress from './Progress';
 import './SkillCollapsible.css';
@@ -10,6 +8,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { SkillsApi } from './context';
+import { useJumpalToast } from '../../../../components';
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -20,21 +20,16 @@ SkillCollapsible.propTypes = {
   learnt: PropTypes.bool,
   progress: PropTypes.array,
   url: PropTypes.string,
-  onAction: PropTypes.func,
 };
 
 function SkillCollapsible(props) {
-  const { id, skillName, learnt, progress, url, onAction } = props;
-  const firebase = useContext(FirebaseContext);
+  const Toast = useJumpalToast();
+  const { id, skillName, learnt, progress, url } = props;
+  const api = useContext(SkillsApi);
   const [open, setOpen] = useState(false);
   const [openProgress, setOpenProgress] = useState(false);
   const [editText, setEditText] = useState('');
   const [editing, setEditing] = useState(false);
-  const skillRef = child(firebase.skillList, id);
-
-  useEffect(() => {
-    return () => off(skillRef);
-  }, []);
 
   const handleClick = () => {
     setOpen(!open);
@@ -44,23 +39,35 @@ function SkillCollapsible(props) {
     setOpenProgress(!openProgress);
   };
 
-  const handleDelete = () => {
-    remove(skillRef);
-    onAction('Skill deleted successfully!');
+  const handleDelete = async () => {
+    const res = await api.delSkill(id);
+    if (res) {
+      Toast.success('Skill deleted successfully!');
+    } else {
+      Toast.error('An error occured :(');
+    }
   };
 
-  const handleLearnt = () => {
-    update(skillRef, {
+  const handleLearnt = async () => {
+    const res = await api.updateSkill(id, {
       learnt: true,
     });
-    onAction('Congratulations on learning a new skill!');
+    if (res) {
+      Toast.success('Congratulations on learning a new skill!');
+    } else {
+      Toast.error('An error occured :(');
+    }
   };
 
-  const handleUnlearn = () => {
-    update(skillRef, {
+  const handleUnlearn = async () => {
+    const res = await api.updateSkill(id, {
       learnt: false,
     });
-    onAction('Oops gonna have to relearn that!');
+    if (res) {
+      Toast.success('Oops gonna have to relearn that!');
+    } else {
+      Toast.error('An error occured :(');
+    }
   };
 
   const handleEditButtonClick = () => {
@@ -78,9 +85,14 @@ function SkillCollapsible(props) {
   const handleSubmit = async (e) => {
     const val = editText;
     if (val) {
-      update(skillRef, {
+      const res = await api.updateSkill(id, {
         url: val,
       });
+      if (res) {
+        Toast.success('Skill updated successfully!');
+      } else {
+        Toast.error('An error occured :(');
+      }
     }
     setEditing(false);
   };

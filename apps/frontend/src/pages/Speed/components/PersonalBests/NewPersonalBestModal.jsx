@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import {
   JumpalButton,
-  JumpalAlertFeedback,
-  alertSeverity } from '../../../../components';
+  useJumpalToast } from '../../../../components';
 import {
   Modal,
   Box,
@@ -36,12 +35,12 @@ NewPersonalBestModal.propTypes = {
 
 function NewPersonalBestModal(props) {
   const { addPb } = props;
+  const Toast = useJumpalToast();
   const [user] = useAuth();
   const [open, setOpen] = useState(false);
   const [eventJ, setEventJ] = useState(null);
   const [score, setScore] = useState(null);
   const [time, setTime] = useState(null);
-  const [success, setSuccess] = useState(null);
 
   const toggleNewPersonalBest = () => {
     setOpen(!open);
@@ -66,19 +65,15 @@ function NewPersonalBestModal(props) {
     event.preventDefault();
     const res = await addPb(eventJ, score, time);
     if (res) {
-      setSuccess('New Personal Best saved successfully!');
+      Toast.success('New Personal Best saved successfully!');
       toggleNewPersonalBest();
+    } else {
+      Toast.error('An error occured :(');
     }
   };
 
   return (
     <div>
-      <JumpalAlertFeedback
-        msg={success}
-        severity={alertSeverity.SUCCESS}
-        onClose={() => setSuccess(null)}
-        global
-      />
       <div className='jumpalCenteredButton'>
         <JumpalButton onClick={toggleNewPersonalBest}>
           Add New Personal Best

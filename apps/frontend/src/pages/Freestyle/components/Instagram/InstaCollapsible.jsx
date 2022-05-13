@@ -1,39 +1,33 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  off,
-  remove,
-  child,
-} from 'firebase/database';
-import { FirebaseContext } from '../../../../Firebase';
 import { Collapse, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './InstaCollapsible.css';
+import { useJumpalToast } from '../../../../components';
 
 InstaCollapsible.propTypes = {
-  id: PropTypes.string,
-  url: PropTypes.string,
-  content: PropTypes.string,
-  onAction: PropTypes.func,
+  id: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  delIg: PropTypes.func.isRequired,
 };
 
 function InstaCollapsible(props) {
-  const firebase = useContext(FirebaseContext);
-  const { id, url, content, onAction } = props;
+  const Toast = useJumpalToast();
+  const { id, url, content, delIg } = props;
   const [open, setOpen] = useState(false);
-  const igRef = child(firebase.igs, id);
-
-  useEffect(() => {
-    return () => off(igRef);
-  }, []);
 
   const handleClick = () => {
     setOpen(!open);
   };
 
-  const handleDelete = () => {
-    remove(igRef);
-    onAction('Instagram post deleted successfully!');
+  const handleDelete = async () => {
+    const res = await delIg(id);
+    if (res) {
+      Toast.success('Instagram post deleted successfully!');
+      return;
+    }
+    Toast.error('An error occured :(');
   };
 
   return (

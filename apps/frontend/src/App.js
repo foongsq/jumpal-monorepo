@@ -38,6 +38,7 @@ import {
   Button,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { ToastProvider } from './components/JumpalToast';
 
 function App() {
   const [user, loading] = useAuth();
@@ -46,37 +47,39 @@ function App() {
     <div className="app">
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
-          <Router>
-            <div className="navAndcontent">
-              <Navigation />
-              <div className="content">
-                <Routes>
-                  <Route
-                    exact path={routes.LANDING}
-                    element={<Navigate to={
+          <ToastProvider>
+            <Router>
+              <div className="navAndcontent">
+                <Navigation />
+                <div className="content">
+                  <Routes>
+                    <Route
+                      exact path={routes.LANDING}
+                      element={<Navigate to={
                       !loading && !user ? routes.PROFILE : routes.HOME}
-                    />}
-                  />
-                  <Route path={routes.HOME} element={<Home />} />
-                  <Route path={routes.SPEED} element={<Speed />}/>
-                  <Route
-                    path={routes.TIMINGTRACKS}
-                    element={<TimingTracks />}
-                  />
-                  <Route path={routes.COUNTER} element={<Counter />} />
-                  <Route path={routes.SPEEDDATA} element={<SpeedData />} />
-                  <Route
-                    path={routes.PERSONALBESTS}
-                    element={<PersonalBests />}
-                  />
-                  <Route path={routes.FREESTYLE} element={<Freestyle />} />
-                  <Route path={routes.PROFILE} element={<Profile />} />
-                  <Route path={routes.SIGNIN} element={<SignInPage />} />
-                  <Route path={routes.SIGNOUT} element={<SignOut />} />
-                </Routes>
+                      />}
+                    />
+                    <Route path={routes.HOME} element={<Home />} />
+                    <Route path={routes.SPEED} element={<Speed />}/>
+                    <Route
+                      path={routes.TIMINGTRACKS}
+                      element={<TimingTracks />}
+                    />
+                    <Route path={routes.COUNTER} element={<Counter />} />
+                    <Route path={routes.SPEEDDATA} element={<SpeedData />} />
+                    <Route
+                      path={routes.PERSONALBESTS}
+                      element={<PersonalBests />}
+                    />
+                    <Route path={routes.FREESTYLE} element={<Freestyle />} />
+                    <Route path={routes.PROFILE} element={<Profile />} />
+                    <Route path={routes.SIGNIN} element={<SignInPage />} />
+                    <Route path={routes.SIGNOUT} element={<SignOut />} />
+                  </Routes>
+                </div>
               </div>
-            </div>
-          </Router>
+            </Router>
+          </ToastProvider>
         </ThemeProvider>
       </LocalizationProvider>
     </div>
