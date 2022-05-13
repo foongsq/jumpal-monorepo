@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useAuth from '../../auth';
+import { useAuth } from '../../hooks';
 import SpeedData from './components/SpeedData/SpeedData';
 import TimingTracks from './components/TimingTracks/TimingTracks';
 import Counter from './components/Counter/Counter';

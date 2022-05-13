@@ -1,7 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { FirebaseContext } from '../../../../Firebase/index';
-import { onAuthStateChanged } from 'firebase/auth';
-import { set, child, off } from 'firebase/database';
+import React, { useState } from 'react';
 import {
   JumpalButton,
   JumpalAlertFeedback,
@@ -18,6 +15,8 @@ import {
 } from '@mui/material';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import { styles } from '../../../../constants';
+import { useAuth } from '../../../../hooks';
+import PropTypes from 'prop-types';
 
 const options = [
   { value: '1x30sec Running Step', label: '1x30sec Running Step' },
@@ -31,30 +30,18 @@ const options = [
   { value: '4x30sec Speed Relay', label: '4x30sec Speed Relay' },
 ];
 
-function NewPersonalBestModal() {
-  const firebase = useContext(FirebaseContext);
-  const [user, setUser] = useState(null);
+NewPersonalBestModal.propTypes = {
+  addPb: PropTypes.func.isRequired,
+};
+
+function NewPersonalBestModal(props) {
+  const { addPb } = props;
+  const [user] = useAuth();
   const [open, setOpen] = useState(false);
   const [eventJ, setEventJ] = useState(null);
   const [score, setScore] = useState(null);
   const [time, setTime] = useState(null);
   const [success, setSuccess] = useState(null);
-  const pbRef = firebase.personalBests;
-
-  useEffect(() => {
-    // Get current user from firebase and save to state as user
-    const unsubscribe = onAuthStateChanged(firebase.auth, async (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        alert('Please sign in to continue');
-      }
-    });
-    return () => {
-      off(pbRef);
-      unsubscribe();
-    };
-  }, []);
 
   const toggleNewPersonalBest = () => {
     setOpen(!open);
@@ -75,27 +62,14 @@ function NewPersonalBestModal() {
     setTime(time);
   };
 
-  const timeStamp = (time) => {
-    time = new Date(time);
-    // Create an array with the current month, day and time
-    const date = [time.getMonth() + 1, time.getDate(), time.getFullYear()];
-
-    // Return the formatted string
-    return date.join('/');
-  };
-
-  const saveNewPersonalBest = (event) => {
+  const saveNewPersonalBest = async (event) => {
     event.preventDefault();
-
-    // Add new personal best entry into database
-    const currEventPbRef = child(pbRef, eventJ);
-    set(currEventPbRef, {
-      score: score,
-      time: timeStamp(time),
-    });
-
-    setSuccess('New Personal Best saved successfully!');
-    toggleNewPersonalBest();
+    console.log('addPb args in modal', eventJ, score, time);
+    const res = await addPb(eventJ, score, time);
+    if (res) {
+      setSuccess('New Personal Best saved successfully!');
+      toggleNewPersonalBest();
+    }
   };
 
   return (

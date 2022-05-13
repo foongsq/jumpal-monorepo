@@ -182,15 +182,11 @@ function SpeedData() {
 
   return (
     <JumpalSpinnerWrapper loading={loading}>
-      <JumpalPossiblyEmpty
-        msg={messages.SD_EMPTY}
-        isPopulated={isDataPopulated(speedRecords)}
-      >
-        <div className="componentContentDiv">
-          <NewSpeedRecordModal />
-          <div className="titleAndButtonDiv">
-            <h2>My Speed Records</h2>
-            {showToday ?
+      <div className="componentContentDiv">
+        <NewSpeedRecordModal />
+        <div className="titleAndButtonDiv">
+          <h2>My Speed Records</h2>
+          {showToday ?
               <JumpalButton onClick={handleAll} className="button">
                 <TagFacesIcon className='icon' />
                 All data
@@ -203,7 +199,11 @@ function SpeedData() {
                 <TagFacesIcon className='icon' />
                 Today
               </JumpalButton>}
-          </div>
+        </div>
+        <JumpalPossiblyEmpty
+          msg={messages.SD_EMPTY}
+          isPopulated={isDataPopulated(speedRecords)}
+        >
           <StyledTableContainer>
             <Table>
               <tbody>
@@ -214,8 +214,9 @@ function SpeedData() {
               </tbody>
             </Table>
           </StyledTableContainer>
-        </div>
-      </JumpalPossiblyEmpty>
+
+        </JumpalPossiblyEmpty>
+      </div>
     </JumpalSpinnerWrapper>
   );
 }

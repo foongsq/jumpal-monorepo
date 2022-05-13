@@ -1,7 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { FirebaseContext } from '../../../../Firebase/index';
-import { onValue, get, child, off, remove } from 'firebase/database';
-import { onAuthStateChanged } from 'firebase/auth';
+import React, { useEffect } from 'react';
 import NewPersonalBestModal from './NewPersonalBestModal';
 import {
   StyledHeaderTableCell,
@@ -16,55 +13,19 @@ import {
   JumpalPossiblyEmpty } from '../../../../components';
 import { messages } from '../../../../constants';
 import { isDataPopulated } from '../../../../utils';
+import { usePbDb } from '../../../../hooks';
 
 function PersonalBests() {
-  const firebase = useContext(FirebaseContext);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [personalBests, setPersonalBests] = useState([]);
-  const pbRef = firebase.personalBests;
+  const [pb, loading, getPb, addPb, delPb] = usePbDb();
 
   useEffect(() => {
-    onValue(pbRef, onPersonalBestsUpdate);
-    setLoading(true);
-    // Get current user from firebase and save to state as user
-    const unsubscribe = onAuthStateChanged(firebase.auth, async (user) => {
-      if (user) {
-        const personalBests = [];
-        get(pbRef).then((snapshot) => {
-          const value = snapshot.val();
-          personalBests.push(value);
-          setPersonalBests(personalBests);
-          setUser(user);
-          setLoading(false);
-        })
-            .catch((error) => {
-              console.error(error);
-            });
-      } else {
-        alert('Please sign in to continue');
-        setLoading(false);
-      }
-    });
-    return () => {
-      off(pbRef);
-      unsubscribe();
-    };
+    getPb();
   }, []);
 
-  const onPersonalBestsUpdate = (snapshot) => {
-    setLoading(true);
-    const newPersonalBests = [];
-    newPersonalBests.push(snapshot.val());
-    setPersonalBests(newPersonalBests);
-    setLoading(false);
-  };
-
-  const handleDelete = (event) => {
-    // TODO: Change this to modal/toast
+  const handleDelete = async (event) => {
     const result = window.confirm('Are you sure you want to delete?');
-    if (user && result) {
-      remove(child(pbRef, event));
+    if (result) {
+      await delPb(event);
     }
   };
 
@@ -100,19 +61,20 @@ function PersonalBests() {
       });
     }
   };
+
   return (
     <JumpalSpinnerWrapper loading={loading}>
       <div className="componentContentDiv">
-        <NewPersonalBestModal />
+        <NewPersonalBestModal addPb={addPb} />
         <h2>My Personal Bests</h2>
         <JumpalPossiblyEmpty
           msg={messages.PB_EMPTY}
-          isPopulated={isDataPopulated(personalBests)}>
+          isPopulated={isDataPopulated(pb)}>
           <StyledTableContainer>
             <Table>
               <tbody>
                 {renderTableHeader()}
-                {renderAllData(personalBests)}
+                {renderAllData(pb)}
               </tbody>
             </Table>
           </StyledTableContainer>

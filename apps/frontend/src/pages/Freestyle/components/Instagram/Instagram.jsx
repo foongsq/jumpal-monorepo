@@ -23,6 +23,7 @@ function Instagram() {
 
   useEffect(() => {
     onValue(igsRef, onInstagramDataChange);
+    setLoading(true);
     const unsubscribe = onAuthStateChanged(firebase.auth, async (user) => {
       if (user) {
         const dataFromDB = [];
@@ -51,6 +52,7 @@ function Instagram() {
   };
 
   const onInstagramDataChange = (snapshot) => {
+    console.log('ig change');
     const dataFromDB = [];
     dataFromDB.push(snapshot.val());
     setIgData(dataFromDB);

@@ -1,7 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { off } from 'firebase/database';
-import { get, onValue } from 'firebase/database';
+import { off, get, onValue } from 'firebase/database';
 import { FirebaseContext } from '../../../../Firebase';
 import {
   JumpalSpinnerWrapper,
@@ -54,6 +53,7 @@ function SkillList() {
   };
 
   const onSkillListDataChange = (snapshot) => {
+    console.log('skill change');
     const skillsDataFromDb = [];
     skillsDataFromDb.push(snapshot.val());
     setSkillsData(skillsDataFromDb);

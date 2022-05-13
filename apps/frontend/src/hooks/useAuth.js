@@ -16,6 +16,7 @@ function useAuth() {
         } else {
           setAuthUser(null);
           setLoading(false);
+          alert('Please sign in to continue');
         };
       },
   );

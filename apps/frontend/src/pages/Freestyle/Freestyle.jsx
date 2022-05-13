@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useAuth from '../../auth';
+import { useAuth } from '../../hooks';
 import Instagram from './components/Instagram/Instagram';
 import SkillList from './components/SkillList/SkillList';
 import {
