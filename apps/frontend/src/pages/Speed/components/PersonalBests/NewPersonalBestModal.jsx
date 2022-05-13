@@ -64,7 +64,6 @@ function NewPersonalBestModal(props) {
 
   const saveNewPersonalBest = async (event) => {
     event.preventDefault();
-    console.log('addPb args in modal', eventJ, score, time);
     const res = await addPb(eventJ, score, time);
     if (res) {
       setSuccess('New Personal Best saved successfully!');

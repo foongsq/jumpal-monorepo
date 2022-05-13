@@ -1,8 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-
-import { onValue, get, child, off, remove } from 'firebase/database';
-import { onAuthStateChanged } from 'firebase/auth';
-import { FirebaseContext } from '../../../../Firebase/index';
+import React, { useState, useEffect } from 'react';
 import {
   JumpalButton,
   JumpalSpinnerWrapper,
@@ -20,78 +16,25 @@ import NewSpeedRecordModal from './NewSpeedRecordModal';
 import './SpeedData.css';
 import { messages } from '../../../../constants';
 import { isDataPopulated } from '../../../../utils';
+import { useSdDb } from '../../../../hooks';
 
 function SpeedData() {
-  const firebase = useContext(FirebaseContext);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [speedRecords, setSpeedRecords] = useState([]);
+  const [sd, loading, getSd, addSd, delSd] = useSdDb();
   const [showToday, setShowToday] = useState(false);
-  const srRef = firebase.speedRecords;
 
   useEffect(() => {
-    onValue(srRef, onSpeedDataUpdate);
-    setLoading(true);
-    // Get current user from firebase and save to state as user
-    const unsubscribe = onAuthStateChanged(firebase.auth, async (user) => {
-      if (user) {
-        const speedRecords = [];
-        get(srRef).then((snapshot) => {
-          const value = snapshot.val();
-          speedRecords.push(value);
-          setSpeedRecords(speedRecords);
-          setUser(user);
-          setLoading(false);
-        })
-            .catch((error) => {
-              console.error(error);
-            });
-      } else {
-        alert('Please sign in to continue');
-        setLoading(false);
-      }
-    });
-    return () => {
-      off(srRef);
-      unsubscribe();
-    };
+    getSd();
   }, []);
 
-  const onSpeedDataUpdate = (snapshot) => {
-    setLoading(true);
-    const speedRecords = [];
-    speedRecords.push(snapshot.val());
-    setSpeedRecords(speedRecords);
-    setLoading(false);
-  };
-
-  const handleDelete = (event, score, time) => {
-    const dd = String(new Date(time).getDate()).padStart(2, '0');
-    const mm = String(new Date(time).getMonth() + 1)
-        .padStart(2, '0'); // January is 0!
-    const yyyy = new Date(time).getFullYear();
-    const date = `${yyyy}/${mm}/${dd}`;
+  const handleDelete = async (event, score, time) => {
     const result = window.confirm('Are you sure you want to delete?');
-    if (user && result) {
-      get(child(srRef, date))
-          .then((snapshot) => {
-            snapshot.forEach((child) => {
-              if (child.val().event === event &&
-              child.val().score === score &&
-              child.val().time === time) {
-                remove(child.ref);
-              }
-            });
-          });
+    if (result) {
+      await delSd(event, score, time);
     }
   };
 
-  const handleToday = () => {
-    setShowToday(true);
-  };
-
-  const handleAll = () => {
-    setShowToday(false);
+  const toggleToday = (shouldShowToday) => {
+    setShowToday(shouldShowToday);
   };
 
   const renderTableHeader = () => {
@@ -183,34 +126,30 @@ function SpeedData() {
   return (
     <JumpalSpinnerWrapper loading={loading}>
       <div className="componentContentDiv">
-        <NewSpeedRecordModal />
+        <NewSpeedRecordModal addSd={addSd} />
         <div className="titleAndButtonDiv">
           <h2>My Speed Records</h2>
           {showToday ?
-              <JumpalButton onClick={handleAll} className="button">
+              <JumpalButton onClick={() => toggleToday(false)}>
                 <TagFacesIcon className='icon' />
                 All data
               </JumpalButton> :
-              <JumpalButton
-                variant="success"
-                onClick={handleToday}
-                className="button"
-              >
+              <JumpalButton onClick={() => toggleToday(true)}>
                 <TagFacesIcon className='icon' />
                 Today
               </JumpalButton>}
         </div>
         <JumpalPossiblyEmpty
           msg={messages.SD_EMPTY}
-          isPopulated={isDataPopulated(speedRecords)}
+          isPopulated={isDataPopulated(sd)}
         >
           <StyledTableContainer>
             <Table>
               <tbody>
                 {renderTableHeader()}
                 {showToday ?
-                  renderTodayData(parseTime(speedRecords)) :
-                  renderAllData(parseTime(speedRecords))}
+                  renderTodayData(parseTime(sd)) :
+                  renderAllData(parseTime(sd))}
               </tbody>
             </Table>
           </StyledTableContainer>

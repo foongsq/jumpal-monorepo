@@ -1,10 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FirebaseContext } from '../Firebase';
-import { timeStamp } from '../utils';
+import { getPbTime } from '../utils';
 import { get, set, remove, child, off, onValue } from 'firebase/database';
-// import { get, remove, child, off, onValue } from 'firebase/database';
-
 
 function usePbDb() {
   const firebase = useContext(FirebaseContext);
@@ -66,7 +64,7 @@ function usePbDb() {
         const currEventPbRef = child(pbRef, event);
         await set(currEventPbRef, {
           score: score,
-          time: timeStamp(time),
+          time: getPbTime(time),
         });
         return true;
       }
