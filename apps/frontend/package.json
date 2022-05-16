@@ -14,7 +14,7 @@
     "bootstrap": "^4.6.0",
     "date-fns": "^2.27.0",
     "firebase": "^9.6.5",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "nth-check": ">=2.0.1",
     "postcss": ">=8.2.13",
     "react": "^17.0.2",
