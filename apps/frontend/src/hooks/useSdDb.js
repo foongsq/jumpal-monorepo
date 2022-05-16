@@ -18,7 +18,6 @@ function useSdDb() {
           setAuthUser(authUser);
         } else {
           setAuthUser(null);
-          alert('Please sign in to continue');
         };
       },
   );
@@ -50,7 +49,9 @@ function useSdDb() {
       if (user) {
         const snapshot = await get(sdRef);
         onSdUpdate(snapshot);
+        return true;
       }
+      return false;
     } catch (e) {
       console.error(e);
       return false;
@@ -87,6 +88,7 @@ function useSdDb() {
             remove(child.ref);
           }
         });
+        return true;
       }
       return false;
     } catch (e) {

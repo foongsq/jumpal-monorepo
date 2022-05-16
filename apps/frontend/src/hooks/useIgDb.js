@@ -17,7 +17,6 @@ function useIgDb() {
           setAuthUser(authUser);
         } else {
           setAuthUser(null);
-          alert('Please sign in to continue');
         };
       },
   );

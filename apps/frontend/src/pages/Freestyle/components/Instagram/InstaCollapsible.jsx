@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Collapse, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './InstaCollapsible.css';
-import { useJumpalToast } from '../../../../components';
+import { useJumpalConfirm, useJumpalToast } from '../../../../components';
 
 InstaCollapsible.propTypes = {
   id: PropTypes.string.isRequired,
@@ -14,6 +14,7 @@ InstaCollapsible.propTypes = {
 
 function InstaCollapsible(props) {
   const Toast = useJumpalToast();
+  const { confirm } = useJumpalConfirm();
   const { id, url, content, delIg } = props;
   const [open, setOpen] = useState(false);
 
@@ -22,12 +23,14 @@ function InstaCollapsible(props) {
   };
 
   const handleDelete = async () => {
-    const res = await delIg(id);
-    if (res) {
-      Toast.success('Instagram post deleted successfully!');
-      return;
-    }
-    Toast.error('An error occured :(');
+    confirm({
+      title: 'Confirm deletion',
+      msg: 'Are you sure you want to delete this inspiration post?',
+      onConfirm: async () => {
+        const res = await delIg(id);
+        Toast.apiFeedback({ res, successMsg: messages.IG_DEL_SUCCESS });
+      },
+    });
   };
 
   return (

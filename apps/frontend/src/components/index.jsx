@@ -4,6 +4,7 @@ import JumpalPossiblyEmpty from './JumpalPossiblyEmpty';
 import JumpalSpinnerWrapper from './JumpalSpinnerWrapper';
 import JumpalToggleButtons from './JumpalToggleButtons';
 import useJumpalToast from './JumpalToast';
+import useJumpalConfirm from './JumpalConfirm';
 
 export {
   JumpalButton,
@@ -12,4 +13,5 @@ export {
   JumpalSpinnerWrapper,
   JumpalToggleButtons,
   useJumpalToast,
+  useJumpalConfirm,
 };

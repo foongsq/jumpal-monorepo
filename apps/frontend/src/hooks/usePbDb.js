@@ -18,7 +18,6 @@ function usePbDb() {
           setAuthUser(authUser);
         } else {
           setAuthUser(null);
-          alert('Please sign in to continue');
         };
       },
   );
@@ -50,7 +49,9 @@ function usePbDb() {
       if (user) {
         const snapshot = await get(pbRef);
         onPbUpdate(snapshot);
+        return true;
       }
+      return false;
     } catch (e) {
       console.error(e);
       return false;
@@ -78,6 +79,7 @@ function usePbDb() {
     try {
       if (user) {
         await remove(child(pbRef, event));
+        return true;
       }
       return false;
     } catch (e) {

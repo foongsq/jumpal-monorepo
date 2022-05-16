@@ -43,7 +43,16 @@ export const ToastProvider = ({ children }) => {
     setToasts((toasts) => toasts.filter((t) => t.id !== id));
   }, [setToasts]);
 
-  const value = { success, warn, error, removeToast };
+  const apiFeedback = ({ res, successMsg, errorMsg }) => {
+    errorMsg = errorMsg || 'An error occured :(';
+    if (res) {
+      success(successMsg);
+    } else {
+      error(errorMsg);
+    }
+  };
+
+  const value = { success, warn, error, removeToast, apiFeedback };
 
   return (
     <ToastContext.Provider value={value}>
@@ -84,7 +93,7 @@ const Toast = ({ children, severity, id }) => {
   }, [id, removeToast]);
 
   return (
-    <StyledAlert severity={severity} onClose={() => {}}>
+    <StyledAlert severity={severity} onClose={() => removeToast(id)}>
       {children}
     </StyledAlert>
   );

@@ -3,7 +3,8 @@ import {
   JumpalButton,
   JumpalSpinnerWrapper,
   JumpalPossiblyEmpty,
-  useJumpalToast } from '../../../../components';
+  useJumpalToast,
+  useJumpalConfirm } from '../../../../components';
 import {
   StyledHeaderTableCell,
   StyledTableCell,
@@ -21,6 +22,7 @@ import { useSdDb } from '../../../../hooks';
 
 function SpeedData() {
   const Toast = useJumpalToast();
+  const { confirm } = useJumpalConfirm();
   const [sd, loading, getSd, addSd, delSd] = useSdDb();
   const [showToday, setShowToday] = useState(false);
 
@@ -29,14 +31,14 @@ function SpeedData() {
   }, []);
 
   const handleDelete = async (event, score, time) => {
-    const result = window.confirm('Are you sure you want to delete?');
-    if (result) {
-      if (await delSd(event, score, time)) {
-        Toast.succes('Speed record deleted successfully!');
-      } else {
-        Toast.error('An error occured :(');
-      }
-    }
+    confirm({
+      title: 'Confirm deletion',
+      msg: 'Are you sure you want to delete this speed record?',
+      onConfirm: async () => {
+        const res = await delSd(event, score, time);
+        Toast.apiFeedback({ res, successMsg: messages.SD_DEL_SUCCESS });
+      },
+    });
   };
 
   const toggleToday = (shouldShowToday) => {

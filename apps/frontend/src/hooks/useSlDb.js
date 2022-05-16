@@ -19,7 +19,6 @@ function useSlDb() {
           setAuthUser(authUser);
         } else {
           setAuthUser(null);
-          alert('Please sign in to continue');
         };
       },
   );
@@ -51,7 +50,9 @@ function useSlDb() {
       if (user) {
         const snapshot = await get(slRef);
         onSlUpdate(snapshot);
+        return true;
       }
+      return false;
     } catch (e) {
       console.error(e);
       return false;
@@ -104,9 +105,12 @@ function useSlDb() {
 
   const updateSkill = async (id, change) => {
     try {
-      const skillRef = child(slRef, id);
-      await update(skillRef, change);
-      return true;
+      if (user) {
+        const skillRef = child(slRef, id);
+        await update(skillRef, change);
+        return true;
+      }
+      return false;
     } catch (e) {
       console.error(e);
       return false;

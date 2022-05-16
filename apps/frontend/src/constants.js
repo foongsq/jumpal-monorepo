@@ -37,13 +37,24 @@ export const styles = {
 
 export const messages = {
   PB_NOT_SIGNED_IN: 'Please sign in to see your personal bests.',
+  PB_EMPTY: 'Nothing to display, start by entering a new personal best above.',
+  PB_DEL_SUCCESS: 'Personal best deleted successfully!',
+
   SD_NOT_SIGNED_IN: 'Please sign in to see your speed data.',
+  SD_EMPTY: 'Nothing to display, start by entering a new speed record above.',
+  SD_DEL_SUCCESS: 'Speed record deleted successfully!',
+
+
   SKILL_NOT_SIGNED_IN: 'Please sign in to see your freestyle skills.',
-  IG_NOT_SIGNED_IN: 'Please sign in to see your Instagram inspiration.',
   NOTLEARNT_SKILLS_EMPTY: 'No skills to learn... Add some above!',
   LEARNT_SKILLS_EMPTY: 'Have not learnt any skills, jiayou!',
-  SD_EMPTY: 'Nothing to display, start by entering a new speed record above.',
-  PB_EMPTY: 'Nothing to display, start by entering a new personal best above.',
   SKILLS_EMPTY: 'Nothing to display, start by adding some skills above.',
+  SKILL_DEL_SUCCESS: 'Skill deleted successfully!',
+  LEARN_SUCCESS: 'Congratulations on learning a new skill!',
+  UNLEARN_SUCCESS: 'Oops gonna have to relearn that!',
+  SKILL_UPDATE_SUCCESS: 'Skill updated successfully!',
+
+  IG_NOT_SIGNED_IN: 'Please sign in to see your inspiration posts.',
   IG_EMPTY: 'Nothing to display, start by adding some posts above.',
+  IG_DEL_SUCCESS: 'Inspiration post deleted successfully!',
 };

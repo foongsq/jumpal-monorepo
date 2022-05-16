@@ -9,7 +9,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { SkillsApi } from './context';
-import { useJumpalToast } from '../../../../components';
+import { useJumpalConfirm, useJumpalToast } from '../../../../components';
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -24,6 +24,7 @@ SkillCollapsible.propTypes = {
 
 function SkillCollapsible(props) {
   const Toast = useJumpalToast();
+  const { confirm } = useJumpalConfirm();
   const { id, skillName, learnt, progress, url } = props;
   const api = useContext(SkillsApi);
   const [open, setOpen] = useState(false);
@@ -40,34 +41,28 @@ function SkillCollapsible(props) {
   };
 
   const handleDelete = async () => {
-    const res = await api.delSkill(id);
-    if (res) {
-      Toast.success('Skill deleted successfully!');
-    } else {
-      Toast.error('An error occured :(');
-    }
+    confirm({
+      title: 'Confirm deletion',
+      msg: 'Are you sure you want to delete this skill?',
+      onConfirm: async () => {
+        const res = await api.delSkill(id);
+        Toast.apiFeedback({ res, successMsg: messages.SKILL_DEL_SUCCESS });
+      },
+    });
   };
 
   const handleLearnt = async () => {
     const res = await api.updateSkill(id, {
       learnt: true,
     });
-    if (res) {
-      Toast.success('Congratulations on learning a new skill!');
-    } else {
-      Toast.error('An error occured :(');
-    }
+    Toast.apiFeedback({ res, successMsg: messages.LEARN_SUCCESS });
   };
 
   const handleUnlearn = async () => {
     const res = await api.updateSkill(id, {
       learnt: false,
     });
-    if (res) {
-      Toast.success('Oops gonna have to relearn that!');
-    } else {
-      Toast.error('An error occured :(');
-    }
+    Toast.apiFeedback({ res, successMsg: messages.UNLEARN_SUCCESS });
   };
 
   const handleEditButtonClick = () => {
@@ -88,11 +83,7 @@ function SkillCollapsible(props) {
       const res = await api.updateSkill(id, {
         url: val,
       });
-      if (res) {
-        Toast.success('Skill updated successfully!');
-      } else {
-        Toast.error('An error occured :(');
-      }
+      Toast.apiFeedback({ res, successMsg: messages.SKILL_UPDATE_SUCCESS });
     }
     setEditing(false);
   };
