@@ -10,3 +10,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Add firebase configurations in `/src/Firebase/config.js` according to `config.js sample` file
 - In `apps/frontend`, `npm install` to install dependencies
 - In `apps/frontend`, `npm run dev` to start up app on localhost
+
+## Documentation
+Documentation is found at [project wiki](https://github.com/foongsq/jumpal-monorepo/wiki)
