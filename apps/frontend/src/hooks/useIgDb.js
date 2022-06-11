@@ -3,7 +3,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { FirebaseContext } from '../Firebase';
 import { get, push, remove, child, off, onValue } from 'firebase/database';
 
-function useIgDb() {
+export default function useIgDb() {
   const firebase = useContext(FirebaseContext);
   const [user, setAuthUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -84,5 +84,3 @@ function useIgDb() {
 
   return [ig, loading, getIg, addIg, delIg];
 }
-
-export default useIgDb;

@@ -1,57 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   JumpalButton,
   JumpalSpinnerWrapper,
   JumpalPossiblyEmpty,
-  useJumpalToast,
-  useJumpalConfirm } from '../../../../components';
-import {
-  StyledHeaderTableCell,
-  StyledTableCell,
-  StyledTableRow,
-  StyledTableContainer,
-} from '../../../../components/table';
+  JumpalHeaderTableCell,
+  JumpalTableCell,
+  JumpalTableRow,
+  JumpalTableContainer,
+  JumpalTableDeleteButton,
+} from '../../../../components';
 import { Table, TableRow } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TagFacesIcon from '@mui/icons-material/TagFaces';
-import NewSpeedRecordModal from './NewSpeedRecordModal';
-import './SpeedData.css';
+import NewSpeedRecord from './NewSpeedRecord';
 import { messages } from '../../../../constants';
 import { isDataPopulated } from '../../../../utils';
-import { useSdDb } from '../../../../hooks';
+import styled from '@emotion/styled';
+import useSpeedDataController from './useSpeedDataController';
 
-function SpeedData() {
-  const Toast = useJumpalToast();
-  const { confirm } = useJumpalConfirm();
-  const [sd, loading, getSd, addSd, delSd] = useSdDb();
-  const [showToday, setShowToday] = useState(false);
-
-  useEffect(() => {
-    getSd();
-  }, []);
-
-  const handleDelete = async (event, score, time) => {
-    confirm({
-      title: 'Confirm deletion',
-      msg: 'Are you sure you want to delete this speed record?',
-      onConfirm: async () => {
-        const res = await delSd(event, score, time);
-        Toast.apiFeedback({ res, successMsg: messages.SD_DEL_SUCCESS });
-      },
-    });
-  };
-
-  const toggleToday = (shouldShowToday) => {
-    setShowToday(shouldShowToday);
-  };
+export default function SpeedData() {
+  const [sd, loading, addSd, showToday, handleDelete,
+    toggleToday, parseTime] = useSpeedDataController();
 
   const renderTableHeader = () => {
     return (
       <TableRow>
-        <StyledHeaderTableCell>Event</StyledHeaderTableCell>
-        <StyledHeaderTableCell>Score</StyledHeaderTableCell>
-        <StyledHeaderTableCell>Time</StyledHeaderTableCell>
-        <StyledHeaderTableCell></StyledHeaderTableCell>
+        <JumpalHeaderTableCell>Event</JumpalHeaderTableCell>
+        <JumpalHeaderTableCell>Score</JumpalHeaderTableCell>
+        <JumpalHeaderTableCell>Time</JumpalHeaderTableCell>
+        <JumpalHeaderTableCell></JumpalHeaderTableCell>
       </TableRow>
     );
   };
@@ -61,18 +38,18 @@ function SpeedData() {
       return records.reverse().map((record) => {
         const { event, score, time } = record;
         return (
-          <StyledTableRow key={time}>
-            <StyledTableCell>{event}</StyledTableCell>
-            <StyledTableCell>{score}</StyledTableCell>
-            <StyledTableCell>{time}</StyledTableCell>
-            <StyledTableCell>
-              <button
-                className="jumpalTableDeleteButton"
+          <JumpalTableRow key={time}>
+            <JumpalTableCell>{event}</JumpalTableCell>
+            <JumpalTableCell>{score}</JumpalTableCell>
+            <JumpalTableCell>{time}</JumpalTableCell>
+            <JumpalTableCell>
+              <JumpalTableDeleteButton
                 onClick={() => handleDelete(event, score, time)}
               >
                 <DeleteIcon />
-              </button></StyledTableCell>
-          </StyledTableRow>
+              </JumpalTableDeleteButton>
+            </JumpalTableCell>
+          </JumpalTableRow>
         );
       });
     }
@@ -90,18 +67,18 @@ function SpeedData() {
         const splitTime = time.split(' ');
         if (splitTime[0] === today) {
           return (
-            <StyledTableRow key={time}>
-              <StyledTableCell>{event}</StyledTableCell>
-              <StyledTableCell>{score}</StyledTableCell>
-              <StyledTableCell>{time}</StyledTableCell>
-              <StyledTableCell>
-                <button
-                  className="jumpalTableDeleteButton"
+            <JumpalTableRow key={time}>
+              <JumpalTableCell>{event}</JumpalTableCell>
+              <JumpalTableCell>{score}</JumpalTableCell>
+              <JumpalTableCell>{time}</JumpalTableCell>
+              <JumpalTableCell>
+                <JumpalTableDeleteButton
                   onClick={() => handleDelete(event, score, time)}
                 >
                   <DeleteIcon />
-                </button></StyledTableCell>
-            </StyledTableRow>
+                </JumpalTableDeleteButton>
+              </JumpalTableCell>
+            </JumpalTableRow>
           );
         } else {
           return null;
@@ -110,32 +87,11 @@ function SpeedData() {
     }
   };
 
-  const parseTime = (records) => {
-    if (isDataPopulated(records)) {
-      const consolidated = [];
-      const years = Object.keys(records[0]);
-      years.forEach((year) => {
-        const months = Object.keys(records[0][year]);
-        months.forEach((month) => {
-          const days = Object.keys(records[0][year][month]);
-          days.forEach((day) => {
-            Object.values(records[0][year][month][day]).forEach((record) => {
-              consolidated.push(record);
-            });
-          });
-        });
-      });
-      // Sort records in ascending order according to time
-      return consolidated.sort(
-          (a, b) => (new Date(a.time) > new Date(b.time)) ? 1 : -1);
-    }
-  };
-
   return (
     <JumpalSpinnerWrapper loading={loading}>
       <div className="componentContentDiv">
-        <NewSpeedRecordModal addSd={addSd} />
-        <div className="titleAndButtonDiv">
+        <NewSpeedRecord addSd={addSd} />
+        <TitleButtonContainer>
           <h2>My Speed Records</h2>
           {showToday ?
               <JumpalButton onClick={() => toggleToday(false)}>
@@ -146,12 +102,12 @@ function SpeedData() {
                 <TagFacesIcon className='icon' />
                 Today
               </JumpalButton>}
-        </div>
+        </TitleButtonContainer>
         <JumpalPossiblyEmpty
           msg={messages.SD_EMPTY}
           isPopulated={isDataPopulated(sd)}
         >
-          <StyledTableContainer>
+          <JumpalTableContainer>
             <Table>
               <tbody>
                 {renderTableHeader()}
@@ -160,12 +116,15 @@ function SpeedData() {
                   renderAllData(parseTime(sd))}
               </tbody>
             </Table>
-          </StyledTableContainer>
-
+          </JumpalTableContainer>
         </JumpalPossiblyEmpty>
       </div>
     </JumpalSpinnerWrapper>
   );
 }
 
-export default SpeedData;
+const TitleButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;

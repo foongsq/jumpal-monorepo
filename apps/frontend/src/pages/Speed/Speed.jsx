@@ -20,7 +20,7 @@ const component = {
 const toggleButtonNames = [component.PERSONALBEST, component.SPEEDDATA,
   component.TIMING, component.COUNTER];
 
-function Speed() {
+export default function Speed() {
   const [user, loading] = useAuth();
   const [componentRendered, setComponentRendered] =
     useState(component.PERSONALBEST);
@@ -53,5 +53,3 @@ function Speed() {
     </JumpalSpinnerWrapper>
   );
 }
-
-export default Speed;

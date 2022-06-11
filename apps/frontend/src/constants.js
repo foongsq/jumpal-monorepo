@@ -22,17 +22,6 @@ export const styles = {
   blueInputFocus: 'rgba(0, 127, 255, 0.25)',
   inputBorderColor: 'rgba(0, 0, 0, 0.15)',
   reactSelectOptionColor: '#383838',
-  modalStyle: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    borderRadius: '5px',
-    boxShadow: 24,
-    p: 4,
-  },
 };
 
 export const messages = {
@@ -58,3 +47,37 @@ export const messages = {
   IG_EMPTY: 'Nothing to display, start by adding some posts above.',
   IG_DEL_SUCCESS: 'Inspiration post deleted successfully!',
 };
+
+export const speedEvents = [
+  { value: '1x30sec Running Step', label: '1x30sec Running Step' },
+  { value: '1x60sec Running Step', label: '1x60sec Running Step' },
+  { value: '1x30sec Double Unders', label: '1x30sec Double Unders' },
+  { value: '1x60sec Double Unders', label: '1x60sec Double Unders' },
+  { value: '1x180sec Running Step', label: '1x180sec Running Step' },
+  { value: '1x240sec Running Step', label: '1x240sec Running Step' },
+  { value: 'Consecutive Triple Unders', label: 'Consecutive Triple Unders' },
+  { value: '2x30sec Double Unders', label: '2x30sec Double Unders' },
+  { value: '4x30sec Speed Relay', label: '4x30sec Speed Relay' },
+];
+
+export const timingTrackOptions = [
+  { value: 'SRSS-1x30sec', label: 'Single Rope Speed Sprints 1x30sec' },
+  { value: 'SRDU-2x30sec', label: 'Single Rope Double Unders 2x30sec' },
+  { value: 'SRSE-1x180sec', label: 'Single Rope Speed Endurance 1x180sec' },
+  { value: 'SRSR-4x30sec', label: 'Single Rope Speed Relay 4x30sec' },
+  { value: 'DDSR-4x30sec', label: 'Double Dutch Speed Relay 4x30sec' },
+  { value: 'DDSS-1x60sec', label: 'Double Dutch Speed Sprints 1x60sec' },
+];
+
+export const freestyleComponent = {
+  SKILLSLIST: 'Skills List',
+  IGINSPO: 'Media Inspiration',
+};
+
+export const freestyleToggleButtons = [
+  freestyleComponent.SKILLSLIST,
+  freestyleComponent.IGINSPO,
+];
+
+export const ESCAPE_KEY = 27;
+export const ENTER_KEY = 13;

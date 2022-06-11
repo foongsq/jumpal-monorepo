@@ -65,7 +65,8 @@ export const ToastProvider = ({ children }) => {
 const ToastContainer = ({ toasts }) => {
   return createPortal(
       <div style={
-        { position: 'absolute', right: '1rem', top: 0, zIndex: '10' }
+        { position: 'absolute', top: 0, left: '50%',
+          transform: 'translateX(-50%)', zIndex: '10' }
       }>
         {toasts.map((item, index) => (
           <Toast key={index} severity={item.severity} id={item.id}>

@@ -1,18 +1,23 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import EditableText from '../EditableText';
+import EditableText from './EditableText';
 import Progress from './Progress';
-import './SkillCollapsible.css';
 import { Collapse, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { SkillsApi } from './context';
-import { useJumpalConfirm, useJumpalToast } from '../../../../components';
-
-const ESCAPE_KEY = 27;
-const ENTER_KEY = 13;
+import { CollapsibleButtonsContainer }
+  from '../../../../components/JumpalCommon';
+import {
+  ActiveNoteButtonStyle,
+  NoteButtonStyle,
+} from '../../../../styles/styles';
+import styled from '@emotion/styled';
+import Url from './Url';
+import {
+  ActiveCollapsibleHeaderStyle,
+  CollapsibleHeaderStyle } from '../../../../styles/styles';
+import useSkillCollapsibleController from './useSkillCollapsibleController';
 
 SkillCollapsible.propTypes = {
   id: PropTypes.string,
@@ -22,148 +27,98 @@ SkillCollapsible.propTypes = {
   url: PropTypes.string,
 };
 
-function SkillCollapsible(props) {
-  const Toast = useJumpalToast();
-  const { confirm } = useJumpalConfirm();
+export default function SkillCollapsible(props) {
   const { id, skillName, learnt, progress, url } = props;
-  const api = useContext(SkillsApi);
-  const [open, setOpen] = useState(false);
-  const [openProgress, setOpenProgress] = useState(false);
-  const [editText, setEditText] = useState('');
-  const [editing, setEditing] = useState(false);
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
-  const handleProgressClick = () => {
-    setOpenProgress(!openProgress);
-  };
-
-  const handleDelete = async () => {
-    confirm({
-      title: 'Confirm deletion',
-      msg: 'Are you sure you want to delete this skill?',
-      onConfirm: async () => {
-        const res = await api.delSkill(id);
-        Toast.apiFeedback({ res, successMsg: messages.SKILL_DEL_SUCCESS });
-      },
-    });
-  };
-
-  const handleLearnt = async () => {
-    const res = await api.updateSkill(id, {
-      learnt: true,
-    });
-    Toast.apiFeedback({ res, successMsg: messages.LEARN_SUCCESS });
-  };
-
-  const handleUnlearn = async () => {
-    const res = await api.updateSkill(id, {
-      learnt: false,
-    });
-    Toast.apiFeedback({ res, successMsg: messages.UNLEARN_SUCCESS });
-  };
-
-  const handleEditButtonClick = () => {
-    if (editing) {
-      handleSubmit();
-    } else {
-      setEditing(true);
-    }
-  };
-
-  const handleChange = (e) => {
-    setEditText(e.target.value);
-  };
-
-  const handleSubmit = async (e) => {
-    const val = editText;
-    if (val) {
-      const res = await api.updateSkill(id, {
-        url: val,
-      });
-      Toast.apiFeedback({ res, successMsg: messages.SKILL_UPDATE_SUCCESS });
-    }
-    setEditing(false);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.which === ESCAPE_KEY) {
-      setEditText(skillName);
-      setEditing(false);
-    } else if (e.which === ENTER_KEY) {
-      handleSubmit(e);
-    }
-  };
+  const [open, openProgress, handleClick, handleProgressClick,
+    handleDelete, handleLearnt, handleUnlearn] =
+    useSkillCollapsibleController();
 
   return (
     <div>
-      <div className="note-and-trash-div">
-        <button onClick={handleClick}
-          className={open ? 'noteActive' : 'note-button'}>
+      <CollapsibleButtonsContainer>
+        <NoteButton isOpen={open} onClick={handleClick}>
           {skillName}
-        </button>
-        <button onClick={handleDelete} className="s-trash-button">
+        </NoteButton>
+        <TrashButton onClick={handleDelete}>
           <DeleteIcon color="action" />
-        </button>
+        </TrashButton>
         {learnt ?
-          <button onClick={handleUnlearn} className="learnt-button">
+          <LearnUnlearnButton onClick={handleUnlearn}>
             Unlearn
-          </button> :
-          <button onClick={handleLearnt} className="learnt-button">
+          </LearnUnlearnButton> :
+          <LearnUnlearnButton onClick={handleLearnt}>
             Learnt
-          </button>}
-      </div>
+          </LearnUnlearnButton>}
+      </CollapsibleButtonsContainer>
 
       <Collapse in={open}>
-        <Paper className='skillItem' elevation={5}>
-          <div className='skillItemInnerCompDiv'>
+        <SkillDetailsContainer elevation={5}>
+          <SkillNameDisplay>
             <p>Skill Name:</p>
             <EditableText id={id} type="skillName" content={skillName} />
-          </div>
-          {url === '-' ?
-              <div className='skillItemProgress'>
-                <button id={editing ?
-                  'progressActive' : 'progress-button'}
-                onClick={handleEditButtonClick}
-                >
-                  <label>URLs:</label>
-                  <AddCircleOutlineIcon color="action" />
-                </button>
-                <Collapse in={editing}>
-                  <div className='url-container'>
-                    <div className='show'>
-                      <p className='show-p'>New URL:</p>
-                      <input
-                        className='show-input'
-                        value={editText}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                      />
-                    </div>
-                  </div>
-                </Collapse>
-              </div> :
-              <div className='skillItemInnerCompDiv'>
-                <p>URL:</p>
-                <EditableText id={id} type="url" content={url} />
-              </div>}
-          <div className='skillItemProgress'>
-            <button id={openProgress ? 'progressActive' : 'progress-button'}
-              onClick={handleProgressClick}>
-              <label>Progress:</label>
-              {openProgress ? <ArrowDropUpIcon color="action" /> :
-                <ArrowDropDownIcon color="action" />}
-            </button>
-          </div>
+          </SkillNameDisplay>
+          <Url skillId={id} url={url} />
+          <ProgressCollapsibleHeaderButton
+            isOpen={openProgress}
+            onClick={handleProgressClick}>
+            <label>Progress:</label>
+            {openProgress ?
+              <ArrowDropUpIcon color="action" /> :
+              <ArrowDropDownIcon color="action" />}
+          </ProgressCollapsibleHeaderButton>
           <Collapse in={openProgress}>
             <Progress progress={progress} id={id} />
           </Collapse>
-        </Paper>
+        </SkillDetailsContainer>
       </Collapse>
     </div>
   );
 }
 
-export default SkillCollapsible;
+const NoteButton = styled.button`
+  ${(props) => props.isOpen ? ActiveNoteButtonStyle : NoteButtonStyle}
+`;
+
+const TrashButton = styled.button`
+  border: none;
+  outline: none;
+  float: right;
+  &:hover {
+    cursor: pointer;
+    background-color: red;
+  }
+`;
+
+const LearnUnlearnButton = styled.button`
+  border: none;
+  outline: none;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  &:hover {
+    background-color: #8adcff;
+    cursor: pointer;
+  }
+`;
+
+const SkillDetailsContainer = styled(Paper)`
+  padding: 0.5rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const SkillNameDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  p {
+    white-space: nowrap;
+    margin-right: 1rem;
+    margin-bottom: 0;
+    text-align: left;
+  }
+`;
+
+const ProgressCollapsibleHeaderButton = styled.button`
+  ${(props) => props.isOpen ?
+    ActiveCollapsibleHeaderStyle : CollapsibleHeaderStyle }
+`;

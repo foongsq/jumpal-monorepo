@@ -5,7 +5,7 @@ import { FirebaseContext } from '../Firebase';
 import { get, push, remove, child,
   off, onValue, update } from 'firebase/database';
 
-function useSlDb() {
+export default function useSlDb() {
   const firebase = useContext(FirebaseContext);
   const [user, setAuthUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -117,7 +117,6 @@ function useSlDb() {
     }
   };
 
-  return [sl, loading, getSl, getSkill, addSkill, delSkill, updateSkill];
+  return { sl, loading, getSl, getSkill,
+    addSkill, delSkill, updateSkill };
 }
-
-export default useSlDb;

@@ -4,7 +4,7 @@ import { FirebaseContext } from '../Firebase';
 import { getSdDbTime, getSdTime } from '../utils';
 import { get, push, remove, child, off, onValue } from 'firebase/database';
 
-function useSdDb() {
+export default function useSdDb() {
   const firebase = useContext(FirebaseContext);
   const [user, setAuthUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -99,5 +99,3 @@ function useSdDb() {
 
   return [sd, loading, getSd, addSd, delSd];
 }
-
-export default useSdDb;

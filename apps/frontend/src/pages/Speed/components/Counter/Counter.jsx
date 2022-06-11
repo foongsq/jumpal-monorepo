@@ -1,20 +1,66 @@
-import React, { useState } from 'react';
-import './Counter.css';
+import React from 'react';
+import useCounterController from './useCounterController';
+import styled from '@emotion/styled';
 
 export default function Counter() {
-  const [count, setCount] = useState(0);
-  const increment = () => setCount(count + 1);
-  const decrement = () => setCount(count - 1);
-  const reset = () => setCount(0);
+  const [count, increment, decrement, reset] = useCounterController();
+
   return (
-    <div className="counter-container">
-      <div className="count"><h1>{count}</h1></div>
-      <div className="counter-buttons-div">
-        <button className="minus-button" onClick={decrement}>-</button>
-        <button className="add-button" onClick={increment}>+</button>
-      </div>
-      <button className="reset-button" onClick={reset}>Reset</button>
-    </div>
+    <CounterContainer>
+      <CountContainer><Count>{count}</Count></CountContainer>
+      <CounterButtons>
+        <CounterButton onClick={decrement}>-</CounterButton>
+        <CounterButton onClick={increment}>+</CounterButton>
+      </CounterButtons>
+      <ResetButton onClick={reset}>Reset</ResetButton>
+    </CounterContainer>
   );
 }
 
+const CounterContainer = styled.div({
+  backgroundColor: '#c2c2c2',
+  borderRadius: '10px',
+  padding: '1rem',
+  margin: '0.5rem auto',
+  maxWidth: '500px',
+});
+
+const CountContainer = styled.div({
+  border: '1px solid #dedede',
+  backgroundColor: '#dedede',
+});
+
+const Count = styled.h1({
+  fontSize: '3rem',
+  textAlign: 'center',
+});
+
+const CounterButtons = styled.div({
+  display: 'flex',
+  justifyContent: 'space-between',
+});
+
+const CounterButton = styled.button`
+  border: none;
+  outline: none;
+  font-size: 3rem;
+  margin: 0.5rem;
+  padding: 3rem 3rem;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+  }
+`;
+
+const ResetButton = styled.button`
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+  }
+`;

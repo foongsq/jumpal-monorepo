@@ -7,7 +7,7 @@ JumpalErrorText.propTypes = {
   msg: PropTypes.string,
 };
 
-function JumpalErrorText(props) {
+export default function JumpalErrorText(props) {
   const { msg } = props;
   return (
     <StyledWarningAlert severity="warning">{msg}</StyledWarningAlert>
@@ -17,5 +17,3 @@ function JumpalErrorText(props) {
 const StyledWarningAlert = styled(Alert)({
   marginTop: '1rem',
 });
-
-export default JumpalErrorText;
