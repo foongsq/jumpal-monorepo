@@ -2,22 +2,23 @@ import React, { useState, useContext } from 'react';
 import { set, child } from 'firebase/database';
 import { FirebaseContext } from '../../../../Firebase/index';
 import { useNavigate } from 'react-router-dom';
-import JumpalButton from '../../../../components/JumpalButton';
+import { JumpalButton } from '../../../../components';
 import { signInWithPopup } from 'firebase/auth';
 import GoogleIcon from '@mui/icons-material/Google';
+import styled from '@emotion/styled';
 
-import './SignIn.css';
-
-const SignInPage = () => (
-  <div>
-    <h1 className='signInText'>Sign In</h1>
-    <div className='signInButtons'>
-      <SignInGoogle />
+export default function SignInPage() {
+  return (
+    <div>
+      <SignInText>Sign In</SignInText>
+      <SignInButtonsContainer>
+        <SignInGoogle />
+      </SignInButtonsContainer>
     </div>
-  </div>
-);
+  );
+};
 
-function SignInGoogle() {
+export function SignInGoogle() {
   const firebase = useContext(FirebaseContext);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
@@ -51,5 +52,12 @@ function SignInGoogle() {
   );
 }
 
-export default SignInPage;
-export { SignInGoogle };
+const SignInText = styled.h1`
+  text-align: center;
+  margin: 1rem;
+`;
+
+const SignInButtonsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;

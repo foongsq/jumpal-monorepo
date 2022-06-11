@@ -41,7 +41,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { ToastProvider } from './components/JumpalToast';
 import { ConfirmProvider } from './components/JumpalConfirm';
 
-function App() {
+export default function App() {
   const [user, loading] = useAuth();
 
   return (
@@ -88,8 +88,6 @@ function App() {
     </div>
   );
 }
-
-export default App;
 
 const pages = [routes.HOME, routes.SPEED, routes.FREESTYLE, routes.PROFILE];
 

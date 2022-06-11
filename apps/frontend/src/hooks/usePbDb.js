@@ -4,7 +4,7 @@ import { FirebaseContext } from '../Firebase';
 import { getPbTime } from '../utils';
 import { get, set, remove, child, off, onValue } from 'firebase/database';
 
-function usePbDb() {
+export default function usePbDb() {
   const firebase = useContext(FirebaseContext);
   const [user, setAuthUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -90,5 +90,3 @@ function usePbDb() {
 
   return [pb, loading, getPb, addPb, delPb];
 }
-
-export default usePbDb;

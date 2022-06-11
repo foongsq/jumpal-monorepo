@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { TableCell, TableRow, TableContainer } from '@mui/material';
 import { styles } from '../constants.js';
 
-const StyledTableContainer = styled(TableContainer)({
+export const JumpalTableContainer = styled(TableContainer)({
   borderRadius: '10px',
   marginTop: '1rem',
   boxShadow: `10px 10px 10px ${styles.shadow}`,
@@ -12,7 +12,7 @@ const StyledTableContainer = styled(TableContainer)({
 // - Apply green background color
 // - Bold, horizontally center text, change text color to white
 // - Add grey border
-const StyledHeaderTableCell = styled(TableCell)({
+export const JumpalHeaderTableCell = styled(TableCell)({
   background: styles.bootstrapGreen,
   fontWeight: 'bold',
   color: 'white',
@@ -22,22 +22,25 @@ const StyledHeaderTableCell = styled(TableCell)({
 });
 
 // Add grey border
-const StyledTableCell = styled(TableCell)({
+export const JumpalTableCell = styled(TableCell)({
   border: '1px solid',
   borderColor: styles.greyTableBorder,
   padding: '0.75rem',
 });
 
 // Alternate white and grey rows
-const StyledTableRow = styled(TableRow)({
+export const JumpalTableRow = styled(TableRow)({
   '&:nth-of-type(odd)': {
     background: styles.greyTableRow,
   },
 });
 
-export {
-  StyledHeaderTableCell,
-  StyledTableCell,
-  StyledTableRow,
-  StyledTableContainer,
-};
+export const JumpalTableDeleteButton = styled.button`
+  border: none;
+  background-color: inherit;
+  border-radius: 5px;
+  &:hover {
+    color: white;
+    background-color: var(--red);
+  }
+`;

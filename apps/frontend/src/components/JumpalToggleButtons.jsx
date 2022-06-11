@@ -8,7 +8,7 @@ JumpalToggleButtons.propTypes = {
   toggle: PropTypes.func,
 };
 
-function JumpalToggleButtons(props) {
+export default function JumpalToggleButtons(props) {
   const { buttons, value, toggle } = props;
   return (
     <ToggleButtonGroup
@@ -31,5 +31,3 @@ function JumpalToggleButtons(props) {
     </ToggleButtonGroup>
   );
 };
-
-export default JumpalToggleButtons;
