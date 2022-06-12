@@ -1,24 +1,21 @@
-import React from 'react';
-import Paper from '@mui/material/Paper';
-import SignOut from './components/SignOut/SignOut';
-import SignIn from './components/SignIn/SignIn';
-import { JumpalSpinnerWrapper } from '../../components';
-import { useAuth } from '../../hooks';
-import { JumpalPageContainer } from '../../components';
-import styled from '@emotion/styled';
+import React from "react";
+import Paper from "@mui/material/Paper";
+import SignOut from "./components/SignOut/SignOut";
+import SignIn from "./components/SignIn/SignIn";
+import { JumpalSpinnerWrapper } from "../../components";
+import { useAuth } from "../../hooks";
+import { JumpalPageContainer } from "../../components";
+import styled from "@emotion/styled";
 
 export default function ProfilePage() {
   const [user, loading] = useAuth();
 
   return (
     <JumpalSpinnerWrapper loading={loading}>
-      {user ?
+      {user ? (
         <ProfilePageContainer>
           <ProfileCard elevation={10}>
-            <ProfileImage
-              src={user.photoURL}
-              alt='Profile'
-            />
+            <ProfileImage src={user.photoURL} alt="Profile" />
             <DisplayName>{user.displayName}</DisplayName>
             <EmailContainer>
               <EmailLabel>Email:</EmailLabel>
@@ -26,8 +23,10 @@ export default function ProfilePage() {
             </EmailContainer>
             <SignOut />
           </ProfileCard>
-        </ProfilePageContainer> :
-      <SignIn />}
+        </ProfilePageContainer>
+      ) : (
+        <SignIn />
+      )}
     </JumpalSpinnerWrapper>
   );
 }
@@ -36,14 +35,14 @@ const ProfilePageContainer = styled(JumpalPageContainer)`
   width: 100%;
   height: 94vh;
   padding: 2rem;
-  background-image: url('../../images/cloudy-sky.jpg');
+  background-image: url("../../images/cloudy-sky.jpg");
   background-repeat: repeat-y;
 `;
 
 const ProfileCard = styled(Paper)`
   width: 100%;
   padding: 2rem;
-  background-image: url('../../images/cloudy-sky.jpg');
+  background-image: url("../../images/cloudy-sky.jpg");
   background-repeat: repeat-y;
 `;
 

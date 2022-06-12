@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 JumpalPossiblyEmpty.propTypes = {
   msg: PropTypes.string,
@@ -18,10 +18,6 @@ export default function JumpalPossiblyEmpty(props) {
   if (showChildren) {
     return <div>{children}</div>;
   } else {
-    return (
-      <p style={{ textAlign: 'center' }}>
-        {msg}
-      </p>
-    );
+    return <p style={{ textAlign: "center" }}>{msg}</p>;
   }
 }

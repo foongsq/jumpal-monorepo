@@ -1,27 +1,27 @@
-import React from 'react';
-import {
-  TextField,
-  InputLabel,
-  MenuItem,
-  Select,
-} from '@mui/material';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-import { speedEvents } from '../../../../constants';
-import PropTypes from 'prop-types';
-import useNewPersonalBestController from './useNewPersonalBestController';
-import {
-  JumpalFormControl,
-} from '../../../../components/JumpalCommon.tsx';
-import JumpalModal from '../../../../components/JumpalModal';
+import React from "react";
+import { TextField, InputLabel, MenuItem, Select } from "@mui/material";
+import DateTimePicker from "@mui/lab/DateTimePicker";
+import { speedEvents } from "../../../../constants";
+import PropTypes from "prop-types";
+import useNewPersonalBestController from "./useNewPersonalBestController";
+import { JumpalFormControl } from "../../../../components/JumpalCommon.tsx";
+import JumpalModal from "../../../../components/JumpalModal";
 
 NewPersonalBest.propTypes = {
   addPb: PropTypes.func.isRequired,
 };
 
 export default function NewPersonalBest(props) {
-  const [toggleNewPersonalBest, handleEventChange, handleScoreChange,
-    handleTimeChange, saveNewPersonalBest, open, eventJ, time] =
-    useNewPersonalBestController(props.addPb);
+  const [
+    toggleNewPersonalBest,
+    handleEventChange,
+    handleScoreChange,
+    handleTimeChange,
+    saveNewPersonalBest,
+    open,
+    eventJ,
+    time,
+  ] = useNewPersonalBestController(props.addPb);
 
   return (
     <JumpalModal
@@ -41,11 +41,7 @@ export default function NewPersonalBest(props) {
       </JumpalFormControl>
       <JumpalFormControl>
         <InputLabel>Event</InputLabel>
-        <Select
-          label="Event"
-          value={eventJ}
-          onChange={handleEventChange}
-        >
+        <Select label="Event" value={eventJ} onChange={handleEventChange}>
           {speedEvents.map((event) => (
             <MenuItem value={event.value} key={event.value}>
               {event.label}

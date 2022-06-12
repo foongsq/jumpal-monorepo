@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
-import { isDataPopulated } from '../../../../utils';
-import { useSlDb } from '../../../../hooks';
+import { useEffect } from "react";
+import { isDataPopulated } from "../../../../utils";
+import { useSlDb } from "../../../../hooks";
 
 export default function useSkillListController() {
-  const { sl, loading, getSl, getSkill,
-    addSkill, delSkill, updateSkill } = useSlDb();
+  const { sl, loading, getSl, getSkill, addSkill, delSkill, updateSkill } =
+    useSlDb();
 
   const api = { getSl, getSkill, addSkill, delSkill, updateSkill };
 
@@ -31,7 +31,6 @@ export default function useSkillListController() {
       notLearnt: notLearntData,
     };
   };
-
 
   return [sl, loading, api, processData];
 }

@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { useAuth } from '../../hooks';
-import { freestyleComponent } from '../../constants';
+import { useState } from "react";
+import { useAuth } from "../../hooks";
+import { freestyleComponent } from "../../constants";
 
 export default function useFreestyleController() {
   const [user, loading] = useAuth();
-  const [componentRendered, setComponentRendered] =
-      useState(freestyleComponent.SKILLSLIST);
+  const [componentRendered, setComponentRendered] = useState(
+    freestyleComponent.SKILLSLIST
+  );
 
   const toggleComponent = (event, newComponent) => {
     if (newComponent) {

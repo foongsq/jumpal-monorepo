@@ -1,17 +1,17 @@
-import React from 'react';
-import NewMedia from './NewMedia';
-import MediaCollapsible from './MediaCollapsible';
+import React from "react";
+import NewMedia from "./NewMedia";
+import MediaCollapsible from "./MediaCollapsible";
 import {
   JumpalSpinnerWrapper,
   JumpalPossiblyEmpty,
-} from '../../../../components';
-import { messages } from '../../../../constants';
-import { isDataPopulated } from '../../../../utils';
+} from "../../../../components";
+import { messages } from "../../../../constants";
+import { isDataPopulated } from "../../../../utils";
 import {
   FullWidthContainer,
   JumpalVerticalSpacing,
-} from '../../../../components/JumpalCommon.tsx';
-import useMediaController from './useMediaController';
+} from "../../../../components/JumpalCommon.tsx";
+import useMediaController from "./useMediaController";
 
 export default function Media() {
   const [ig, loading, addIg, delIg, processData] = useMediaController();
@@ -23,7 +23,8 @@ export default function Media() {
         <JumpalVerticalSpacing />
         <JumpalPossiblyEmpty
           msg={messages.IG_EMPTY}
-          isPopulated={isDataPopulated(ig)}>
+          isPopulated={isDataPopulated(ig)}
+        >
           <div>
             {processData().map((object) => {
               return (

@@ -1,7 +1,7 @@
-import { useState, useContext, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { FirebaseContext } from '../Firebase';
-import { get, push, remove, child, off, onValue } from 'firebase/database';
+import { useState, useContext, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { FirebaseContext } from "../Firebase";
+import { get, push, remove, child, off, onValue } from "firebase/database";
 
 export default function useIgDb() {
   const firebase = useContext(FirebaseContext);
@@ -10,16 +10,13 @@ export default function useIgDb() {
   const [ig, setIg] = useState([]);
   const igsRef = firebase.igs;
 
-  const unsubscribe = onAuthStateChanged(
-      firebase.auth,
-      (authUser) => {
-        if (authUser) {
-          setAuthUser(authUser);
-        } else {
-          setAuthUser(null);
-        }
-      },
-  );
+  const unsubscribe = onAuthStateChanged(firebase.auth, (authUser) => {
+    if (authUser) {
+      setAuthUser(authUser);
+    } else {
+      setAuthUser(null);
+    }
+  });
 
   const onIgUpdate = (snapshot) => {
     setLoading(true);
@@ -40,7 +37,6 @@ export default function useIgDb() {
       unsubscribe();
     };
   }, []);
-
 
   const getIg = async () => {
     try {
@@ -71,7 +67,7 @@ export default function useIgDb() {
   const delIg = async (id) => {
     try {
       if (user) {
-        const igRef= child(igsRef, id);
+        const igRef = child(igsRef, id);
         await remove(igRef);
         return true;
       }

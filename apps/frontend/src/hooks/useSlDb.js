@@ -1,9 +1,16 @@
-import { useState, useContext, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { FirebaseContext } from '../Firebase';
+import { useState, useContext, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { FirebaseContext } from "../Firebase";
 
-import { get, push, remove, child,
-  off, onValue, update } from 'firebase/database';
+import {
+  get,
+  push,
+  remove,
+  child,
+  off,
+  onValue,
+  update,
+} from "firebase/database";
 
 export default function useSlDb() {
   const firebase = useContext(FirebaseContext);
@@ -12,16 +19,13 @@ export default function useSlDb() {
   const [sl, setSl] = useState([]);
   const slRef = firebase.skillList;
 
-  const unsubscribe = onAuthStateChanged(
-      firebase.auth,
-      (authUser) => {
-        if (authUser) {
-          setAuthUser(authUser);
-        } else {
-          setAuthUser(null);
-        }
-      },
-  );
+  const unsubscribe = onAuthStateChanged(firebase.auth, (authUser) => {
+    if (authUser) {
+      setAuthUser(authUser);
+    } else {
+      setAuthUser(null);
+    }
+  });
 
   const onSlUpdate = (snapshot) => {
     setLoading(true);
@@ -42,7 +46,6 @@ export default function useSlDb() {
       unsubscribe();
     };
   }, []);
-
 
   const getSl = async () => {
     try {
@@ -117,6 +120,5 @@ export default function useSlDb() {
     }
   };
 
-  return { sl, loading, getSl, getSkill,
-    addSkill, delSkill, updateSkill };
+  return { sl, loading, getSl, getSkill, addSkill, delSkill, updateSkill };
 }

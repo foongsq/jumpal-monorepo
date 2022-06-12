@@ -1,8 +1,8 @@
-import { useState, useContext, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { FirebaseContext } from '../Firebase';
-import { getSdDbTime, getSdTime } from '../utils';
-import { get, push, remove, child, off, onValue } from 'firebase/database';
+import { useState, useContext, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { FirebaseContext } from "../Firebase";
+import { getSdDbTime, getSdTime } from "../utils";
+import { get, push, remove, child, off, onValue } from "firebase/database";
 
 export default function useSdDb() {
   const firebase = useContext(FirebaseContext);
@@ -11,16 +11,13 @@ export default function useSdDb() {
   const [sd, setSd] = useState([]);
   const sdRef = firebase.speedRecords;
 
-  const unsubscribe = onAuthStateChanged(
-      firebase.auth,
-      (authUser) => {
-        if (authUser) {
-          setAuthUser(authUser);
-        } else {
-          setAuthUser(null);
-        }
-      },
-  );
+  const unsubscribe = onAuthStateChanged(firebase.auth, (authUser) => {
+    if (authUser) {
+      setAuthUser(authUser);
+    } else {
+      setAuthUser(null);
+    }
+  });
 
   const onSdUpdate = (snapshot) => {
     setLoading(true);
@@ -42,7 +39,6 @@ export default function useSdDb() {
     };
   }, []);
 
-
   const getSd = async () => {
     try {
       setLoading(true);
@@ -61,13 +57,11 @@ export default function useSdDb() {
   const addSd = async (event, score, time) => {
     try {
       if (user) {
-        push(child(sdRef, `${getSdDbTime(time)}`),
-            {
-              event: event,
-              score: score,
-              time: getSdTime(time),
-            },
-        );
+        push(child(sdRef, `${getSdDbTime(time)}`), {
+          event: event,
+          score: score,
+          time: getSdTime(time),
+        });
         return true;
       }
       return false;
@@ -82,9 +76,11 @@ export default function useSdDb() {
       if (user) {
         const snapshot = await get(child(sdRef, getSdDbTime(time)));
         snapshot.forEach((child) => {
-          if (child.val().event === event &&
+          if (
+            child.val().event === event &&
             child.val().score === score &&
-            child.val().time === time) {
+            child.val().time === time
+          ) {
             remove(child.ref);
           }
         });

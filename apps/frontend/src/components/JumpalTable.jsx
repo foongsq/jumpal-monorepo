@@ -1,10 +1,10 @@
-import styled from '@emotion/styled';
-import { TableCell, TableRow, TableContainer } from '@mui/material';
-import { styles } from '../constants.js';
+import styled from "@emotion/styled";
+import { TableCell, TableRow, TableContainer } from "@mui/material";
+import { styles } from "../constants.js";
 
 export const JumpalTableContainer = styled(TableContainer)({
-  borderRadius: '10px',
-  marginTop: '1rem',
+  borderRadius: "10px",
+  marginTop: "1rem",
   boxShadow: `10px 10px 10px ${styles.shadow}`,
 });
 
@@ -14,23 +14,23 @@ export const JumpalTableContainer = styled(TableContainer)({
 // - Add grey border
 export const JumpalHeaderTableCell = styled(TableCell)({
   background: styles.bootstrapGreen,
-  fontWeight: 'bold',
-  color: 'white',
-  border: '1px solid',
+  fontWeight: "bold",
+  color: "white",
+  border: "1px solid",
   borderColor: styles.greyTableBorder,
-  padding: '0.75rem',
+  padding: "0.75rem",
 });
 
 // Add grey border
 export const JumpalTableCell = styled(TableCell)({
-  border: '1px solid',
+  border: "1px solid",
   borderColor: styles.greyTableBorder,
-  padding: '0.75rem',
+  padding: "0.75rem",
 });
 
 // Alternate white and grey rows
 export const JumpalTableRow = styled(TableRow)({
-  '&:nth-of-type(odd)': {
+  "&:nth-of-type(odd)": {
     background: styles.greyTableRow,
   },
 });

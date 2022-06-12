@@ -1,7 +1,7 @@
-import styled from '@emotion/styled';
-import { InputStyle, HiddenStyle } from '../styles/styles';
-import { FormControl } from '@mui/material';
-import React from 'react';
+import styled from "@emotion/styled";
+import { InputStyle, HiddenStyle } from "../styles/styles";
+import { FormControl } from "@mui/material";
+import React from "react";
 
 export const JumpalPageContainer = styled.div`
   padding: 0 1rem 1rem 1rem;
@@ -41,24 +41,22 @@ export const JumpalCenteredButtonContainer = styled.div`
 `;
 
 type EditableInputProps = {
-  isEditing: boolean,
+  isEditing: boolean;
 };
 
 export const EditableInput = styled.input`
-  ${(props: EditableInputProps) => props.isEditing ? InputStyle : HiddenStyle }
+  ${(props: EditableInputProps) => (props.isEditing ? InputStyle : HiddenStyle)}
 `;
 
 type JumpalFormControlProps = {
-  children: React.Component,
+  children: React.Component;
 };
 
 export function JumpalFormControl(props: JumpalFormControlProps) {
   return (
     <>
       <JumpalVerticalSpacing />
-      <FormControl fullWidth>
-        {props.children}
-      </FormControl>
+      <FormControl fullWidth>{props.children}</FormControl>
       <JumpalVerticalSpacing />
     </>
   );

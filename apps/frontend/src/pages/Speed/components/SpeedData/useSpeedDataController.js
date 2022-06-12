@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
-import {
-  useJumpalToast,
-  useJumpalConfirm } from '../../../../components';
-import { messages } from '../../../../constants';
-import { isDataPopulated } from '../../../../utils';
-import { useSdDb } from '../../../../hooks';
+import { useState, useEffect } from "react";
+import { useJumpalToast, useJumpalConfirm } from "../../../../components";
+import { messages } from "../../../../constants";
+import { isDataPopulated } from "../../../../utils";
+import { useSdDb } from "../../../../hooks";
 
 export default function useSpeedDataController() {
   const Toast = useJumpalToast();
@@ -18,8 +16,8 @@ export default function useSpeedDataController() {
 
   const handleDelete = async (event, score, time) => {
     confirm({
-      title: 'Confirm deletion',
-      msg: 'Are you sure you want to delete this speed record?',
+      title: "Confirm deletion",
+      msg: "Are you sure you want to delete this speed record?",
       onConfirm: async () => {
         const res = await delSd(event, score, time);
         Toast.apiFeedback({ res, successMsg: messages.SD_DEL_SUCCESS });
@@ -47,11 +45,11 @@ export default function useSpeedDataController() {
         });
       });
       // Sort records in ascending order according to time
-      return consolidated.sort(
-          (a, b) => (new Date(a.time) > new Date(b.time)) ? 1 : -1);
+      return consolidated.sort((a, b) =>
+        new Date(a.time) > new Date(b.time) ? 1 : -1
+      );
     }
   };
 
-  return [sd, loading, addSd, showToday, handleDelete,
-    toggleToday, parseTime];
+  return [sd, loading, addSd, showToday, handleDelete, toggleToday, parseTime];
 }

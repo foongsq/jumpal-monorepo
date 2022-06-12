@@ -1,8 +1,8 @@
-import { useState, useContext, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { FirebaseContext } from '../Firebase';
-import { getPbTime } from '../utils';
-import { get, set, remove, child, off, onValue } from 'firebase/database';
+import { useState, useContext, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { FirebaseContext } from "../Firebase";
+import { getPbTime } from "../utils";
+import { get, set, remove, child, off, onValue } from "firebase/database";
 
 export default function usePbDb() {
   const firebase = useContext(FirebaseContext);
@@ -11,16 +11,13 @@ export default function usePbDb() {
   const [pb, setPb] = useState([]);
   const pbRef = firebase.personalBests;
 
-  const unsubscribe = onAuthStateChanged(
-      firebase.auth,
-      (authUser) => {
-        if (authUser) {
-          setAuthUser(authUser);
-        } else {
-          setAuthUser(null);
-        }
-      },
-  );
+  const unsubscribe = onAuthStateChanged(firebase.auth, (authUser) => {
+    if (authUser) {
+      setAuthUser(authUser);
+    } else {
+      setAuthUser(null);
+    }
+  });
 
   const onPbUpdate = (snapshot) => {
     setLoading(true);
@@ -41,7 +38,6 @@ export default function usePbDb() {
       unsubscribe();
     };
   }, []);
-
 
   const getPb = async () => {
     try {

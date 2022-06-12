@@ -1,18 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { Collapse } from '@mui/material';
-import EditableText from './EditableText';
+import React from "react";
+import PropTypes from "prop-types";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { Collapse } from "@mui/material";
+import EditableText from "./EditableText";
 import {
   ActiveCollapsibleHeaderStyle,
   CollapsibleHeaderStyle,
   InputStyle,
-  LabelStyle } from '../../../../styles/styles';
-import styled from '@emotion/styled';
-import useUrlController from './useUrlController';
-import {
-  JumpalHorizontalSpacing,
-} from '../../../../components/JumpalCommon.tsx';
+  LabelStyle,
+} from "../../../../styles/styles";
+import styled from "@emotion/styled";
+import useUrlController from "./useUrlController";
+import { JumpalHorizontalSpacing } from "../../../../components/JumpalCommon.tsx";
 
 Url.propTypes = {
   url: PropTypes.string,
@@ -21,10 +20,14 @@ Url.propTypes = {
 
 export default function Url(props) {
   const { url, skillId } = props;
-  const [editText, editing, handleUrlChange,
-    handleKeyDown, handleCollapsibleHeaderClick] =
-    useUrlController(skillId, url);
-  const isUrlEmpty = (url) => url === '-' || url === '';
+  const [
+    editText,
+    editing,
+    handleUrlChange,
+    handleKeyDown,
+    handleCollapsibleHeaderClick,
+  ] = useUrlController(skillId, url);
+  const isUrlEmpty = (url) => url === "-" || url === "";
 
   if (isUrlEmpty(url)) {
     return (
@@ -64,8 +67,8 @@ const UrlContainer2 = styled.div`
 `;
 
 const UrlCollapsibleHeader = styled.button`
-  ${(props) => props.isEditing ?
-    ActiveCollapsibleHeaderStyle : CollapsibleHeaderStyle }
+  ${(props) =>
+    props.isEditing ? ActiveCollapsibleHeaderStyle : CollapsibleHeaderStyle}
 `;
 
 const UrlLabel = styled.p`

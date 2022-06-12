@@ -1,19 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import useProgressController from './useProgressController';
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
-import {
-  LabelStyle,
-  HiddenStyle,
-} from '../../../../styles/styles';
+import React from "react";
+import PropTypes from "prop-types";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import useProgressController from "./useProgressController";
+import styled from "@emotion/styled";
+import { css } from "@emotion/react";
+import { LabelStyle, HiddenStyle } from "../../../../styles/styles";
 import {
   FlexContainer,
   FullWidthContainer,
   JumpalSmallVerticalSpacing,
   EditableInput,
-} from '../../../../components/JumpalCommon.tsx';
+} from "../../../../components/JumpalCommon.tsx";
 
 Progress.propTypes = {
   id: PropTypes.string,
@@ -22,17 +19,20 @@ Progress.propTypes = {
 
 export default function Progress(props) {
   const { id, progress } = props;
-  const [editText, editing, handleEditButtonClick, handleChange,
-    handleSubmit, handleKeyDown, reverseArray] =
-    useProgressController(id, progress);
+  const [
+    editText,
+    editing,
+    handleEditButtonClick,
+    handleChange,
+    handleSubmit,
+    handleKeyDown,
+    reverseArray,
+  ] = useProgressController(id, progress);
 
   const displayProgress = reverseArray();
   return (
     <ProgressContainer>
-      <AddNewProgressButton
-        isEditing={editing}
-        onClick={handleEditButtonClick}
-      >
+      <AddNewProgressButton isEditing={editing} onClick={handleEditButtonClick}>
         <AddCircleOutlineIcon color="action" />
         <p>Add New Progress</p>
       </AddNewProgressButton>
@@ -76,7 +76,7 @@ const ProgressContainer = styled.div`
 `;
 
 const AddNewProgressButton = styled.button`
-  ${(props) => props.isEditing ? HiddenStyle : AddNewProgressButtonStyle }
+  ${(props) => (props.isEditing ? HiddenStyle : AddNewProgressButtonStyle)}
 `;
 
 const AddNewProgressButtonStyle = css`
@@ -104,7 +104,7 @@ const ProgressEntryContainer = styled.div`
 `;
 
 const ProgressEntryLabel = styled.p`
-  ${(props) => props.isEditing ? LabelStyle : HiddenStyle}
+  ${(props) => (props.isEditing ? LabelStyle : HiddenStyle)}
 `;
 
 const ProgressEntryText = styled.p`

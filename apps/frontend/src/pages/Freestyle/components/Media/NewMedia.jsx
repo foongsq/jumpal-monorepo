@@ -1,11 +1,9 @@
-import React from 'react';
-import { TextField } from '@mui/material';
-import PropTypes from 'prop-types';
-import {
-  JumpalFormControl,
-} from '../../../../components/JumpalCommon.tsx';
-import JumpalModal from '../../../../components/JumpalModal';
-import useNewMediaController from './useNewMediaController';
+import React from "react";
+import { TextField } from "@mui/material";
+import PropTypes from "prop-types";
+import { JumpalFormControl } from "../../../../components/JumpalCommon.tsx";
+import JumpalModal from "../../../../components/JumpalModal";
+import useNewMediaController from "./useNewMediaController";
 
 NewMedia.propTypes = {
   addIg: PropTypes.func.isRequired,
@@ -13,8 +11,8 @@ NewMedia.propTypes = {
 
 export default function NewMedia(props) {
   const { addIg } = props;
-  const [open, toggleNewIg, handleNoteChange,
-    handleUrlChange, submitEntry] = useNewMediaController(addIg);
+  const [open, toggleNewIg, handleNoteChange, handleUrlChange, submitEntry] =
+    useNewMediaController(addIg);
 
   return (
     <JumpalModal

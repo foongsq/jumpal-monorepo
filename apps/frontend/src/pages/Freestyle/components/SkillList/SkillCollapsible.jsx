@@ -1,23 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import EditableText from './EditableText';
-import Progress from './Progress';
-import { Collapse, Paper } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { CollapsibleButtonsContainer }
-  from '../../../../components/JumpalCommon.tsx';
+import React from "react";
+import PropTypes from "prop-types";
+import EditableText from "./EditableText";
+import Progress from "./Progress";
+import { Collapse, Paper } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import { CollapsibleButtonsContainer } from "../../../../components/JumpalCommon.tsx";
 import {
   ActiveNoteButtonStyle,
   NoteButtonStyle,
-} from '../../../../styles/styles';
-import styled from '@emotion/styled';
-import Url from './Url';
+} from "../../../../styles/styles";
+import styled from "@emotion/styled";
+import Url from "./Url";
 import {
   ActiveCollapsibleHeaderStyle,
-  CollapsibleHeaderStyle } from '../../../../styles/styles';
-import useSkillCollapsibleController from './useSkillCollapsibleController';
+  CollapsibleHeaderStyle,
+} from "../../../../styles/styles";
+import useSkillCollapsibleController from "./useSkillCollapsibleController";
 
 SkillCollapsible.propTypes = {
   id: PropTypes.string,
@@ -29,9 +29,15 @@ SkillCollapsible.propTypes = {
 
 export default function SkillCollapsible(props) {
   const { id, skillName, learnt, progress, url } = props;
-  const [open, openProgress, handleClick, handleProgressClick,
-    handleDelete, handleLearnt, handleUnlearn] =
-    useSkillCollapsibleController(id);
+  const [
+    open,
+    openProgress,
+    handleClick,
+    handleProgressClick,
+    handleDelete,
+    handleLearnt,
+    handleUnlearn,
+  ] = useSkillCollapsibleController(id);
 
   return (
     <div>
@@ -42,13 +48,13 @@ export default function SkillCollapsible(props) {
         <TrashButton onClick={handleDelete}>
           <DeleteIcon color="action" />
         </TrashButton>
-        {learnt ?
+        {learnt ? (
           <LearnUnlearnButton onClick={handleUnlearn}>
             Unlearn
-          </LearnUnlearnButton> :
-          <LearnUnlearnButton onClick={handleLearnt}>
-            Learnt
-          </LearnUnlearnButton>}
+          </LearnUnlearnButton>
+        ) : (
+          <LearnUnlearnButton onClick={handleLearnt}>Learnt</LearnUnlearnButton>
+        )}
       </CollapsibleButtonsContainer>
 
       <Collapse in={open}>
@@ -60,11 +66,14 @@ export default function SkillCollapsible(props) {
           <Url skillId={id} url={url} />
           <ProgressCollapsibleHeaderButton
             isOpen={openProgress}
-            onClick={handleProgressClick}>
+            onClick={handleProgressClick}
+          >
             <label>Progress:</label>
-            {openProgress ?
-              <ArrowDropUpIcon color="action" /> :
-              <ArrowDropDownIcon color="action" />}
+            {openProgress ? (
+              <ArrowDropUpIcon color="action" />
+            ) : (
+              <ArrowDropDownIcon color="action" />
+            )}
           </ProgressCollapsibleHeaderButton>
           <Collapse in={openProgress}>
             <Progress progress={progress} id={id} />
@@ -76,7 +85,7 @@ export default function SkillCollapsible(props) {
 }
 
 const NoteButton = styled.button`
-  ${(props) => props.isOpen ? ActiveNoteButtonStyle : NoteButtonStyle}
+  ${(props) => (props.isOpen ? ActiveNoteButtonStyle : NoteButtonStyle)}
 `;
 
 const TrashButton = styled.button`
@@ -119,6 +128,6 @@ const SkillNameDisplay = styled.div`
 `;
 
 const ProgressCollapsibleHeaderButton = styled.button`
-  ${(props) => props.isOpen ?
-    ActiveCollapsibleHeaderStyle : CollapsibleHeaderStyle }
+  ${(props) =>
+    props.isOpen ? ActiveCollapsibleHeaderStyle : CollapsibleHeaderStyle}
 `;

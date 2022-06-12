@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { useIgDb } from '../../../../hooks';
-import { isDataPopulated } from '../../../../utils';
+import { useEffect } from "react";
+import { useIgDb } from "../../../../hooks";
+import { isDataPopulated } from "../../../../utils";
 
 export default function useMediaController() {
   const [ig, loading, getIg, addIg, delIg] = useIgDb();

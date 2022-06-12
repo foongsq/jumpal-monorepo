@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   JumpalButton,
   JumpalSpinnerWrapper,
@@ -8,19 +8,19 @@ import {
   JumpalTableRow,
   JumpalTableContainer,
   JumpalTableDeleteButton,
-} from '../../../../components';
-import { Table, TableRow } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import TagFacesIcon from '@mui/icons-material/TagFaces';
-import NewSpeedRecord from './NewSpeedRecord';
-import { messages } from '../../../../constants';
-import { isDataPopulated } from '../../../../utils';
-import styled from '@emotion/styled';
-import useSpeedDataController from './useSpeedDataController';
+} from "../../../../components";
+import { Table, TableRow } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import TagFacesIcon from "@mui/icons-material/TagFaces";
+import NewSpeedRecord from "./NewSpeedRecord";
+import { messages } from "../../../../constants";
+import { isDataPopulated } from "../../../../utils";
+import styled from "@emotion/styled";
+import useSpeedDataController from "./useSpeedDataController";
 
 export default function SpeedData() {
-  const [sd, loading, addSd, showToday, handleDelete,
-    toggleToday, parseTime] = useSpeedDataController();
+  const [sd, loading, addSd, showToday, handleDelete, toggleToday, parseTime] =
+    useSpeedDataController();
 
   const renderTableHeader = () => {
     return (
@@ -64,7 +64,7 @@ export default function SpeedData() {
       today = `${mm}/${dd}/${yyyy}`;
       return records.reverse().map((record) => {
         const { event, score, time } = record; // destructuring
-        const splitTime = time.split(' ');
+        const splitTime = time.split(" ");
         if (splitTime[0] === today) {
           return (
             <JumpalTableRow key={time}>
@@ -93,15 +93,17 @@ export default function SpeedData() {
         <NewSpeedRecord addSd={addSd} />
         <TitleButtonContainer>
           <h2>My Speed Records</h2>
-          {showToday ?
-              <JumpalButton onClick={() => toggleToday(false)}>
-                <TagFacesIcon className='icon' />
-                All data
-              </JumpalButton> :
-              <JumpalButton onClick={() => toggleToday(true)}>
-                <TagFacesIcon className='icon' />
-                Today
-              </JumpalButton>}
+          {showToday ? (
+            <JumpalButton onClick={() => toggleToday(false)}>
+              <TagFacesIcon className="icon" />
+              All data
+            </JumpalButton>
+          ) : (
+            <JumpalButton onClick={() => toggleToday(true)}>
+              <TagFacesIcon className="icon" />
+              Today
+            </JumpalButton>
+          )}
         </TitleButtonContainer>
         <JumpalPossiblyEmpty
           msg={messages.SD_EMPTY}
@@ -111,9 +113,9 @@ export default function SpeedData() {
             <Table>
               <tbody>
                 {renderTableHeader()}
-                {showToday ?
-                  renderTodayData(parseTime(sd)) :
-                  renderAllData(parseTime(sd))}
+                {showToday
+                  ? renderTodayData(parseTime(sd))
+                  : renderAllData(parseTime(sd))}
               </tbody>
             </Table>
           </JumpalTableContainer>

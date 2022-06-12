@@ -1,13 +1,15 @@
-import React from 'react';
-import useCounterController from './useCounterController';
-import styled from '@emotion/styled';
+import React from "react";
+import useCounterController from "./useCounterController";
+import styled from "@emotion/styled";
 
 export default function Counter() {
   const [count, increment, decrement, reset] = useCounterController();
 
   return (
     <CounterContainer>
-      <CountContainer><Count>{count}</Count></CountContainer>
+      <CountContainer>
+        <Count>{count}</Count>
+      </CountContainer>
       <CounterButtons>
         <CounterButton onClick={decrement}>-</CounterButton>
         <CounterButton onClick={increment}>+</CounterButton>
@@ -18,26 +20,26 @@ export default function Counter() {
 }
 
 const CounterContainer = styled.div({
-  backgroundColor: '#c2c2c2',
-  borderRadius: '10px',
-  padding: '1rem',
-  margin: '0.5rem auto',
-  maxWidth: '500px',
+  backgroundColor: "#c2c2c2",
+  borderRadius: "10px",
+  padding: "1rem",
+  margin: "0.5rem auto",
+  maxWidth: "500px",
 });
 
 const CountContainer = styled.div({
-  border: '1px solid #dedede',
-  backgroundColor: '#dedede',
+  border: "1px solid #dedede",
+  backgroundColor: "#dedede",
 });
 
 const Count = styled.h1({
-  fontSize: '3rem',
-  textAlign: 'center',
+  fontSize: "3rem",
+  textAlign: "center",
 });
 
 const CounterButtons = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
+  display: "flex",
+  justifyContent: "space-between",
 });
 
 const CounterButton = styled.button`

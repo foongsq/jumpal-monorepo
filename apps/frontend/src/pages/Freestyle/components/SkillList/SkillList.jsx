@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 import {
   JumpalSpinnerWrapper,
   JumpalPossiblyEmpty,
-} from '../../../../components';
-import SkillCollapsible from './SkillCollapsible';
-import NewSkill from './NewSkill';
-import { messages } from '../../../../constants';
-import { isDataPopulated } from '../../../../utils';
-import { SkillsApi } from './context';
-import { JumpalVerticalSpacing } from '../../../../components/JumpalCommon.tsx';
-import useSkillListController from './useSkillListController';
+} from "../../../../components";
+import SkillCollapsible from "./SkillCollapsible";
+import NewSkill from "./NewSkill";
+import { messages } from "../../../../constants";
+import { isDataPopulated } from "../../../../utils";
+import { SkillsApi } from "./context";
+import { JumpalVerticalSpacing } from "../../../../components/JumpalCommon.tsx";
+import useSkillListController from "./useSkillListController";
 
 export default function SkillList() {
   const [sl, loading, api, processData] = useSkillListController();
@@ -62,6 +62,5 @@ export default function SkillList() {
         </JumpalPossiblyEmpty>
       </JumpalSpinnerWrapper>
     </SkillsApi.Provider>
-
   );
 }

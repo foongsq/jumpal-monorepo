@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { CircularProgress } from '@mui/material';
-import styled from '@emotion/styled';
-import { JumpalPageContainer } from './JumpalCommon.tsx';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { CircularProgress } from "@mui/material";
+import styled from "@emotion/styled";
+import { JumpalPageContainer } from "./JumpalCommon.tsx";
 
 JumpalSpinnerWrapper.propTypes = {
   loading: PropTypes.bool,
@@ -35,9 +35,9 @@ function JumpalSpinner() {
 }
 
 const SpinnerContainer = styled.div({
-  paddingTop: '1rem',
-  height: '50%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
+  paddingTop: "1rem",
+  height: "50%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 });
