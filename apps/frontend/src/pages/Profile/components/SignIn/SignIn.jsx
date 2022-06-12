@@ -32,8 +32,8 @@ export function SignInGoogle() {
       set(
           child(firebase.users, result.user.uid),
           {
-            username: result.additionalUserInfo.profile.name,
-            email: result.additionalUserInfo.profile.email,
+            // username: result.additionalUserInfo.profile.name,
+            // email: result.additionalUserInfo.profile.email,
             roles: {},
           },
       );

@@ -3,7 +3,7 @@ import { SkillsApi } from './context';
 import { useJumpalConfirm, useJumpalToast } from '../../../../components';
 import { messages } from '../../../../constants';
 
-export default function useSkillCollapsibleController() {
+export default function useSkillCollapsibleController(id) {
   const Toast = useJumpalToast();
   const { confirm } = useJumpalConfirm();
   const api = useContext(SkillsApi);

@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { useAuth } from '../../../../hooks';
 import { useJumpalToast } from '../../../../components';
 
 export default function useNewPersonalBestController(addPb) {
   const Toast = useJumpalToast();
-  const [user] = useAuth();
   const [open, setOpen] = useState(false);
   const [eventJ, setEventJ] = useState(null);
   const [score, setScore] = useState(null);
@@ -40,6 +38,6 @@ export default function useNewPersonalBestController(addPb) {
     }
   };
 
-  return [user, toggleNewPersonalBest, handleEventChange, handleScoreChange,
+  return [toggleNewPersonalBest, handleEventChange, handleScoreChange,
     handleTimeChange, saveNewPersonalBest, open, eventJ, time];
 }

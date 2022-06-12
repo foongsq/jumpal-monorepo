@@ -40,6 +40,7 @@ export default function Progress(props) {
         <JumpalSmallVerticalSpacing />
         <ProgressEntryLabel isEditing={editing}>New Entry:</ProgressEntryLabel>
         <EditableInput
+          isEditing={editing}
           ref={(input) => input && input.focus()}
           value={editText}
           onChange={handleChange}

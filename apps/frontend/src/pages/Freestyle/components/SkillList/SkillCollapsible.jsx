@@ -31,7 +31,7 @@ export default function SkillCollapsible(props) {
   const { id, skillName, learnt, progress, url } = props;
   const [open, openProgress, handleClick, handleProgressClick,
     handleDelete, handleLearnt, handleUnlearn] =
-    useSkillCollapsibleController();
+    useSkillCollapsibleController(id);
 
   return (
     <div>
