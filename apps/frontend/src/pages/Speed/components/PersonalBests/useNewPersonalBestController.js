@@ -37,5 +37,15 @@ export default function useNewPersonalBestController(addPb) {
       Toast.error("An error occured :(");
     }
   };
-  return [toggleNewPersonalBest,handleEventChange,handleScoreChange, handleTimeChange,   saveNewPersonalBest,   open,   eventJ,   time, ];
+
+  return [
+    toggleNewPersonalBest,
+    handleEventChange,
+    handleScoreChange,
+    handleTimeChange,
+    saveNewPersonalBest,
+    open,
+    eventJ,
+    time,
+  ];
 }
