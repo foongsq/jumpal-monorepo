@@ -3,7 +3,7 @@ import { useJumpalToast } from '../../../../components';
 import { messages, ENTER_KEY, ESCAPE_KEY } from '../../../../constants';
 import { SkillsApi } from './context';
 
-export default function useUrlController(id) {
+export default function useUrlController(id, url) {
   const [editText, setEditText] = useState('');
   const [editing, setEditing] = useState(false);
   const Toast = useJumpalToast();
@@ -13,7 +13,7 @@ export default function useUrlController(id) {
     setEditText(e.target.value);
   };
 
-  const handleUrlSubmit = async (e) => {
+  const handleUrlSubmit = async () => {
     const val = editText;
     if (val) {
       const res = await api.updateSkill(id, {

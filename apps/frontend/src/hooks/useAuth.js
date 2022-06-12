@@ -16,7 +16,7 @@ export default function useAuth() {
         } else {
           setAuthUser(null);
           setLoading(false);
-        };
+        }
       },
   );
 

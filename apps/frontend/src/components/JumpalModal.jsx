@@ -65,4 +65,4 @@ export default function JumpalModal(props) {
       </Modal>
     </div>
   );
-};
+}

@@ -23,5 +23,5 @@ export default function useMediaCollapsibleController(id, delIg) {
   };
 
   return [open, handleClick, handleDelete];
-};
+}
 

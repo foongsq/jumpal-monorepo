@@ -16,7 +16,7 @@ export default function SignInPage() {
       </SignInButtonsContainer>
     </div>
   );
-};
+}
 
 export function SignInGoogle() {
   const firebase = useContext(FirebaseContext);

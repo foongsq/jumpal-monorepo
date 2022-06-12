@@ -18,7 +18,7 @@ export default function usePbDb() {
           setAuthUser(authUser);
         } else {
           setAuthUser(null);
-        };
+        }
       },
   );
 

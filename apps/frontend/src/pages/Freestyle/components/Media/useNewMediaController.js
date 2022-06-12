@@ -34,4 +34,4 @@ export default function useNewMediaController(addIg) {
 
   return [open, toggleNewIg, handleNoteChange,
     handleUrlChange, submitEntry];
-};
+}

@@ -22,7 +22,7 @@ export default function JumpalSpinnerWrapper(props) {
   } else {
     return <div>{children}</div>;
   }
-};
+}
 
 function JumpalSpinner() {
   return (

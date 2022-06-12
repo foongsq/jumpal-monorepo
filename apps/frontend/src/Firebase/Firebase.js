@@ -7,7 +7,7 @@ import config from './config';
 const firebase = initializeApp(config);
 
 export default class Firebase {
-  constructor(props) {
+  constructor() {
     this.auth = getAuth();
     this.db = getDatabase(firebase);
     this.googleProvider = new GoogleAuthProvider();

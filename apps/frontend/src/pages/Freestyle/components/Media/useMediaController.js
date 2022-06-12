@@ -22,4 +22,4 @@ export default function useMediaController() {
   };
 
   return [ig, loading, addIg, delIg, processData];
-};
+}

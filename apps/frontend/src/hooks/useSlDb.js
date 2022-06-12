@@ -19,7 +19,7 @@ export default function useSlDb() {
           setAuthUser(authUser);
         } else {
           setAuthUser(null);
-        };
+        }
       },
   );
 

@@ -22,7 +22,8 @@ Url.propTypes = {
 export default function Url(props) {
   const { url, skillId } = props;
   const [editText, editing, handleUrlChange,
-    handleKeyDown, handleCollapsibleHeaderClick] = useUrlController(skillId);
+    handleKeyDown, handleCollapsibleHeaderClick] =
+    useUrlController(skillId, url);
   const isUrlEmpty = (url) => url === '-' || url === '';
 
   if (isUrlEmpty(url)) {
