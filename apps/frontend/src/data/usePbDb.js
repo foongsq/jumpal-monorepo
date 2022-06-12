@@ -1,14 +1,15 @@
 import { useState, useContext, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { FirebaseContext } from "../Firebase";
-import { get, push, remove, child, off, onValue } from "firebase/database";
+import { FirebaseContext } from "./Firebase";
+import { getPbTime } from "../utils";
+import { get, set, remove, child, off, onValue } from "firebase/database";
 
-export default function useIgDb() {
+export default function usePbDb() {
   const firebase = useContext(FirebaseContext);
   const [user, setAuthUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [ig, setIg] = useState([]);
-  const igsRef = firebase.igs;
+  const [pb, setPb] = useState([]);
+  const pbRef = firebase.personalBests;
 
   const unsubscribe = onAuthStateChanged(firebase.auth, (authUser) => {
     if (authUser) {
@@ -18,43 +19,32 @@ export default function useIgDb() {
     }
   });
 
-  const onIgUpdate = (snapshot) => {
+  const onPbUpdate = (snapshot) => {
     setLoading(true);
     if (snapshot) {
-      const newIg = [];
-      newIg.push(snapshot.val());
-      setIg(newIg);
+      const newPersonalBests = [];
+      newPersonalBests.push(snapshot.val());
+      setPb(newPersonalBests);
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    if (onIgUpdate) {
-      onValue(igsRef, onIgUpdate);
+    if (onPbUpdate) {
+      onValue(pbRef, onPbUpdate);
     }
     return () => {
-      off(igsRef);
+      off(pbRef);
       unsubscribe();
     };
   }, []);
 
-  const getIg = async () => {
+  const getPb = async () => {
     try {
       setLoading(true);
       if (user) {
-        const snapshot = await get(igsRef);
-        onIgUpdate(snapshot);
-      }
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
-  };
-
-  const addIg = async (note, url) => {
-    try {
-      if (user) {
-        push(igsRef, { note, url });
+        const snapshot = await get(pbRef);
+        onPbUpdate(snapshot);
         return true;
       }
       return false;
@@ -64,11 +54,14 @@ export default function useIgDb() {
     }
   };
 
-  const delIg = async (id) => {
+  const addPb = async (event, score, time) => {
     try {
       if (user) {
-        const igRef = child(igsRef, id);
-        await remove(igRef);
+        const currEventPbRef = child(pbRef, event);
+        await set(currEventPbRef, {
+          score: score,
+          time: getPbTime(time),
+        });
         return true;
       }
       return false;
@@ -78,5 +71,18 @@ export default function useIgDb() {
     }
   };
 
-  return [ig, loading, getIg, addIg, delIg];
+  const delPb = async (event) => {
+    try {
+      if (user) {
+        await remove(child(pbRef, event));
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  };
+
+  return [pb, loading, getPb, addPb, delPb];
 }

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { InputStyle, HiddenStyle } from "../styles/styles";
+import { HiddenStyle, InputStyle } from "../styles/styles";
 import { FormControl } from "@mui/material";
 import React from "react";
 
@@ -48,16 +48,16 @@ export const EditableInput = styled.input`
   ${(props: EditableInputProps) => (props.isEditing ? InputStyle : HiddenStyle)}
 `;
 
-type JumpalFormControlProps = {
+interface JumpalFormControlProps {
   children: React.Component;
-};
+}
 
-export function JumpalFormControl(props: JumpalFormControlProps) {
+export const JumpalFormControl = ({ children }: JumpalFormControlProps) => {
   return (
     <>
       <JumpalVerticalSpacing />
-      <FormControl fullWidth>{props.children}</FormControl>
+      <FormControl fullWidth>{children}</FormControl>
       <JumpalVerticalSpacing />
     </>
   );
-}
+};

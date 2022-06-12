@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../../hooks";
+import { useAuth } from "../../data";
 import { freestyleComponent } from "../../constants";
 
 export default function useFreestyleController() {

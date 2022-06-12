@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { set, child } from "firebase/database";
-import { FirebaseContext } from "../../../../Firebase/index";
+import { FirebaseContext } from "../../../../data";
 import { useNavigate } from "react-router-dom";
 import { JumpalButton } from "../../../../components";
 import { signInWithPopup } from "firebase/auth";

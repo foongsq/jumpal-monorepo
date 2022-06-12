@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import SignOut from "./components/SignOut/SignOut";
 import SignIn from "./components/SignIn/SignIn";
 import { JumpalSpinnerWrapper } from "../../components";
-import { useAuth } from "../../hooks";
+import { useAuth } from "../../data";
 import { JumpalPageContainer } from "../../components";
 import styled from "@emotion/styled";
 

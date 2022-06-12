@@ -23,7 +23,7 @@ import SpeedData from "./pages/Speed/components/SpeedData/SpeedData";
 import PersonalBests from "./pages/Speed/components/PersonalBests/PersonalBests";
 import Freestyle from "./pages/Freestyle/Freestyle";
 import Home from "./pages/Home/Home";
-import { useAuth } from "./hooks";
+import { useAuth } from "./data";
 import { useNavigate } from "react-router-dom";
 import {
   AppBar,

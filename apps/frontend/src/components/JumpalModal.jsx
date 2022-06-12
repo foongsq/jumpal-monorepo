@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { JumpalButton } from "./JumpalButton";
 import { Box, Modal, Typography } from "@mui/material";
 import { JumpalCenteredButtonContainer } from "./JumpalCommon.tsx";
-import { useAuth } from "../hooks";
+import { useAuth } from "../data";
 
 JumpalModalContent.propTypes = {
   children: PropTypes.element,

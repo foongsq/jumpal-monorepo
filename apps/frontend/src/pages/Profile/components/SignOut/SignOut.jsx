@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { FirebaseContext } from "../../../../Firebase/index";
+import { FirebaseContext } from "../../../../data";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { JumpalButton } from "../../../../components";

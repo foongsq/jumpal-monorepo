@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { usePbDb } from "../../../../hooks";
+import { usePbDb } from "../../../../data";
 import { useJumpalToast, useJumpalConfirm } from "../../../../components";
 import { messages } from "../../../../constants";
 

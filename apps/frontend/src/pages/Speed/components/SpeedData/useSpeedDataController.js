@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useJumpalToast, useJumpalConfirm } from "../../../../components";
 import { messages } from "../../../../constants";
 import { isDataPopulated } from "../../../../utils";
-import { useSdDb } from "../../../../hooks";
+import { useSdDb } from "../../../../data";
 
 export default function useSpeedDataController() {
   const Toast = useJumpalToast();

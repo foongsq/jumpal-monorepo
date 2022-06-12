@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useIgDb } from "../../../../hooks";
+import { useIgDb } from "../../../../data";
 import { isDataPopulated } from "../../../../utils";
 
 export default function useMediaController() {

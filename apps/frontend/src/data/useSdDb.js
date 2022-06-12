@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { FirebaseContext } from "../Firebase";
+import { FirebaseContext } from "./Firebase";
 import { getSdDbTime, getSdTime } from "../utils";
 import { get, push, remove, child, off, onValue } from "firebase/database";
 

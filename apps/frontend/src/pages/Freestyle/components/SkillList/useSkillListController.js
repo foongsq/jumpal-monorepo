@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { isDataPopulated } from "../../../../utils";
-import { useSlDb } from "../../../../hooks";
+import { useSlDb } from "../../../../data";
 
 export default function useSkillListController() {
   const { sl, loading, getSl, getSkill, addSkill, delSkill, updateSkill } =

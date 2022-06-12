@@ -3,6 +3,9 @@ import { getAuth } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import { getDatabase, ref, child } from "firebase/database";
 import config from "./config";
+import React from "react";
+
+export const FirebaseContext = React.createContext(null);
 
 const firebase = initializeApp(config);
 
