@@ -17,7 +17,7 @@ export default function useIgDb() {
           setAuthUser(authUser);
         } else {
           setAuthUser(null);
-        };
+        }
       },
   );
 
@@ -47,7 +47,7 @@ export default function useIgDb() {
       setLoading(true);
       if (user) {
         const snapshot = await get(igsRef);
-        onSdUpdate(snapshot);
+        onIgUpdate(snapshot);
       }
     } catch (e) {
       console.error(e);

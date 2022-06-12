@@ -4,14 +4,6 @@ export const HiddenStyle = css`
   display: none;
 `;
 
-export const EditableInputStyle = css`
-  outline: none;
-  border: 1px solid grey;
-  border-radius: 5px;
-  width: 100%;
-  padding: 0.5rem;
-`;
-
 export const LinkDisplayStyle = css`
   display: flex;
   color: #383838;

@@ -12,7 +12,7 @@ import {
 } from './JumpalTable';
 import {
   JumpalPageContainer,
-} from './JumpalCommon';
+} from './JumpalCommon.tsx';
 import useJumpalToast from './JumpalToast';
 import useJumpalConfirm from './JumpalConfirm';
 

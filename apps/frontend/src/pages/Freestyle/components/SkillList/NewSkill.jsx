@@ -2,7 +2,7 @@ import React from 'react';
 import { TextField } from '@mui/material';
 import {
   JumpalFormControl,
-} from '../../../../components/JumpalCommon';
+} from '../../../../components/JumpalCommon.tsx';
 import useNewSkillController from './useNewSkillController';
 import JumpalModal from '../../../../components/JumpalModal';
 

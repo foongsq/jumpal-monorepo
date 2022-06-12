@@ -12,7 +12,7 @@ export default function JumpalErrorText(props) {
   return (
     <StyledWarningAlert severity="warning">{msg}</StyledWarningAlert>
   );
-};
+}
 
 const StyledWarningAlert = styled(Alert)({
   marginTop: '1rem',

@@ -4,12 +4,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import {
-  EditableInputStyle,
   HiddenStyle,
   LinkDisplayStyle,
 } from '../../../../styles/styles';
 import useEditableTextController from './useEditableTextController';
-import { FullWidthContainer } from '../../../../components/JumpalCommon';
+import {
+  FullWidthContainer,
+  EditableInput,
+} from '../../../../components/JumpalCommon.tsx';
 
 EditableText.propTypes = {
   id: PropTypes.string,
@@ -49,8 +51,8 @@ export default function EditableText(props) {
             <EditIcon color="action" />
           </EditButton>}
         <EditableInput
-          ref={(input) => input && input.focus()}
           isEditing={isEditing}
+          ref={(input) => input && input.focus()}
           value={editText}
           onChange={handleChange}
           onBlur={handleSubmit}
@@ -70,10 +72,6 @@ const EditableTextContainer = styled.div`
 
 const EditButton = styled.button`
   ${(props) => props.isEditing ? HiddenStyle : EditButtonStyle};
-`;
-
-const EditableInput = styled.input`
-  ${(props) => props.isEditing ? EditableInputStyle : HiddenStyle};
 `;
 
 const LinkDisplay = styled.a`

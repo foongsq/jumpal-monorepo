@@ -8,7 +8,7 @@ import {
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import PropTypes from 'prop-types';
 import {
-  JumpalFormControl } from '../../../../components/JumpalCommon';
+  JumpalFormControl } from '../../../../components/JumpalCommon.tsx';
 import JumpalModal from '../../../../components/JumpalModal';
 import { speedEvents } from '../../../../constants';
 import useNewSpeedRecordController from './useNewSpeedRecordController';

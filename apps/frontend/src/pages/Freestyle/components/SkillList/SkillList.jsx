@@ -8,7 +8,7 @@ import NewSkill from './NewSkill';
 import { messages } from '../../../../constants';
 import { isDataPopulated } from '../../../../utils';
 import { SkillsApi } from './context';
-import { JumpalVerticalSpacing } from '../../../../components/JumpalCommon';
+import { JumpalVerticalSpacing } from '../../../../components/JumpalCommon.tsx';
 import useSkillListController from './useSkillListController';
 
 export default function SkillList() {

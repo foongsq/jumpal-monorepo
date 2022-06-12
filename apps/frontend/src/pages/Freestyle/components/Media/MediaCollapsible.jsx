@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Collapse, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CollapsibleButtonsContainer }
-  from '../../../../components/JumpalCommon';
+  from '../../../../components/JumpalCommon.tsx';
 import styled from '@emotion/styled';
 import { LinkDisplayStyle } from '../../../../styles/styles';
 import {

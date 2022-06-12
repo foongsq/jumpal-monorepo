@@ -10,7 +10,7 @@ import { isDataPopulated } from '../../../../utils';
 import {
   FullWidthContainer,
   JumpalVerticalSpacing,
-} from '../../../../components/JumpalCommon';
+} from '../../../../components/JumpalCommon.tsx';
 import useMediaController from './useMediaController';
 
 export default function Media() {

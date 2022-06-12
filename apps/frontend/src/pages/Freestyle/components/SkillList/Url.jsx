@@ -10,7 +10,9 @@ import {
   LabelStyle } from '../../../../styles/styles';
 import styled from '@emotion/styled';
 import useUrlController from './useUrlController';
-import { JumpalHorizontalSpacing } from '../../../../components/JumpalCommon';
+import {
+  JumpalHorizontalSpacing,
+} from '../../../../components/JumpalCommon.tsx';
 
 Url.propTypes = {
   url: PropTypes.string,

@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import useNewPersonalBestController from './useNewPersonalBestController';
 import {
   JumpalFormControl,
-} from '../../../../components/JumpalCommon';
+} from '../../../../components/JumpalCommon.tsx';
 import JumpalModal from '../../../../components/JumpalModal';
 
 NewPersonalBest.propTypes = {

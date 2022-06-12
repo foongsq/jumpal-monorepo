@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { CollapsibleButtonsContainer }
-  from '../../../../components/JumpalCommon';
+  from '../../../../components/JumpalCommon.tsx';
 import {
   ActiveNoteButtonStyle,
   NoteButtonStyle,

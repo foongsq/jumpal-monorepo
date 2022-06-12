@@ -3,7 +3,7 @@ import { TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import {
   JumpalFormControl,
-} from '../../../../components/JumpalCommon';
+} from '../../../../components/JumpalCommon.tsx';
 import JumpalModal from '../../../../components/JumpalModal';
 import useNewMediaController from './useNewMediaController';
 

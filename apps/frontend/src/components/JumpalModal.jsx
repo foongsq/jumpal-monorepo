@@ -4,7 +4,7 @@ import { JumpalButton } from './JumpalButton';
 import { Box, Modal, Typography } from '@mui/material';
 import {
   JumpalCenteredButtonContainer,
-} from './JumpalCommon';
+} from './JumpalCommon.tsx';
 import { useAuth } from '../hooks';
 
 JumpalModalContent.propTypes = {

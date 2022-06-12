@@ -13,7 +13,7 @@ import {
   FullWidthContainer,
   JumpalSmallVerticalSpacing,
   EditableInput,
-} from '../../../../components/JumpalCommon';
+} from '../../../../components/JumpalCommon.tsx';
 
 Progress.propTypes = {
   id: PropTypes.string,
