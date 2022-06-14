@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import { getDatabase, ref, child } from "firebase/database";
-import config from "./config";
+import { config } from "./config";
 import React from "react";
 
 export const FirebaseContext = React.createContext(null);
@@ -41,7 +41,7 @@ export default class Firebase {
   }
 
   // IG URL list ref
-  get igs() {
-    return child(this.user, "freestyle-saved-insta-urls");
+  get mediaReferences() {
+    return child(this.user, "freestyle-saved-media-references");
   }
 }

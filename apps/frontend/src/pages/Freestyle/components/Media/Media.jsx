@@ -14,7 +14,7 @@ import {
 import useMediaController from "./useMediaController";
 
 export default function Media() {
-  const [ig, loading, addIg, delIg, processData] = useMediaController();
+  const [ig, loading, addIg, delIg] = useMediaController();
 
   return (
     <JumpalSpinnerWrapper loading={loading}>
@@ -26,13 +26,13 @@ export default function Media() {
           isPopulated={isDataPopulated(ig)}
         >
           <div>
-            {processData().map((object) => {
+            {ig.map((feMediaRefRecord) => {
               return (
                 <MediaCollapsible
-                  key={object[0]}
-                  id={object[0]}
-                  content={object[1].note}
-                  url={object[1].url}
+                  key={feMediaRefRecord.id}
+                  id={feMediaRefRecord.id}
+                  content={feMediaRefRecord.note}
+                  url={feMediaRefRecord.url}
                   delIg={delIg}
                 />
               );

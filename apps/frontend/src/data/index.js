@@ -1,10 +1,10 @@
-import { FirebaseContext } from "./Firebase";
-import Firebase from "./Firebase";
-import useAuth from "./useAuth";
-import usePbDb from "./usePbDb";
-import useSdDb from "./useSdDb";
-import useSlDb from "./useSlDb";
-import useIgDb from "./useIgDb";
+import { FirebaseContext } from "./firebase/Firebase";
+import Firebase from "./firebase/Firebase";
+import useAuth from "./api/useAuth";
+import usePbDb from "./api/usePbDb";
+import useSdDb from "./api//useSdDb";
+import useSlDb from "./api//useSlDb";
+import useMediaRefDb from "./api//useMediaRefDb";
 
 export {
   Firebase,
@@ -13,5 +13,5 @@ export {
   usePbDb,
   useSdDb,
   useSlDb,
-  useIgDb,
+  useMediaRefDb,
 };

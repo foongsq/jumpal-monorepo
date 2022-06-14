@@ -1,4 +1,4 @@
-const config = {
+export const config = {
   apiKey: "",
   authDomain: "",
   databaseURL: "",
@@ -6,7 +6,5 @@ const config = {
   storageBucket: "",
   messagingSenderId: "",
   appId: "",
-  measurementId: ""
+  measurementId: "",
 };
-
-export default config;

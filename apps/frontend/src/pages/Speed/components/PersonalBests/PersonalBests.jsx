@@ -29,17 +29,18 @@ export default function PersonalBests() {
     );
   };
 
-  const renderAllData = (records) => {
-    if (isDataPopulated(records)) {
-      const eventsArr = Object.keys(records[0]);
-      return eventsArr.map((event) => {
+  const renderAllData = (fePbData) => {
+    if (isDataPopulated(fePbData)) {
+      return fePbData.map((pbRecord) => {
         return (
-          <JumpalTableRow key={event}>
-            <JumpalTableCell>{event}</JumpalTableCell>
-            <JumpalTableCell>{records[0][event].score}</JumpalTableCell>
-            <JumpalTableCell>{records[0][event].time}</JumpalTableCell>
+          <JumpalTableRow key={pbRecord.event}>
+            <JumpalTableCell>{pbRecord.event}</JumpalTableCell>
+            <JumpalTableCell>{pbRecord.score}</JumpalTableCell>
+            <JumpalTableCell>{pbRecord.time}</JumpalTableCell>
             <JumpalTableCell>
-              <JumpalTableDeleteButton onClick={() => handleDelete(event)}>
+              <JumpalTableDeleteButton
+                onClick={() => handleDelete(pbRecord.event)}
+              >
                 <DeleteIcon />
               </JumpalTableDeleteButton>
             </JumpalTableCell>

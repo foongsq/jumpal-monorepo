@@ -5,7 +5,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import routes from "./routes/routes";
+import routes from "./routes/routes.js";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
