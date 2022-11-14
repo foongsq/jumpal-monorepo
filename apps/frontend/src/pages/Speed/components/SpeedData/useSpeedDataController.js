@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { useJumpalToast, useJumpalConfirm } from "../../../../components";
 import { messages } from "../../../../constants";
-import { isDataPopulated } from "../../../../utils";
 import { useSdDb } from "../../../../data";
 
 export default function useSpeedDataController() {
   const Toast = useJumpalToast();
   const { confirm } = useJumpalConfirm();
-  const [sd, loading, getSd, addSd, delSd] = useSdDb();
+  const [sd, today, loading, getSd, addSd, delSd] = useSdDb();
   const [showToday, setShowToday] = useState(false);
 
   useEffect(() => {
@@ -29,27 +28,5 @@ export default function useSpeedDataController() {
     setShowToday(shouldShowToday);
   };
 
-  const parseTime = (records) => {
-    if (isDataPopulated(records)) {
-      const consolidated = [];
-      const years = Object.keys(records[0]);
-      years.forEach((year) => {
-        const months = Object.keys(records[0][year]);
-        months.forEach((month) => {
-          const days = Object.keys(records[0][year][month]);
-          days.forEach((day) => {
-            Object.values(records[0][year][month][day]).forEach((record) => {
-              consolidated.push(record);
-            });
-          });
-        });
-      });
-      // Sort records in ascending order according to time
-      return consolidated.sort((a, b) =>
-        new Date(a.time) > new Date(b.time) ? 1 : -1
-      );
-    }
-  };
-
-  return [sd, loading, addSd, showToday, handleDelete, toggleToday, parseTime];
+  return [sd, today, loading, addSd, showToday, handleDelete, toggleToday];
 }

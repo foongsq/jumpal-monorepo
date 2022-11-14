@@ -2,6 +2,10 @@ import { useState, useContext, useEffect } from "react";
 import { FirebaseContext } from "../firebase/Firebase";
 import { getSdDbTime, getSdTime } from "../../utils";
 import { get, push, remove, child, off, onValue } from "firebase/database";
+import {
+  processSpeedRecord,
+  filterTodayRecords,
+} from "../dataProcessors/sdDataProcessor";
 import useRequest from "./useRequest";
 
 export default function useSdDb() {
@@ -9,14 +13,17 @@ export default function useSdDb() {
   const { postRequest } = useRequest();
   const [loading, setLoading] = useState(true);
   const [sd, setSd] = useState([]);
+  const [today, setToday] = useState([]);
   const sdRef = firebase.speedRecords;
 
   const onSdUpdate = (snapshot) => {
     setLoading(true);
     if (snapshot) {
-      const speedRecords = [];
-      speedRecords.push(snapshot.val());
-      setSd(speedRecords);
+      const rawSpeedRecords = snapshot.val();
+      const feSpeedRecords = processSpeedRecord(rawSpeedRecords);
+      setSd(feSpeedRecords);
+      const feTodayRecords = filterTodayRecords(feSpeedRecords);
+      setToday(feTodayRecords);
     }
     setLoading(false);
   };
@@ -63,5 +70,5 @@ export default function useSdDb() {
     });
   };
 
-  return [sd, loading, getSd, addSd, delSd];
+  return [sd, today, loading, getSd, addSd, delSd];
 }

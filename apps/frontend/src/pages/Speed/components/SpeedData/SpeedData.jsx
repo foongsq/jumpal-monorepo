@@ -19,7 +19,7 @@ import styled from "@emotion/styled";
 import useSpeedDataController from "./useSpeedDataController";
 
 export default function SpeedData() {
-  const [sd, loading, addSd, showToday, handleDelete, toggleToday, parseTime] =
+  const [sd, today, loading, addSd, showToday, handleDelete, toggleToday] =
     useSpeedDataController();
 
   const renderTableHeader = () => {
@@ -33,9 +33,9 @@ export default function SpeedData() {
     );
   };
 
-  const renderAllData = (records) => {
+  const renderData = (records) => {
     if (isDataPopulated(records)) {
-      return records.reverse().map((record) => {
+      return records.map((record) => {
         const { event, score, time } = record;
         return (
           <JumpalTableRow key={time}>
@@ -51,38 +51,6 @@ export default function SpeedData() {
             </JumpalTableCell>
           </JumpalTableRow>
         );
-      });
-    }
-  };
-
-  const renderTodayData = (records) => {
-    if (isDataPopulated(records)) {
-      let today = new Date();
-      const dd = String(today.getDate());
-      const mm = String(today.getMonth() + 1); // January is 0!
-      const yyyy = today.getFullYear();
-      today = `${mm}/${dd}/${yyyy}`;
-      return records.reverse().map((record) => {
-        const { event, score, time } = record; // destructuring
-        const splitTime = time.split(" ");
-        if (splitTime[0] === today) {
-          return (
-            <JumpalTableRow key={time}>
-              <JumpalTableCell>{event}</JumpalTableCell>
-              <JumpalTableCell>{score}</JumpalTableCell>
-              <JumpalTableCell>{time}</JumpalTableCell>
-              <JumpalTableCell>
-                <JumpalTableDeleteButton
-                  onClick={() => handleDelete(event, score, time)}
-                >
-                  <DeleteIcon />
-                </JumpalTableDeleteButton>
-              </JumpalTableCell>
-            </JumpalTableRow>
-          );
-        } else {
-          return null;
-        }
       });
     }
   };
@@ -113,9 +81,7 @@ export default function SpeedData() {
             <Table>
               <tbody>
                 {renderTableHeader()}
-                {showToday
-                  ? renderTodayData(parseTime(sd))
-                  : renderAllData(parseTime(sd))}
+                {showToday ? renderData(today) : renderData(sd)}
               </tbody>
             </Table>
           </JumpalTableContainer>
