@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { useJumpalToast } from '../../../../components';
+import { useState } from "react";
+import { useJumpalToast } from "../../../../components";
 
 export default function useNewMediaController(addIg) {
   const Toast = useJumpalToast();
   const [open, setOpen] = useState(false);
-  const [note, setNote] = useState('');
-  const [url, setUrl] = useState('');
+  const [note, setNote] = useState("");
+  const [url, setUrl] = useState("");
 
   const toggleNewIg = () => {
     setOpen(!open);
-    setNote('');
-    setUrl('');
+    setNote("");
+    setUrl("");
   };
 
   const handleNoteChange = (event) => {
@@ -25,13 +25,12 @@ export default function useNewMediaController(addIg) {
     event.preventDefault();
     const res = await addIg(note, url);
     if (res) {
-      Toast.success('Media post saved successfully!');
+      Toast.success("Media post saved successfully!");
       toggleNewIg();
     } else {
-      Toast.error('An error occured :(');
+      Toast.error("An error occured :(");
     }
   };
 
-  return [open, toggleNewIg, handleNoteChange,
-    handleUrlChange, submitEntry];
-};
+  return [open, toggleNewIg, handleNoteChange, handleUrlChange, submitEntry];
+}

@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
-import { InputLabel, MenuItem, FormControl, Select } from '@mui/material';
-import { timingTrackOptions } from '../../../../constants';
-import styled from '@emotion/styled';
-import useTimingTracksController from './useTimingTracksController';
+import { InputLabel, MenuItem, FormControl, Select } from "@mui/material";
+import { timingTrackOptions } from "../../../../constants";
+import styled from "@emotion/styled";
+import useTimingTracksController from "./useTimingTracksController";
 
 export default function TimingTracks() {
   const [src, handleTrackChange] = useTimingTracksController();
@@ -13,22 +13,17 @@ export default function TimingTracks() {
       <TimingTrackTitle>Timing Tracks</TimingTrackTitle>
       <FormControl fullWidth>
         <InputLabel>Select timing track</InputLabel>
-        <Select
-          label="Select timing track"
-          onChange={handleTrackChange}
-        >
-          {timingTrackOptions.map(
-              (option) => (
-                <MenuItem value={option.value} key={option.value}>
-                  {option.label}
-                </MenuItem>
-              ),
-          )}
+        <Select label="Select timing track" onChange={handleTrackChange}>
+          {timingTrackOptions.map((option) => (
+            <MenuItem value={option.value} key={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
-      {src !== '' ?
-          <TimingTrackAudio src={src} controls></TimingTrackAudio>:
-           null}
+      {src !== "" ? (
+        <TimingTrackAudio src={src} controls></TimingTrackAudio>
+      ) : null}
     </TimingTrackContainer>
   );
 }

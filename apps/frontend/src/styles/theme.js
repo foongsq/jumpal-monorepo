@@ -1,5 +1,5 @@
-import { createTheme } from '@mui/material/styles';
-import { green, grey } from '@mui/material/colors';
+import { createTheme } from "@mui/material/styles";
+import { green, grey } from "@mui/material/colors";
 
 export default createTheme({
   palette: {

@@ -1,15 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import EditIcon from '@mui/icons-material/Edit';
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
+import React from "react";
+import PropTypes from "prop-types";
+import EditIcon from "@mui/icons-material/Edit";
+import styled from "@emotion/styled";
+import { css } from "@emotion/react";
+import { HiddenStyle, LinkDisplayStyle } from "../../../../styles/styles";
+import useEditableTextController from "./useEditableTextController";
 import {
-  EditableInputStyle,
-  HiddenStyle,
-  LinkDisplayStyle,
-} from '../../../../styles/styles';
-import useEditableTextController from './useEditableTextController';
-import { FullWidthContainer } from '../../../../components/JumpalCommon';
+  FullWidthContainer,
+  EditableInput,
+} from "../../../../components/JumpalCommon.tsx";
 
 EditableText.propTypes = {
   id: PropTypes.string,
@@ -19,38 +18,39 @@ EditableText.propTypes = {
 
 export default function EditableText(props) {
   const { id, content, type } = props;
-  const [editText, isEditing, handleEditButtonClick,
-    handleChange, handleSubmit, handleKeyDown] =
-     useEditableTextController(id, content, type);
+  const [
+    editText,
+    isEditing,
+    handleEditButtonClick,
+    handleChange,
+    handleSubmit,
+    handleKeyDown,
+  ] = useEditableTextController(id, content, type);
 
   return (
     <EditableTextContainer>
       <FullWidthContainer>
-        {type === 'url' ?
-          <EditButton
-            isEditing={isEditing}
-            onClick={handleEditButtonClick}
-          >
+        {type === "url" ? (
+          <EditButton isEditing={isEditing} onClick={handleEditButtonClick}>
             <LinkDisplay
               href={editText}
-              target='_blank'
+              target="_blank"
               rel="noopener noreferrer" // added for security: https://mathiasbynens.github.io/rel-noopener/
               isEditing={isEditing}
             >
               {editText}
             </LinkDisplay>
             <EditIcon color="action" />
-          </EditButton> :
-          <EditButton
-            isEditing={isEditing}
-            onClick={handleEditButtonClick}
-          >
+          </EditButton>
+        ) : (
+          <EditButton isEditing={isEditing} onClick={handleEditButtonClick}>
             {editText}
             <EditIcon color="action" />
-          </EditButton>}
+          </EditButton>
+        )}
         <EditableInput
-          ref={(input) => input && input.focus()}
           isEditing={isEditing}
+          ref={(input) => input && input.focus()}
           value={editText}
           onChange={handleChange}
           onBlur={handleSubmit}
@@ -69,15 +69,11 @@ const EditableTextContainer = styled.div`
 `;
 
 const EditButton = styled.button`
-  ${(props) => props.isEditing ? HiddenStyle : EditButtonStyle};
-`;
-
-const EditableInput = styled.input`
-  ${(props) => props.isEditing ? EditableInputStyle : HiddenStyle};
+  ${(props) => (props.isEditing ? HiddenStyle : EditButtonStyle)};
 `;
 
 const LinkDisplay = styled.a`
-  ${(props) => props.isEditing ? HiddenStyle : LinkDisplayStyle }
+  ${(props) => (props.isEditing ? HiddenStyle : LinkDisplayStyle)}
 `;
 
 const EditButtonStyle = css`

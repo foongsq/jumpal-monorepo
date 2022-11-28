@@ -1,7 +1,7 @@
-import { useState, useContext } from 'react';
-import { SkillsApi } from './context';
-import { messages, ESCAPE_KEY, ENTER_KEY } from '../../../../constants';
-import { useJumpalToast } from '../../../../components';
+import { useState, useContext } from "react";
+import { SkillsApi } from "./context";
+import { messages, ESCAPE_KEY, ENTER_KEY } from "../../../../constants";
+import { useJumpalToast } from "../../../../components";
 
 export default function useEditableTextController(id, content, type) {
   const api = useContext(SkillsApi);
@@ -23,18 +23,18 @@ export default function useEditableTextController(id, content, type) {
 
   const handleSubmit = () => {
     const val = editText;
-    console.log('type', type);
-    if (type === 'skillName') {
+    console.log("type", type);
+    if (type === "skillName") {
       const res = api.updateSkill(id, {
         skillName: val,
       });
       Toast.apiFeedback({ res, successMsg: messages.SKILL_UPDATE_SUCCESS });
-    } else if (type === 'description') {
+    } else if (type === "description") {
       const res = api.updateSkill(id, {
         description: val,
       });
       Toast.apiFeedback({ res, successMsg: messages.SKILL_UPDATE_SUCCESS });
-    } else if (type === 'url') {
+    } else if (type === "url") {
       const res = api.updateSkill(id, {
         url: val,
       });
@@ -59,6 +59,12 @@ export default function useEditableTextController(id, content, type) {
     }
   };
 
-  return [editText, isEditing, handleEditButtonClick,
-    handleChange, handleSubmit, handleKeyDown];
+  return [
+    editText,
+    isEditing,
+    handleEditButtonClick,
+    handleChange,
+    handleSubmit,
+    handleKeyDown,
+  ];
 }

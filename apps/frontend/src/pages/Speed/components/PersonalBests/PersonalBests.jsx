@@ -1,7 +1,7 @@
-import React from 'react';
-import NewPersonalBest from './NewPersonalBest';
-import { Table, TableRow } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React from "react";
+import NewPersonalBest from "./NewPersonalBest";
+import { Table, TableRow } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   JumpalSpinnerWrapper,
   JumpalPossiblyEmpty,
@@ -10,10 +10,10 @@ import {
   JumpalTableRow,
   JumpalTableContainer,
   JumpalTableDeleteButton,
-} from '../../../../components';
-import { messages } from '../../../../constants';
-import { isDataPopulated } from '../../../../utils';
-import usePersonalBestsController from './usePersonalBestsController';
+} from "../../../../components";
+import { messages } from "../../../../constants";
+import { isDataPopulated } from "../../../../utils";
+import usePersonalBestsController from "./usePersonalBestsController";
 
 export default function PersonalBests() {
   const [pb, loading, addPb, handleDelete] = usePersonalBestsController();
@@ -29,18 +29,17 @@ export default function PersonalBests() {
     );
   };
 
-  const renderAllData = (records) => {
-    if (isDataPopulated(records)) {
-      const eventsArr = Object.keys(records[0]);
-      return eventsArr.map((event) => {
+  const renderAllData = (fePbData) => {
+    if (isDataPopulated(fePbData)) {
+      return fePbData.map((pbRecord) => {
         return (
-          <JumpalTableRow key={event}>
-            <JumpalTableCell>{event}</JumpalTableCell>
-            <JumpalTableCell>{records[0][event].score}</JumpalTableCell>
-            <JumpalTableCell>{records[0][event].time}</JumpalTableCell>
+          <JumpalTableRow key={pbRecord.event}>
+            <JumpalTableCell>{pbRecord.event}</JumpalTableCell>
+            <JumpalTableCell>{pbRecord.score}</JumpalTableCell>
+            <JumpalTableCell>{pbRecord.time}</JumpalTableCell>
             <JumpalTableCell>
               <JumpalTableDeleteButton
-                onClick={() => handleDelete(event)}
+                onClick={() => handleDelete(pbRecord.event)}
               >
                 <DeleteIcon />
               </JumpalTableDeleteButton>
@@ -58,7 +57,8 @@ export default function PersonalBests() {
         <h2>My Personal Bests</h2>
         <JumpalPossiblyEmpty
           msg={messages.PB_EMPTY}
-          isPopulated={isDataPopulated(pb)}>
+          isPopulated={isDataPopulated(pb)}
+        >
           <JumpalTableContainer>
             <Table>
               <tbody>

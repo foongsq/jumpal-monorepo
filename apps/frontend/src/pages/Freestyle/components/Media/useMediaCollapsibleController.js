@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useJumpalConfirm, useJumpalToast } from '../../../../components';
-import { messages } from '../../../../constants';
+import { useState } from "react";
+import { useJumpalConfirm, useJumpalToast } from "../../../../components";
+import { messages } from "../../../../constants";
 
 export default function useMediaCollapsibleController(id, delIg) {
   const Toast = useJumpalToast();
@@ -13,8 +13,8 @@ export default function useMediaCollapsibleController(id, delIg) {
 
   const handleDelete = async () => {
     confirm({
-      title: 'Confirm deletion',
-      msg: 'Are you sure you want to delete this inspiration post?',
+      title: "Confirm deletion",
+      msg: "Are you sure you want to delete this inspiration post?",
       onConfirm: async () => {
         const res = await delIg(id);
         Toast.apiFeedback({ res, successMsg: messages.IG_DEL_SUCCESS });
@@ -23,5 +23,4 @@ export default function useMediaCollapsibleController(id, delIg) {
   };
 
   return [open, handleClick, handleDelete];
-};
-
+}

@@ -1,14 +1,18 @@
-import React from 'react';
-import { TextField } from '@mui/material';
-import {
-  JumpalFormControl,
-} from '../../../../components/JumpalCommon';
-import useNewSkillController from './useNewSkillController';
-import JumpalModal from '../../../../components/JumpalModal';
+import React from "react";
+import { TextField } from "@mui/material";
+import { JumpalFormControl } from "../../../../components/JumpalCommon.tsx";
+import useNewSkillController from "./useNewSkillController";
+import JumpalModal from "../../../../components/JumpalModal";
 
 export default function NewSkill() {
-  const [open, toggleNewSkill, handleSkillNameChange, handleProgressChange,
-    handleUrlChange, submitEntry] = useNewSkillController();
+  const [
+    open,
+    toggleNewSkill,
+    handleSkillNameChange,
+    handleProgressChange,
+    handleUrlChange,
+    submitEntry,
+  ] = useNewSkillController();
 
   return (
     <JumpalModal

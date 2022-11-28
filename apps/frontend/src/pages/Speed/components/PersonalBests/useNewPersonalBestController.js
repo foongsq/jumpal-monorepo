@@ -1,10 +1,8 @@
-import { useState } from 'react';
-import { useAuth } from '../../../../hooks';
-import { useJumpalToast } from '../../../../components';
+import { useState } from "react";
+import { useJumpalToast } from "../../../../components";
 
 export default function useNewPersonalBestController(addPb) {
   const Toast = useJumpalToast();
-  const [user] = useAuth();
   const [open, setOpen] = useState(false);
   const [eventJ, setEventJ] = useState(null);
   const [score, setScore] = useState(null);
@@ -33,13 +31,21 @@ export default function useNewPersonalBestController(addPb) {
     event.preventDefault();
     const res = await addPb(eventJ, score, time);
     if (res) {
-      Toast.success('New Personal Best saved successfully!');
+      Toast.success("New Personal Best saved successfully!");
       toggleNewPersonalBest();
     } else {
-      Toast.error('An error occured :(');
+      Toast.error("An error occured :(");
     }
   };
 
-  return [user, toggleNewPersonalBest, handleEventChange, handleScoreChange,
-    handleTimeChange, saveNewPersonalBest, open, eventJ, time];
+  return [
+    toggleNewPersonalBest,
+    handleEventChange,
+    handleScoreChange,
+    handleTimeChange,
+    saveNewPersonalBest,
+    open,
+    eventJ,
+    time,
+  ];
 }

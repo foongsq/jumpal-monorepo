@@ -1,17 +1,11 @@
-import React from 'react';
-import {
-  TextField,
-  InputLabel,
-  MenuItem,
-  Select,
-} from '@mui/material';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-import PropTypes from 'prop-types';
-import {
-  JumpalFormControl } from '../../../../components/JumpalCommon';
-import JumpalModal from '../../../../components/JumpalModal';
-import { speedEvents } from '../../../../constants';
-import useNewSpeedRecordController from './useNewSpeedRecordController';
+import React from "react";
+import { TextField, InputLabel, MenuItem, Select } from "@mui/material";
+import DateTimePicker from "@mui/lab/DateTimePicker";
+import PropTypes from "prop-types";
+import { JumpalFormControl } from "../../../../components/JumpalCommon.tsx";
+import JumpalModal from "../../../../components/JumpalModal";
+import { speedEvents } from "../../../../constants";
+import useNewSpeedRecordController from "./useNewSpeedRecordController";
 
 NewSpeedRecord.propTypes = {
   addSd: PropTypes.func.isRequired,
@@ -19,9 +13,17 @@ NewSpeedRecord.propTypes = {
 
 export default function NewSpeedRecord(props) {
   const { addSd } = props;
-  const [open, eventJ, score, time, toggleNewSpeedRecord, handleEventChange,
-    handleScoreChange, handleTimeChange, saveSpeedRecord] =
-    useNewSpeedRecordController(addSd);
+  const [
+    open,
+    eventJ,
+    score,
+    time,
+    toggleNewSpeedRecord,
+    handleEventChange,
+    handleScoreChange,
+    handleTimeChange,
+    saveSpeedRecord,
+  ] = useNewSpeedRecordController(addSd);
 
   return (
     <JumpalModal
@@ -42,17 +44,16 @@ export default function NewSpeedRecord(props) {
       <JumpalFormControl>
         <InputLabel id="event-label">Event</InputLabel>
         <Select
-          labelId='event-label'
+          labelId="event-label"
           label="Event"
           value={eventJ}
           onChange={handleEventChange}
         >
-          {speedEvents.map(
-              (event) =>
-                <MenuItem value={event.value} key={event.value}>
-                  {event.label}
-                </MenuItem>,
-          )}
+          {speedEvents.map((event) => (
+            <MenuItem value={event.value} key={event.value}>
+              {event.label}
+            </MenuItem>
+          ))}
         </Select>
       </JumpalFormControl>
       <JumpalFormControl>

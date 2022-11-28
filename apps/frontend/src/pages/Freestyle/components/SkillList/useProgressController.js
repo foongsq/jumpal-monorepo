@@ -1,12 +1,12 @@
-import { useState, useContext } from 'react';
-import { SkillsApi } from './context';
-import { useJumpalToast } from '../../../../components';
-import { ENTER_KEY, ESCAPE_KEY } from '../../../../constants';
+import { useState, useContext } from "react";
+import { SkillsApi } from "./context";
+import { useJumpalToast } from "../../../../components";
+import { ENTER_KEY, ESCAPE_KEY } from "../../../../constants";
 
 export default function useProgressController(id, progress) {
   const api = useContext(SkillsApi);
   const Toast = useJumpalToast();
-  const [editText, setEditText] = useState('');
+  const [editText, setEditText] = useState("");
   const [editing, setEditing] = useState(false);
 
   const handleEditButtonClick = () => {
@@ -31,22 +31,22 @@ export default function useProgressController(id, progress) {
         progress: newProgress,
       });
       if (res) {
-        setEditText('');
+        setEditText("");
         setEditing(false);
-        Toast.success('Progress updated successfully!');
+        Toast.success("Progress updated successfully!");
       } else {
-        Toast.error('An error occured :(');
+        Toast.error("An error occured :(");
       }
     } else {
-      setEditText('');
+      setEditText("");
       setEditing(false);
-      Toast.error('An error occured :(');
+      Toast.error("An error occured :(");
     }
   };
 
   const handleKeyDown = (e) => {
     if (e.which === ESCAPE_KEY) {
-      setEditText('');
+      setEditText("");
       setEditing(false);
     } else if (e.which === ENTER_KEY) {
       handleSubmit(e);
@@ -61,6 +61,13 @@ export default function useProgressController(id, progress) {
     }
     return displayProgress;
   };
-  return [editText, editing, handleEditButtonClick, handleChange,
-    handleSubmit, handleKeyDown, reverseArray];
+  return [
+    editText,
+    editing,
+    handleEditButtonClick,
+    handleChange,
+    handleSubmit,
+    handleKeyDown,
+    reverseArray,
+  ];
 }

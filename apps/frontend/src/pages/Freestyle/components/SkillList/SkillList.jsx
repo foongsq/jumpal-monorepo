@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 import {
   JumpalSpinnerWrapper,
   JumpalPossiblyEmpty,
-} from '../../../../components';
-import SkillCollapsible from './SkillCollapsible';
-import NewSkill from './NewSkill';
-import { messages } from '../../../../constants';
-import { isDataPopulated } from '../../../../utils';
-import { SkillsApi } from './context';
-import { JumpalVerticalSpacing } from '../../../../components/JumpalCommon';
-import useSkillListController from './useSkillListController';
+} from "../../../../components";
+import SkillCollapsible from "./SkillCollapsible";
+import NewSkill from "./NewSkill";
+import { messages } from "../../../../constants";
+import { isDataPopulated } from "../../../../utils";
+import { SkillsApi } from "./context";
+import { JumpalVerticalSpacing } from "../../../../components/JumpalCommon.tsx";
+import useSkillListController from "./useSkillListController";
 
 export default function SkillList() {
   const [sl, loading, api, processData] = useSkillListController();
@@ -29,12 +29,12 @@ export default function SkillList() {
           >
             {processData().notLearnt.map((object) => (
               <SkillCollapsible
-                key={object[0]}
-                id={object[0]}
-                skillName={object[1].skillName}
-                description={object[1].description}
-                progress={object[1].progress}
-                url={object[1].url}
+                key={object.recordId}
+                id={object.recordId}
+                skillName={object.skillName}
+                description={object.description}
+                progress={object.progress}
+                url={object.url}
                 learnt={false}
               />
             ))}
@@ -48,12 +48,12 @@ export default function SkillList() {
             {processData().learnt.map((object) => {
               return (
                 <SkillCollapsible
-                  key={object[0]}
-                  id={object[0]}
-                  skillName={object[1].skillName}
-                  description={object[1].description}
-                  progress={object[1].progress}
-                  url={object[1].url}
+                  key={object.recordId}
+                  id={object.recordId}
+                  skillName={object.skillName}
+                  description={object.description}
+                  progress={object.progress}
+                  url={object.url}
                   learnt={true}
                 />
               );
@@ -62,6 +62,5 @@ export default function SkillList() {
         </JumpalPossiblyEmpty>
       </JumpalSpinnerWrapper>
     </SkillsApi.Provider>
-
   );
 }

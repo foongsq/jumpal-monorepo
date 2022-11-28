@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useJumpalToast } from '../../../../components';
+import { useState } from "react";
+import { useJumpalToast } from "../../../../components";
 
 function useNewSpeedRecordController(addSd) {
   const Toast = useJumpalToast();
@@ -30,16 +30,25 @@ function useNewSpeedRecordController(addSd) {
   const saveSpeedRecord = async (event) => {
     const res = await addSd(eventJ, score, time);
     if (res) {
-      Toast.success('New speed record successfully saved!');
+      Toast.success("New speed record successfully saved!");
       toggleNewSpeedRecord();
     } else {
-      Toast.error('An error occured :(');
+      Toast.error("An error occured :(");
     }
     event.preventDefault();
   };
 
-  return [open, eventJ, score, time, toggleNewSpeedRecord, handleEventChange,
-    handleScoreChange, handleTimeChange, saveSpeedRecord];
+  return [
+    open,
+    eventJ,
+    score,
+    time,
+    toggleNewSpeedRecord,
+    handleEventChange,
+    handleScoreChange,
+    handleTimeChange,
+    saveSpeedRecord,
+  ];
 }
 
 export default useNewSpeedRecordController;

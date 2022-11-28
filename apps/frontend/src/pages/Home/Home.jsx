@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import routes from '../../routes/routes';
-import styled from '@emotion/styled';
-import { JumpalPageContainer } from '../../components';
+import React from "react";
+import { Link } from "react-router-dom";
+import routes from "../../routes/routes";
+import styled from "@emotion/styled";
+import { JumpalPageContainer } from "../../components";
 
 export default function Home() {
   return (

@@ -1,16 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Collapse, Paper } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { CollapsibleButtonsContainer }
-  from '../../../../components/JumpalCommon';
-import styled from '@emotion/styled';
-import { LinkDisplayStyle } from '../../../../styles/styles';
+import React from "react";
+import PropTypes from "prop-types";
+import { Collapse, Paper } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { CollapsibleButtonsContainer } from "../../../../components/JumpalCommon.tsx";
+import styled from "@emotion/styled";
+import { LinkDisplayStyle } from "../../../../styles/styles";
 import {
   ActiveNoteButtonStyle,
   NoteButtonStyle,
-} from '../../../../styles/styles';
-import useMediaCollapsibleController from './useMediaCollapsibleController';
+} from "../../../../styles/styles";
+import useMediaCollapsibleController from "./useMediaCollapsibleController";
 
 MediaCollapsible.propTypes = {
   id: PropTypes.string.isRequired,
@@ -21,24 +20,23 @@ MediaCollapsible.propTypes = {
 
 export default function MediaCollapsible(props) {
   const { id, url, content, delIg } = props;
-  const [open, handleClick, handleDelete] =
-  useMediaCollapsibleController(id, delIg);
+  const [open, handleClick, handleDelete] = useMediaCollapsibleController(
+    id,
+    delIg
+  );
 
   return (
     <MediaContainer>
       <CollapsibleButtonsContainer>
-        <NoteButton
-          isOpen={open}
-          onClick={handleClick}
-        >
+        <NoteButton isOpen={open} onClick={handleClick}>
           {content}
         </NoteButton>
         <TrashButton onClick={handleDelete}>
-          <DeleteIcon color="action"/>
+          <DeleteIcon color="action" />
         </TrashButton>
       </CollapsibleButtonsContainer>
       <Collapse in={open}>
-        <Paper className='skillItem' elevation={5}>
+        <Paper className="skillItem" elevation={5}>
           <LinkDisplay
             target="_blank"
             rel="noopener noreferrer" // added for security: https://mathiasbynens.github.io/rel-noopener/
@@ -62,7 +60,7 @@ const MediaContainer = styled.div`
 `;
 
 const NoteButton = styled.button`
-  ${(props) => props.isOpen ? ActiveNoteButtonStyle : NoteButtonStyle}
+  ${(props) => (props.isOpen ? ActiveNoteButtonStyle : NoteButtonStyle)}
 `;
 
 const TrashButton = styled.button`

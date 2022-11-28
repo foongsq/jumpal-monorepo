@@ -1,10 +1,10 @@
-import { useState, useContext } from 'react';
-import { useJumpalToast } from '../../../../components';
-import { messages, ENTER_KEY, ESCAPE_KEY } from '../../../../constants';
-import { SkillsApi } from './context';
+import { useState, useContext } from "react";
+import { useJumpalToast } from "../../../../components";
+import { messages, ENTER_KEY, ESCAPE_KEY } from "../../../../constants";
+import { SkillsApi } from "./context";
 
-export default function useUrlController(id) {
-  const [editText, setEditText] = useState('');
+export default function useUrlController(id, url) {
+  const [editText, setEditText] = useState("");
   const [editing, setEditing] = useState(false);
   const Toast = useJumpalToast();
   const api = useContext(SkillsApi);
@@ -13,7 +13,7 @@ export default function useUrlController(id) {
     setEditText(e.target.value);
   };
 
-  const handleUrlSubmit = async (e) => {
+  const handleUrlSubmit = async () => {
     const val = editText;
     if (val) {
       const res = await api.updateSkill(id, {
@@ -21,7 +21,6 @@ export default function useUrlController(id) {
       });
       Toast.apiFeedback({ res, successMsg: messages.SKILL_UPDATE_SUCCESS });
     }
-    setEditing(false);
   };
 
   const handleKeyDown = (e) => {
@@ -41,6 +40,11 @@ export default function useUrlController(id) {
     }
   };
 
-  return [editText, editing, handleUrlChange,
-    handleKeyDown, handleCollapsibleHeaderClick];
+  return [
+    editText,
+    editing,
+    handleUrlChange,
+    handleKeyDown,
+    handleCollapsibleHeaderClick,
+  ];
 }

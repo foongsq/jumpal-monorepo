@@ -1,9 +1,9 @@
-import { useState, useContext } from 'react';
-import { SkillsApi } from './context';
-import { useJumpalConfirm, useJumpalToast } from '../../../../components';
-import { messages } from '../../../../constants';
+import { useState, useContext } from "react";
+import { SkillsApi } from "./context";
+import { useJumpalConfirm, useJumpalToast } from "../../../../components";
+import { messages } from "../../../../constants";
 
-export default function useSkillCollapsibleController() {
+export default function useSkillCollapsibleController(id) {
   const Toast = useJumpalToast();
   const { confirm } = useJumpalConfirm();
   const api = useContext(SkillsApi);
@@ -20,8 +20,8 @@ export default function useSkillCollapsibleController() {
 
   const handleDelete = async () => {
     confirm({
-      title: 'Confirm deletion',
-      msg: 'Are you sure you want to delete this skill?',
+      title: "Confirm deletion",
+      msg: "Are you sure you want to delete this skill?",
       onConfirm: async () => {
         const res = await api.delSkill(id);
         Toast.apiFeedback({ res, successMsg: messages.SKILL_DEL_SUCCESS });
@@ -43,6 +43,13 @@ export default function useSkillCollapsibleController() {
     Toast.apiFeedback({ res, successMsg: messages.UNLEARN_SUCCESS });
   };
 
-  return [open, openProgress, handleClick, handleProgressClick,
-    handleDelete, handleLearnt, handleUnlearn];
+  return [
+    open,
+    openProgress,
+    handleClick,
+    handleProgressClick,
+    handleDelete,
+    handleLearnt,
+    handleUnlearn,
+  ];
 }
