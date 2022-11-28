@@ -1,51 +1,45 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../hooks';
-import Instagram from './components/Instagram/Instagram';
-import SkillList from './components/SkillList/SkillList';
+import React from "react";
+import Media from "./components/Media/Media";
+import SkillList from "./components/SkillList/SkillList";
 import {
   JumpalToggleButtons,
   JumpalErrorText,
-  JumpalSpinnerWrapper } from '../../components';
-import { messages } from '../../constants';
-import './Freestyle.css';
+  JumpalSpinnerWrapper,
+  JumpalPageContainer,
+} from "../../components";
+import {
+  messages,
+  freestyleComponent,
+  freestyleToggleButtons,
+} from "../../constants";
+import useFreestyleController from "./useFreestyleController";
 
-const component = {
-  SKILLSLIST: 'Skills List',
-  IGINSPO: 'Instagram Inspiration',
-};
-
-const toggleButtonNames = [component.SKILLSLIST, component.IGINSPO];
-
-function Freestyle() {
-  const [user, loading] = useAuth();
-  const [componentRendered, setComponentRendered] =
-    useState(component.SKILLSLIST);
-
-  const toggleComponent = (event, newComponent) => {
-    if (newComponent) {
-      setComponentRendered(newComponent);
-    }
-  };
+export default function Freestyle() {
+  const [user, loading, componentRendered, toggleComponent] =
+    useFreestyleController();
 
   return (
     <JumpalSpinnerWrapper loading={loading}>
-      <div className='componentContentDiv'>
+      <JumpalPageContainer>
         <JumpalToggleButtons
-          buttons={toggleButtonNames}
+          buttons={freestyleToggleButtons}
           value={componentRendered}
           toggle={toggleComponent}
         />
-        {componentRendered === component.IGINSPO ?
-          (user ?
-            <Instagram /> :
-            <JumpalErrorText msg={messages.IG_NOT_SIGNED_IN} />) :
-        componentRendered === component.SKILLSLIST ?
-          (user ?
-            <SkillList />:
-            <JumpalErrorText msg={messages.IG_NOT_SIGNED_IN} />) : null }
-      </div>
+        {componentRendered === freestyleComponent.IGINSPO ? (
+          user ? (
+            <Media />
+          ) : (
+            <JumpalErrorText msg={messages.IG_NOT_SIGNED_IN} />
+          )
+        ) : componentRendered === freestyleComponent.SKILLSLIST ? (
+          user ? (
+            <SkillList />
+          ) : (
+            <JumpalErrorText msg={messages.IG_NOT_SIGNED_IN} />
+          )
+        ) : null}
+      </JumpalPageContainer>
     </JumpalSpinnerWrapper>
   );
 }
-
-export default Freestyle;

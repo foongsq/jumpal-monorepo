@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 JumpalPossiblyEmpty.propTypes = {
   msg: PropTypes.string,
@@ -7,7 +7,7 @@ JumpalPossiblyEmpty.propTypes = {
   children: PropTypes.element,
 };
 
-function JumpalPossiblyEmpty(props) {
+export default function JumpalPossiblyEmpty(props) {
   const { msg, isPopulated, children } = props;
   const [showChildren, setShowChildren] = useState(isPopulated);
 
@@ -16,14 +16,8 @@ function JumpalPossiblyEmpty(props) {
   }, [isPopulated]);
 
   if (showChildren) {
-    return children;
+    return <div>{children}</div>;
   } else {
-    return (
-      <p style={{ textAlign: 'center' }}>
-        {msg}
-      </p>
-    );
+    return <p style={{ textAlign: "center" }}>{msg}</p>;
   }
-};
-
-export default JumpalPossiblyEmpty;
+}

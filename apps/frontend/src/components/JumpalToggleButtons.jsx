@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import React from "react";
+import PropTypes from "prop-types";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 JumpalToggleButtons.propTypes = {
   buttons: PropTypes.array,
@@ -8,19 +8,19 @@ JumpalToggleButtons.propTypes = {
   toggle: PropTypes.func,
 };
 
-function JumpalToggleButtons(props) {
+export default function JumpalToggleButtons(props) {
   const { buttons, value, toggle } = props;
   return (
     <ToggleButtonGroup
       exclusive
       value={value}
       onChange={toggle}
-      color='primary'
+      color="primary"
       style={{
-        paddingTop: '1rem',
-        display: 'flex',
-        justifyContent: 'center',
-        width: '100%',
+        paddingTop: "1rem",
+        display: "flex",
+        justifyContent: "center",
+        width: "100%",
       }}
     >
       {buttons.map((buttonValue) => (
@@ -30,6 +30,4 @@ function JumpalToggleButtons(props) {
       ))}
     </ToggleButtonGroup>
   );
-};
-
-export default JumpalToggleButtons;
+}

@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useCallback } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import React, { useState, useCallback } from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const ConfirmContext = React.createContext(null);
 
@@ -27,7 +27,8 @@ export const ConfirmProvider = ({ children }) => {
   const confirm = useCallback(({ title, msg, onConfirm }) => {
     setConfirm({
       open: true,
-      title, msg,
+      title,
+      msg,
       onConfirm: () => {
         onConfirm();
         removeConfirm();
@@ -40,9 +41,7 @@ export const ConfirmProvider = ({ children }) => {
 
   return (
     <ConfirmContext.Provider value={value}>
-      <Confirm
-        confirmData={confirmData}
-      />
+      <Confirm confirmData={confirmData} />
       {children}
     </ConfirmContext.Provider>
   );
@@ -52,10 +51,7 @@ export const ConfirmProvider = ({ children }) => {
 const Confirm = ({ confirmData }) => {
   const { open, title, msg, onConfirm, onCancel } = confirmData;
   return (
-    <Dialog
-      open={open}
-      onClose={onCancel}
-    >
+    <Dialog open={open} onClose={onCancel}>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{msg}</DialogContentText>
