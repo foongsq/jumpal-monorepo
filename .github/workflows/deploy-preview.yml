@@ -18,3 +18,4 @@ jobs:
           expires: 30d
           projectId: jumpal-27f91
           entryPoint: "./apps/frontend"
+          channelId: preprod
