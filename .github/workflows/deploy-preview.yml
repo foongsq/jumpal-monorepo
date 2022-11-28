@@ -1,9 +1,8 @@
 name: Deploy to Preview Channel
 
 on:
-  # pull_request:
-  push:
-    branches: [ "main" ]
+  pull_request:
+    branches: [ "main", "revamp*" ]
 
 jobs:
   build_and_preview:
