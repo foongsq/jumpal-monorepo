@@ -49,6 +49,5 @@ export const processSlData = (rawSlData: RawSlData): FeSlRecord[] => {
       arr.push({ ...eventRecord, recordId });
     }
   }
-  console.log("arr", arr);
   return arr;
 };

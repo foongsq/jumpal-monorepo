@@ -10,7 +10,7 @@ import { freestyleComponent, freestyleToggleButtons } from "../../constants";
 import useFreestyleController from "./useFreestyleController";
 
 export default function Freestyle() {
-  const [loading, componentRendered, toggleComponent] =
+  const [user, loading, componentRendered, toggleComponent] =
     useFreestyleController();
 
   return (
