@@ -1,21 +1,29 @@
 import React from "react";
 import useCounterController from "./useCounterController";
 import styled from "@emotion/styled";
+import { JumpalHideableComponent } from "../../../../components";
+import PropTypes from "prop-types";
 
-export default function Counter() {
+Counter.propTypes = {
+  hide: PropTypes.boolean,
+};
+export default function Counter(props) {
+  const { hide } = props;
   const [count, increment, decrement, reset] = useCounterController();
 
   return (
-    <CounterContainer>
-      <CountContainer>
-        <Count>{count}</Count>
-      </CountContainer>
-      <CounterButtons>
-        <CounterButton onClick={decrement}>-</CounterButton>
-        <CounterButton onClick={increment}>+</CounterButton>
-      </CounterButtons>
-      <ResetButton onClick={reset}>Reset</ResetButton>
-    </CounterContainer>
+    <JumpalHideableComponent hide={hide}>
+      <CounterContainer>
+        <CountContainer>
+          <Count>{count}</Count>
+        </CountContainer>
+        <CounterButtons>
+          <CounterButton onClick={decrement}>-</CounterButton>
+          <CounterButton onClick={increment}>+</CounterButton>
+        </CounterButtons>
+        <ResetButton onClick={reset}>Reset</ResetButton>
+      </CounterContainer>
+    </JumpalHideableComponent>
   );
 }
 

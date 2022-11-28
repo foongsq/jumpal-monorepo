@@ -3,6 +3,7 @@ import JumpalErrorText from "./JumpalErrorText";
 import JumpalPossiblyEmpty from "./JumpalPossiblyEmpty";
 import JumpalSpinnerWrapper from "./JumpalSpinnerWrapper";
 import JumpalToggleButtons from "./JumpalToggleButtons";
+import JumpalHideableComponent from "./JumpalHideableComponent";
 import {
   JumpalTableContainer,
   JumpalHeaderTableCell,
@@ -26,6 +27,7 @@ export {
   JumpalTableRow,
   JumpalTableDeleteButton,
   JumpalPageContainer,
+  JumpalHideableComponent,
   useJumpalToast,
   useJumpalConfirm,
 };

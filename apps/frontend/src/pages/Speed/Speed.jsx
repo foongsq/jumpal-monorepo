@@ -45,23 +45,10 @@ export default function Speed() {
           value={componentRendered}
           toggle={toggleComponent}
         />
-        {componentRendered === component.PERSONALBEST ? (
-          user ? (
-            <PersonalBests />
-          ) : (
-            <JumpalErrorText msg={messages.PB_NOT_SIGNED_IN} />
-          )
-        ) : componentRendered === component.SPEEDDATA ? (
-          user ? (
-            <SpeedData />
-          ) : (
-            <JumpalErrorText msg={messages.SD_NOT_SIGNED_IN} />
-          )
-        ) : componentRendered === component.TIMING ? (
-          <TimingTracks />
-        ) : componentRendered === component.COUNTER ? (
-          <Counter />
-        ) : null}
+        <PersonalBests hide={!(componentRendered === component.PERSONALBEST)} />
+        <SpeedData hide={!(componentRendered === component.SPEEDDATA)} />
+        <TimingTracks hide={!(componentRendered === component.TIMING)} />
+        <Counter hide={!(componentRendered === component.COUNTER)} />
       </div>
     </JumpalSpinnerWrapper>
   );

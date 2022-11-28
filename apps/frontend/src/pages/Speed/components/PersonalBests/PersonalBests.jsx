@@ -1,4 +1,5 @@
 import React from "react";
+import { useAuth } from "../../../../data";
 import NewPersonalBest from "./NewPersonalBest";
 import { Table, TableRow } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -10,13 +11,22 @@ import {
   JumpalTableRow,
   JumpalTableContainer,
   JumpalTableDeleteButton,
+  JumpalErrorText,
+  JumpalHideableComponent,
 } from "../../../../components";
 import { messages } from "../../../../constants";
 import { isDataPopulated } from "../../../../utils";
 import usePersonalBestsController from "./usePersonalBestsController";
+import PropTypes from "prop-types";
 
-export default function PersonalBests() {
+PersonalBests.propTypes = {
+  hide: PropTypes.boolean,
+};
+
+export default function PersonalBests(props) {
+  const { hide } = props;
   const [pb, loading, addPb, handleDelete] = usePersonalBestsController();
+  const [user] = useAuth();
 
   const renderTableHeader = () => {
     return (
@@ -51,24 +61,30 @@ export default function PersonalBests() {
   };
 
   return (
-    <JumpalSpinnerWrapper loading={loading}>
-      <div className="componentContentDiv">
-        <NewPersonalBest addPb={addPb} />
-        <h2>My Personal Bests</h2>
-        <JumpalPossiblyEmpty
-          msg={messages.PB_EMPTY}
-          isPopulated={isDataPopulated(pb)}
-        >
-          <JumpalTableContainer>
-            <Table>
-              <tbody>
-                {renderTableHeader()}
-                {renderAllData(pb)}
-              </tbody>
-            </Table>
-          </JumpalTableContainer>
-        </JumpalPossiblyEmpty>
-      </div>
-    </JumpalSpinnerWrapper>
+    <JumpalHideableComponent hide={hide}>
+      {!user ? (
+        <JumpalErrorText msg={messages.PB_NOT_SIGNED_IN} />
+      ) : (
+        <JumpalSpinnerWrapper loading={loading}>
+          <div className="componentContentDiv">
+            <NewPersonalBest addPb={addPb} />
+            <h2>My Personal Bests</h2>
+            <JumpalPossiblyEmpty
+              msg={messages.PB_EMPTY}
+              isPopulated={isDataPopulated(pb)}
+            >
+              <JumpalTableContainer>
+                <Table>
+                  <tbody>
+                    {renderTableHeader()}
+                    {renderAllData(pb)}
+                  </tbody>
+                </Table>
+              </JumpalTableContainer>
+            </JumpalPossiblyEmpty>
+          </div>
+        </JumpalSpinnerWrapper>
+      )}
+    </JumpalHideableComponent>
   );
 }

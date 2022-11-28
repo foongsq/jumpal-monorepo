@@ -15,7 +15,7 @@ import {
 import useFreestyleController from "./useFreestyleController";
 
 export default function Freestyle() {
-  const [user, loading, componentRendered, toggleComponent] =
+  const [loading, componentRendered, toggleComponent] =
     useFreestyleController();
 
   return (
@@ -26,19 +26,10 @@ export default function Freestyle() {
           value={componentRendered}
           toggle={toggleComponent}
         />
-        {componentRendered === freestyleComponent.IGINSPO ? (
-          user ? (
-            <Media />
-          ) : (
-            <JumpalErrorText msg={messages.IG_NOT_SIGNED_IN} />
-          )
-        ) : componentRendered === freestyleComponent.SKILLSLIST ? (
-          user ? (
-            <SkillList />
-          ) : (
-            <JumpalErrorText msg={messages.IG_NOT_SIGNED_IN} />
-          )
-        ) : null}
+        <Media hide={!(componentRendered === freestyleComponent.IGINSPO)} />
+        <SkillList
+          hide={!(componentRendered === freestyleComponent.SKILLSLIST)}
+        />
       </JumpalPageContainer>
     </JumpalSpinnerWrapper>
   );
