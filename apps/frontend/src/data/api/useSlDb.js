@@ -18,12 +18,14 @@ export default function useSlDb() {
   const [loading, setLoading] = useState(true);
   const [sl, setSl] = useState([]);
   const slRef = firebase.skillList;
+  const slCacheKey = "skill-list";
 
   const onSlUpdate = (snapshot) => {
     setLoading(true);
     if (snapshot) {
       const rawSkillList = snapshot.val();
       const feSkillList = processSlData(rawSkillList);
+      localStorage.setItem(slCacheKey, JSON.stringify(feSkillList));
       setSl(feSkillList);
     }
     setLoading(false);
@@ -40,13 +42,19 @@ export default function useSlDb() {
 
   const getSl = async () => {
     setLoading(true);
-    return postRequest(async () => {
-      const snapshot = await get(slRef);
-      onSlUpdate(snapshot);
-    });
+    const cacheResults = localStorage.getItem(slCacheKey);
+    if (cacheResults) {
+      setSl(JSON.parse(cacheResults));
+    } else {
+      return postRequest(async () => {
+        const snapshot = await get(slRef);
+        onSlUpdate(snapshot);
+      });
+    }
   };
 
   const getSkill = async (id) => {
+    localStorage.removeItem(slCacheKey);
     return getRequest(async () => {
       const skillRef = child(slRef, id);
       const snapshot = await get(skillRef);
@@ -55,6 +63,7 @@ export default function useSlDb() {
   };
 
   const addSkill = async (name, progress, url, isLearnt) => {
+    localStorage.removeItem(slCacheKey);
     return postRequest(() => {
       push(slRef, {
         skillName: name,
@@ -66,6 +75,7 @@ export default function useSlDb() {
   };
 
   const delSkill = async (id) => {
+    localStorage.removeItem(slCacheKey);
     return postRequest(() => {
       const skillRef = child(slRef, id);
       remove(skillRef);
@@ -73,6 +83,7 @@ export default function useSlDb() {
   };
 
   const updateSkill = async (id, change) => {
+    localStorage.removeItem(slCacheKey);
     return postRequest(async () => {
       const skillRef = child(slRef, id);
       await update(skillRef, change);

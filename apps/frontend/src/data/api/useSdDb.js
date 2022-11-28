@@ -15,12 +15,14 @@ export default function useSdDb() {
   const [sd, setSd] = useState([]);
   const [today, setToday] = useState([]);
   const sdRef = firebase.speedRecords;
+  const sdCacheKey = "speed-data";
 
   const onSdUpdate = (snapshot) => {
     setLoading(true);
     if (snapshot) {
       const rawSpeedRecords = snapshot.val();
       const feSpeedRecords = processSpeedRecord(rawSpeedRecords);
+      localStorage.setItem(sdCacheKey, JSON.stringify(feSpeedRecords));
       setSd(feSpeedRecords);
       const feTodayRecords = filterTodayRecords(feSpeedRecords);
       setToday(feTodayRecords);
@@ -39,13 +41,19 @@ export default function useSdDb() {
 
   const getSd = async () => {
     setLoading(true);
-    return postRequest(async () => {
-      const snapshot = await get(sdRef);
-      onSdUpdate(snapshot);
-    });
+    const cacheResults = localStorage.getItem(sdCacheKey);
+    if (cacheResults) {
+      setSd(JSON.parse(cacheResults));
+    } else {
+      return postRequest(async () => {
+        const snapshot = await get(sdRef);
+        onSdUpdate(snapshot);
+      });
+    }
   };
 
   const addSd = async (event, score, time) => {
+    localStorage.removeItem(sdCacheKey);
     return postRequest(() => {
       push(child(sdRef, `${getSdDbTime(time)}`), {
         event: event,
@@ -56,6 +64,7 @@ export default function useSdDb() {
   };
 
   const delSd = async (event, score, time) => {
+    localStorage.removeItem(sdCacheKey);
     return postRequest(async () => {
       const snapshot = await get(child(sdRef, getSdDbTime(time)));
       snapshot.forEach((child) => {
