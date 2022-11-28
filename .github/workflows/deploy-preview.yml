@@ -1,11 +1,12 @@
-name: Deploy to Firebase
+name: Deploy to Preview Channel
 
-# on:
-#   push:
-#     # branches: [ "main" ]
+on:
+  # pull_request:
+  push:
+    branches: [ "main" ]
 
 jobs:
-  deploy_live_website:
+  build_and_preview:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,6 +15,6 @@ jobs:
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          expires: 30d
           projectId: jumpal-27f91
-          channelId: live
           entryPoint: "./apps/frontend"
