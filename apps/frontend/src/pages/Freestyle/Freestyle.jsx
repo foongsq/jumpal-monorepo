@@ -10,6 +10,7 @@ import { freestyleComponent, freestyleToggleButtons } from "../../constants";
 import useFreestyleController from "./useFreestyleController";
 
 export default function Freestyle() {
+  // eslint-disable-next-line
   const [user, loading, componentRendered, toggleComponent] =
     useFreestyleController();
 

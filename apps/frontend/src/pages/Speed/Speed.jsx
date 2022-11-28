@@ -21,6 +21,7 @@ const toggleButtonNames = [
 ];
 
 export default function Speed() {
+  // eslint-disable-next-line
   const [user, loading] = useAuth();
   const [componentRendered, setComponentRendered] = useState(
     component.PERSONALBEST
