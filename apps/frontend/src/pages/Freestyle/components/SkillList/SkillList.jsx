@@ -29,12 +29,12 @@ export default function SkillList() {
           >
             {processData().notLearnt.map((object) => (
               <SkillCollapsible
-                key={object[0]}
-                id={object[0]}
-                skillName={object[1].skillName}
-                description={object[1].description}
-                progress={object[1].progress}
-                url={object[1].url}
+                key={object.recordId}
+                id={object.recordId}
+                skillName={object.skillName}
+                description={object.description}
+                progress={object.progress}
+                url={object.url}
                 learnt={false}
               />
             ))}
@@ -48,12 +48,12 @@ export default function SkillList() {
             {processData().learnt.map((object) => {
               return (
                 <SkillCollapsible
-                  key={object[0]}
-                  id={object[0]}
-                  skillName={object[1].skillName}
-                  description={object[1].description}
-                  progress={object[1].progress}
-                  url={object[1].url}
+                  key={object.recordId}
+                  id={object.recordId}
+                  skillName={object.skillName}
+                  description={object.description}
+                  progress={object.progress}
+                  url={object.url}
                   learnt={true}
                 />
               );

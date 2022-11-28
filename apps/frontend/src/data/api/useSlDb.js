@@ -9,6 +9,7 @@ import {
   onValue,
   update,
 } from "firebase/database";
+import { processSlData } from "../dataProcessors/slDataProcessor";
 import useRequest from "./useRequest";
 
 export default function useSlDb() {
@@ -21,9 +22,9 @@ export default function useSlDb() {
   const onSlUpdate = (snapshot) => {
     setLoading(true);
     if (snapshot) {
-      const newSkillList = [];
-      newSkillList.push(snapshot.val());
-      setSl(newSkillList);
+      const rawSkillList = snapshot.val();
+      const feSkillList = processSlData(rawSkillList);
+      setSl(feSkillList);
     }
     setLoading(false);
   };
