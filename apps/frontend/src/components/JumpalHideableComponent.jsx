@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 JumpalHideableComponent.propTypes = {
-  hide: PropTypes.boolean,
+  hide: PropTypes.bool,
   children: PropTypes.element,
 };
 

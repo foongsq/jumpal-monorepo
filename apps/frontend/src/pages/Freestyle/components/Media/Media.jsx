@@ -18,7 +18,7 @@ import PropTypes from "prop-types";
 import { useAuth } from "../../../../data";
 
 Media.propTypes = {
-  hide: PropTypes.boolean,
+  hide: PropTypes.bool,
 };
 
 export default function Media(props) {

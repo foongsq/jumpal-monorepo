@@ -3,15 +3,10 @@ import Media from "./components/Media/Media";
 import SkillList from "./components/SkillList/SkillList";
 import {
   JumpalToggleButtons,
-  JumpalErrorText,
   JumpalSpinnerWrapper,
   JumpalPageContainer,
 } from "../../components";
-import {
-  messages,
-  freestyleComponent,
-  freestyleToggleButtons,
-} from "../../constants";
+import { freestyleComponent, freestyleToggleButtons } from "../../constants";
 import useFreestyleController from "./useFreestyleController";
 
 export default function Freestyle() {

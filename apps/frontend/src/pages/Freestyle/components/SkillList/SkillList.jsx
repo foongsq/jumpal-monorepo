@@ -16,7 +16,7 @@ import PropTypes from "prop-types";
 import { useAuth } from "../../../../data";
 
 SkillList.propTypes = {
-  hide: PropTypes.boolean,
+  hide: PropTypes.bool,
 };
 
 export default function SkillList(props) {

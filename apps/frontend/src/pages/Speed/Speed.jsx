@@ -4,12 +4,7 @@ import SpeedData from "./components/SpeedData/SpeedData";
 import TimingTracks from "./components/TimingTracks/TimingTracks";
 import Counter from "./components/Counter/Counter";
 import PersonalBests from "./components/PersonalBests/PersonalBests";
-import { messages } from "../../constants";
-import {
-  JumpalToggleButtons,
-  JumpalErrorText,
-  JumpalSpinnerWrapper,
-} from "../../components";
+import { JumpalToggleButtons, JumpalSpinnerWrapper } from "../../components";
 
 const component = {
   TIMING: "Timing Track",

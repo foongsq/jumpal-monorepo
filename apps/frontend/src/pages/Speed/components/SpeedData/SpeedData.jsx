@@ -23,7 +23,7 @@ import PropTypes from "prop-types";
 import { useAuth } from "../../../../data";
 
 SpeedData.propTypes = {
-  hide: PropTypes.boolean,
+  hide: PropTypes.bool,
 };
 
 export default function SpeedData(props) {

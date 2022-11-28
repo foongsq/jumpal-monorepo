@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { JumpalHideableComponent } from "../../../../components";
 
 TimingTracks.propTypes = {
-  hide: PropTypes.boolean,
+  hide: PropTypes.bool,
 };
 
 export default function TimingTracks(props) {

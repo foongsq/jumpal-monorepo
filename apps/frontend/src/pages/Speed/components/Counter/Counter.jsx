@@ -5,7 +5,7 @@ import { JumpalHideableComponent } from "../../../../components";
 import PropTypes from "prop-types";
 
 Counter.propTypes = {
-  hide: PropTypes.boolean,
+  hide: PropTypes.bool,
 };
 export default function Counter(props) {
   const { hide } = props;

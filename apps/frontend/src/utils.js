@@ -1,5 +1,5 @@
 export const isDataPopulated = (data) => {
-  return data && data.length !== 0 && data[0];
+  return data && data.length !== 0;
 };
 
 export const getPbTime = (time) => {

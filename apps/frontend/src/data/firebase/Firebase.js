@@ -29,7 +29,10 @@ export default class Firebase {
 
   // User(s) ref
   get user() {
-    return ref(this.db, `users/${this.auth.currentUser.uid}`);
+    if (this.auth.currentUser) {
+      return ref(this.db, `users/${this.auth.currentUser.uid}`);
+    }
+    return null;
   }
 
   get users() {

@@ -6,7 +6,10 @@ import { JumpalCenteredButtonContainer } from "./JumpalCommon.tsx";
 import { useAuth } from "../data";
 
 JumpalModalContent.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element,
+  ]),
 };
 
 function JumpalModalContent(props) {
@@ -35,7 +38,10 @@ JumpalModal.propTypes = {
   onToggle: PropTypes.func,
   title: PropTypes.string,
   onSubmit: PropTypes.func,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element,
+  ]),
 };
 
 export default function JumpalModal(props) {
@@ -48,15 +54,17 @@ export default function JumpalModal(props) {
         <JumpalButton onClick={onToggle}>{openButtonText}</JumpalButton>
       </JumpalCenteredButtonContainer>
       <Modal open={isOpen} onClose={onToggle}>
-        <JumpalModalContent>
-          <Typography variant="h6" component="h2">
-            {title}
-          </Typography>
-          <form>{children}</form>
-          <JumpalButton onClick={onSubmit} disabled={!user}>
-            Save
-          </JumpalButton>
-        </JumpalModalContent>
+        <>
+          <JumpalModalContent>
+            <Typography variant="h6" component="h2">
+              {title}
+            </Typography>
+            <form>{children}</form>
+            <JumpalButton onClick={onSubmit} disabled={!user}>
+              Save
+            </JumpalButton>
+          </JumpalModalContent>
+        </>
       </Modal>
     </div>
   );

@@ -20,7 +20,7 @@ import usePersonalBestsController from "./usePersonalBestsController";
 import PropTypes from "prop-types";
 
 PersonalBests.propTypes = {
-  hide: PropTypes.boolean,
+  hide: PropTypes.bool,
 };
 
 export default function PersonalBests(props) {
