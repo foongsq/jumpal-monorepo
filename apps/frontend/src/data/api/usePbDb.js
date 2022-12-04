@@ -25,7 +25,7 @@ export default function usePbDb() {
   };
 
   useEffect(() => {
-    if (onPbUpdate) {
+    if (onPbUpdate && pbRef) {
       onValue(pbRef, onPbUpdate);
     }
     return () => {

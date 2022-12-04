@@ -31,7 +31,7 @@ export default function useSdDb() {
   };
 
   useEffect(() => {
-    if (onSdUpdate) {
+    if (onSdUpdate && sdRef) {
       onValue(sdRef, onSdUpdate);
     }
     return () => {

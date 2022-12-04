@@ -32,7 +32,7 @@ export default function useSlDb() {
   };
 
   useEffect(() => {
-    if (onSlUpdate) {
+    if (onSlUpdate && slRef) {
       onValue(slRef, onSlUpdate);
     }
     return () => {

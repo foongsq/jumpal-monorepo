@@ -24,7 +24,7 @@ export default function useMediaRefDb() {
   };
 
   useEffect(() => {
-    if (onIgUpdate) {
+    if (onIgUpdate && mediaRefsRef) {
       onValue(mediaRefsRef, onIgUpdate);
     }
     return () => {
