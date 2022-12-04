@@ -4,27 +4,36 @@ import { InputLabel, MenuItem, FormControl, Select } from "@mui/material";
 import { timingTrackOptions } from "../../../../constants";
 import styled from "@emotion/styled";
 import useTimingTracksController from "./useTimingTracksController";
+import PropTypes from "prop-types";
+import { JumpalHideableComponent } from "../../../../components";
 
-export default function TimingTracks() {
+TimingTracks.propTypes = {
+  hide: PropTypes.bool,
+};
+
+export default function TimingTracks(props) {
+  const { hide } = props;
   const [src, handleTrackChange] = useTimingTracksController();
 
   return (
-    <TimingTrackContainer>
-      <TimingTrackTitle>Timing Tracks</TimingTrackTitle>
-      <FormControl fullWidth>
-        <InputLabel>Select timing track</InputLabel>
-        <Select label="Select timing track" onChange={handleTrackChange}>
-          {timingTrackOptions.map((option) => (
-            <MenuItem value={option.value} key={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      {src !== "" ? (
-        <TimingTrackAudio src={src} controls></TimingTrackAudio>
-      ) : null}
-    </TimingTrackContainer>
+    <JumpalHideableComponent hide={hide}>
+      <TimingTrackContainer>
+        <TimingTrackTitle>Timing Tracks</TimingTrackTitle>
+        <FormControl fullWidth>
+          <InputLabel>Select timing track</InputLabel>
+          <Select label="Select timing track" onChange={handleTrackChange}>
+            {timingTrackOptions.map((option) => (
+              <MenuItem value={option.value} key={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {src !== "" ? (
+          <TimingTrackAudio src={src} controls></TimingTrackAudio>
+        ) : null}
+      </TimingTrackContainer>
+    </JumpalHideableComponent>
   );
 }
 

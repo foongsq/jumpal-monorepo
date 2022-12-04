@@ -2,10 +2,10 @@ import React from "react";
 import { TextField, InputLabel, MenuItem, Select } from "@mui/material";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import { speedEvents } from "../../../../constants";
-import PropTypes from "prop-types";
 import useNewPersonalBestController from "./useNewPersonalBestController";
 import { JumpalFormControl } from "../../../../components/JumpalCommon.tsx";
 import JumpalModal from "../../../../components/JumpalModal";
+import PropTypes from "prop-types";
 
 NewPersonalBest.propTypes = {
   addPb: PropTypes.func.isRequired,

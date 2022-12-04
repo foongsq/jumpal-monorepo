@@ -8,6 +8,8 @@ import {
   JumpalTableRow,
   JumpalTableContainer,
   JumpalTableDeleteButton,
+  JumpalHideableComponent,
+  JumpalErrorText,
 } from "../../../../components";
 import { Table, TableRow } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -17,10 +19,18 @@ import { messages } from "../../../../constants";
 import { isDataPopulated } from "../../../../utils";
 import styled from "@emotion/styled";
 import useSpeedDataController from "./useSpeedDataController";
+import PropTypes from "prop-types";
+import { useAuth } from "../../../../data";
 
-export default function SpeedData() {
+SpeedData.propTypes = {
+  hide: PropTypes.bool,
+};
+
+export default function SpeedData(props) {
+  const { hide } = props;
   const [sd, today, loading, addSd, showToday, handleDelete, toggleToday] =
     useSpeedDataController();
+  const [user] = useAuth();
 
   const renderTableHeader = () => {
     return (
@@ -56,38 +66,44 @@ export default function SpeedData() {
   };
 
   return (
-    <JumpalSpinnerWrapper loading={loading}>
-      <div className="componentContentDiv">
-        <NewSpeedRecord addSd={addSd} />
-        <TitleButtonContainer>
-          <h2>My Speed Records</h2>
-          {showToday ? (
-            <JumpalButton onClick={() => toggleToday(false)}>
-              <TagFacesIcon className="icon" />
-              All data
-            </JumpalButton>
-          ) : (
-            <JumpalButton onClick={() => toggleToday(true)}>
-              <TagFacesIcon className="icon" />
-              Today
-            </JumpalButton>
-          )}
-        </TitleButtonContainer>
-        <JumpalPossiblyEmpty
-          msg={messages.SD_EMPTY}
-          isPopulated={isDataPopulated(sd)}
-        >
-          <JumpalTableContainer>
-            <Table>
-              <tbody>
-                {renderTableHeader()}
-                {showToday ? renderData(today) : renderData(sd)}
-              </tbody>
-            </Table>
-          </JumpalTableContainer>
-        </JumpalPossiblyEmpty>
-      </div>
-    </JumpalSpinnerWrapper>
+    <JumpalHideableComponent hide={hide}>
+      {!user ? (
+        <JumpalErrorText msg={messages.SD_NOT_SIGNED_IN} />
+      ) : (
+        <JumpalSpinnerWrapper loading={loading}>
+          <div className="componentContentDiv">
+            <NewSpeedRecord addSd={addSd} />
+            <TitleButtonContainer>
+              <h2>My Speed Records</h2>
+              {showToday ? (
+                <JumpalButton onClick={() => toggleToday(false)}>
+                  <TagFacesIcon className="icon" />
+                  All data
+                </JumpalButton>
+              ) : (
+                <JumpalButton onClick={() => toggleToday(true)}>
+                  <TagFacesIcon className="icon" />
+                  Today
+                </JumpalButton>
+              )}
+            </TitleButtonContainer>
+            <JumpalPossiblyEmpty
+              msg={messages.SD_EMPTY}
+              isPopulated={isDataPopulated(sd)}
+            >
+              <JumpalTableContainer>
+                <Table>
+                  <tbody>
+                    {renderTableHeader()}
+                    {showToday ? renderData(today) : renderData(sd)}
+                  </tbody>
+                </Table>
+              </JumpalTableContainer>
+            </JumpalPossiblyEmpty>
+          </div>
+        </JumpalSpinnerWrapper>
+      )}
+    </JumpalHideableComponent>
   );
 }
 

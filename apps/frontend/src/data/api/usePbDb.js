@@ -11,12 +11,14 @@ export default function usePbDb() {
   const [loading, setLoading] = useState(true);
   const [pb, setPb] = useState([]);
   const pbRef = firebase.personalBests;
+  const pbCacheKey = "personal-best";
 
-  const onPbUpdate = (snapshot) => {
+  const onPbUpdate = async (snapshot) => {
     setLoading(true);
     if (snapshot) {
       const rawPbData = snapshot.val();
       const fePbData = processPbData(rawPbData);
+      localStorage.setItem(pbCacheKey, JSON.stringify(fePbData));
       setPb(fePbData);
     }
     setLoading(false);
@@ -33,13 +35,19 @@ export default function usePbDb() {
 
   const getPb = async () => {
     setLoading(true);
-    return postRequest(async () => {
-      const snapshot = await get(pbRef);
-      onPbUpdate(snapshot);
-    });
+    const cacheResults = localStorage.getItem(pbCacheKey);
+    if (cacheResults) {
+      setPb(JSON.parse(cacheResults));
+    } else {
+      return postRequest(async () => {
+        const snapshot = await get(pbRef);
+        onPbUpdate(snapshot);
+      });
+    }
   };
 
   const addPb = async (event, score, time) => {
+    localStorage.removeItem(pbCacheKey);
     return postRequest(async () => {
       const currEventPbRef = child(pbRef, event);
       await set(currEventPbRef, {
@@ -50,6 +58,7 @@ export default function usePbDb() {
   };
 
   const delPb = async (event) => {
+    localStorage.removeItem(pbCacheKey);
     return postRequest(async () => {
       await remove(child(pbRef, event));
     });

@@ -10,12 +10,14 @@ export default function useMediaRefDb() {
   const [loading, setLoading] = useState(true);
   const [ig, setIg] = useState([]);
   const mediaRefsRef = firebase.mediaReferences;
+  const mediaRefCacheKey = "media-references";
 
   const onIgUpdate = (snapshot) => {
     setLoading(true);
     if (snapshot) {
       const rawMediaRefData = snapshot.val();
       const feMediaRefData = processMediaRefData(rawMediaRefData);
+      localStorage.setItem(mediaRefCacheKey, JSON.stringify(feMediaRefData));
       setIg(feMediaRefData);
     }
     setLoading(false);
@@ -32,19 +34,26 @@ export default function useMediaRefDb() {
 
   const getIg = async () => {
     setLoading(true);
-    return postRequest(async () => {
-      const snapshot = await get(mediaRefsRef);
-      onIgUpdate(snapshot);
-    });
+    const cacheResults = localStorage.getItem(mediaRefCacheKey);
+    if (cacheResults) {
+      setIg(JSON.parse(cacheResults));
+    } else {
+      return postRequest(async () => {
+        const snapshot = await get(mediaRefsRef);
+        onIgUpdate(snapshot);
+      });
+    }
   };
 
   const addIg = async (note, url) => {
+    localStorage.removeItem(mediaRefCacheKey);
     return postRequest(() => {
       push(mediaRefsRef, { note, url, timestamp: Date.now() });
     });
   };
 
   const delIg = async (id) => {
+    localStorage.removeItem(mediaRefCacheKey);
     return postRequest(async () => {
       const mediaRefRef = child(mediaRefsRef, id);
       await remove(mediaRefRef);

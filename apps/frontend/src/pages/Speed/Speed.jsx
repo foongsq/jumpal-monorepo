@@ -4,12 +4,7 @@ import SpeedData from "./components/SpeedData/SpeedData";
 import TimingTracks from "./components/TimingTracks/TimingTracks";
 import Counter from "./components/Counter/Counter";
 import PersonalBests from "./components/PersonalBests/PersonalBests";
-import { messages } from "../../constants";
-import {
-  JumpalToggleButtons,
-  JumpalErrorText,
-  JumpalSpinnerWrapper,
-} from "../../components";
+import { JumpalToggleButtons, JumpalSpinnerWrapper } from "../../components";
 
 const component = {
   TIMING: "Timing Track",
@@ -26,6 +21,7 @@ const toggleButtonNames = [
 ];
 
 export default function Speed() {
+  // eslint-disable-next-line
   const [user, loading] = useAuth();
   const [componentRendered, setComponentRendered] = useState(
     component.PERSONALBEST
@@ -45,23 +41,10 @@ export default function Speed() {
           value={componentRendered}
           toggle={toggleComponent}
         />
-        {componentRendered === component.PERSONALBEST ? (
-          user ? (
-            <PersonalBests />
-          ) : (
-            <JumpalErrorText msg={messages.PB_NOT_SIGNED_IN} />
-          )
-        ) : componentRendered === component.SPEEDDATA ? (
-          user ? (
-            <SpeedData />
-          ) : (
-            <JumpalErrorText msg={messages.SD_NOT_SIGNED_IN} />
-          )
-        ) : componentRendered === component.TIMING ? (
-          <TimingTracks />
-        ) : componentRendered === component.COUNTER ? (
-          <Counter />
-        ) : null}
+        <PersonalBests hide={!(componentRendered === component.PERSONALBEST)} />
+        <SpeedData hide={!(componentRendered === component.SPEEDDATA)} />
+        <TimingTracks hide={!(componentRendered === component.TIMING)} />
+        <Counter hide={!(componentRendered === component.COUNTER)} />
       </div>
     </JumpalSpinnerWrapper>
   );
