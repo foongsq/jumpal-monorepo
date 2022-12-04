@@ -41,7 +41,6 @@ export default class Firebase {
 
   // Personal best ref
   get personalBests() {
-    console.log("this.user", this.user);
     return child(this.user, "personal-bests");
   }
 

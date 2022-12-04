@@ -14,7 +14,6 @@ export default function usePbDb() {
   const pbCacheKey = "personal-best";
 
   const onPbUpdate = async (snapshot) => {
-    console.log("snapshot", snapshot);
     setLoading(true);
     if (snapshot) {
       const rawPbData = snapshot.val();
@@ -26,8 +25,7 @@ export default function usePbDb() {
   };
 
   useEffect(() => {
-    console.log("pbRef", pbRef);
-    if (onPbUpdate && pbRef) {
+    if (onPbUpdate) {
       onValue(pbRef, onPbUpdate);
     }
     return () => {
