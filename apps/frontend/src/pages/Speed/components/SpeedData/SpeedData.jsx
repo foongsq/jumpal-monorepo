@@ -10,6 +10,7 @@ import {
   JumpalTableDeleteButton,
   JumpalHideableComponent,
   JumpalErrorText,
+  JumpalBarChart,
 } from "../../../../components";
 import { Table, TableRow } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -87,6 +88,16 @@ export default function SpeedData(props) {
                 </JumpalButton>
               )}
             </TitleButtonContainer>
+            <JumpalBarChart
+              data={[
+                {
+                  name: "SCHC",
+                  color: "#d53e4f",
+                  items: sd.map((d) => ({ ...d, time: new Date(d.time) })),
+                },
+              ]}
+              dimensions={dimensions}
+            />
             <JumpalPossiblyEmpty
               msg={messages.SD_EMPTY}
               isPopulated={isDataPopulated(sd)}
@@ -112,3 +123,14 @@ const TitleButtonContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
+const dimensions = {
+  width: 600,
+  height: 300,
+  margin: {
+    top: 30,
+    right: 30,
+    bottom: 30,
+    left: 60,
+  },
+};
