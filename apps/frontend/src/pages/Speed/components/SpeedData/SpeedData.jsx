@@ -29,8 +29,16 @@ SpeedData.propTypes = {
 
 export default function SpeedData(props) {
   const { hide } = props;
-  const [sd, today, loading, addSd, showToday, handleDelete, toggleToday] =
-    useSpeedDataController();
+  const [
+    sd,
+    today,
+    loading,
+    addSd,
+    showToday,
+    handleDelete,
+    toggleToday,
+    splitSdByEvents,
+  ] = useSpeedDataController();
   const [user] = useAuth();
 
   const renderTableHeader = () => {
@@ -88,16 +96,7 @@ export default function SpeedData(props) {
                 </JumpalButton>
               )}
             </TitleButtonContainer>
-            <JumpalLineChart
-              data={[
-                {
-                  name: "all",
-                  color: "#d53e4f",
-                  items: sd.map((d) => ({ ...d, time: new Date(d.time) })),
-                },
-              ]}
-              dimensions={dimensions}
-            />
+            <JumpalLineChart data={splitSdByEvents()} dimensions={dimensions} />
             <JumpalPossiblyEmpty
               msg={messages.SD_EMPTY}
               isPopulated={isDataPopulated(sd)}
@@ -129,8 +128,8 @@ const dimensions = {
   height: 300,
   margin: {
     top: 30,
-    right: 30,
+    right: 50,
     bottom: 30,
-    left: 60,
+    left: 50,
   },
 };

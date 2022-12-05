@@ -28,5 +28,38 @@ export default function useSpeedDataController() {
     setShowToday(shouldShowToday);
   };
 
-  return [sd, today, loading, addSd, showToday, handleDelete, toggleToday];
+  const splitSdByEvents = () => {
+    const colors = ["red", "blue", "green", "purple", "pink"];
+    const grouped = sd.reduce((memo, x) => {
+      if (!memo[x.event]) {
+        memo[x.event] = [];
+      }
+      memo[x.event].push(x);
+      return memo;
+    }, {});
+    const res = [];
+    let i = 0;
+    // eslint-disable-next-line guard-for-in
+    for (const event in grouped) {
+      res.push({
+        name: event,
+        color: colors[i],
+        items: grouped[event].map((d) => ({ ...d, time: new Date(d.time) })),
+      });
+      i = (i + 1) % 5;
+    }
+    // console.log("res", res);
+    return res;
+  };
+
+  return [
+    sd,
+    today,
+    loading,
+    addSd,
+    showToday,
+    handleDelete,
+    toggleToday,
+    splitSdByEvents,
+  ];
 }

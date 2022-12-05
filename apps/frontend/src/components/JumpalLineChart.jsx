@@ -8,48 +8,42 @@ JumpalLineChart.propTypes = {
 };
 
 export default function JumpalLineChart({ data, dimensions }) {
-  // const [windowWidth, setWindowWidth] = useState(
-  //   Math.min(window.innerWidth, 1000) * 0.95
-  // );
-
-  // const setDimension = () => {
-  //   setWindowWidth(Math.min(window.innerWidth, 1000) * 0.95);
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener("resize", setDimension);
-  //   return () => {
-  //     window.removeEventListener("resize", setDimension);
-  //   };
-  // }, [windowWidth, data]);
-
   const svgRef = React.useRef(null);
-  const { width, height, margin } = dimensions;
-  const svgWidth = width + margin.left + margin.right;
+  const { height, margin } = dimensions;
+  const [svgWidth, setSvgWidth] = React.useState(
+    Math.min(window.innerWidth * 0.9, 1000 - 64)
+  );
+
+  const setDimension = () => {
+    setSvgWidth(Math.min(window.innerWidth * 0.9, 1000 - 64));
+    setWidth(svgWidth - margin.left - margin.right);
+  };
+
+  React.useEffect(() => {
+    window.addEventListener("resize", setDimension);
+    return () => {
+      window.removeEventListener("resize", setDimension);
+    };
+  }, [svgWidth]);
+
+  const [width, setWidth] = React.useState(
+    svgWidth - margin.left - margin.right
+  );
   const svgHeight = height + margin.top + margin.bottom;
 
   React.useEffect(() => {
     const xScale = d3
-      .scaleTime() // creates a time scale with a domain and range
+      .scaleUtc() // creates a time scale with a domain and range
       .domain(
         // min and max values
         d3.extent(data[0].items, (d) => new Date(d.time).getTime())
       )
-      .range([0, width]); // how much space the chart takes up in this axis
+      .range([0, width - 20]); // how much space the chart takes up in this axis, offset by 150 to accommodate line labels
     const yScale = d3
       .scaleLinear()
       .domain([
-        Math.max(
-          d3.min(data[0].items, (d) => {
-            console.log(d.score);
-            return parseInt(d.score);
-          }) - 10,
-          0
-        ),
-        d3.max(data[0].items, (d) => {
-          console.log(d.score);
-          return parseInt(d.score);
-        }) + 10,
+        Math.max(d3.min(data[0].items, (d) => parseInt(d.score)) - 10, 0),
+        d3.max(data[0].items, (d) => parseInt(d.score)) + 10,
       ])
       .range([height, 0]);
 
@@ -63,7 +57,7 @@ export default function JumpalLineChart({ data, dimensions }) {
     // Add X grid lines with labels
     const xAxis = d3
       .axisBottom(xScale)
-      .ticks(5) // number of separators for X axis
+      .ticks(20) // number of separators for X axis
       .tickSize(-height); // how long the lines should be
     const xAxisGroup = svg
       .append("g")
@@ -73,7 +67,7 @@ export default function JumpalLineChart({ data, dimensions }) {
     xAxisGroup
       .selectAll("text")
       .attr("color", "grey")
-      .attr("font-size", "0.75rem"); // axis labels
+      .attr("font-size", "0.5rem"); // axis labels
     svg
       .append("text")
       .attr("class", "x label")
@@ -112,7 +106,76 @@ export default function JumpalLineChart({ data, dimensions }) {
       .attr("stroke", (d) => d.color)
       .attr("stroke-width", 3)
       .attr("d", (d) => line(d.items));
-  }, [data]); // Redraw chart if data changes
+
+    // Add the points
+    svg
+      // First we need to enter in a group
+      .selectAll("myDots")
+      .data(data)
+      .enter()
+      .append("g")
+      .style("fill", (d) => d.color)
+      .selectAll("myPoints")
+      .data((d) => d.items)
+      .enter()
+      .append("circle")
+      .attr("cx", (d) => xScale(d.time))
+      .attr("cy", (d) => yScale(d.score))
+      .attr("r", 5)
+      .attr("stroke", "white");
+
+    // Add a legend at the end of each line
+    const wrap = (text, width) => {
+      text.each(function () {
+        // eslint-disable-next-line no-invalid-this
+        const text = d3.select(this);
+        const words = text.text().split(/\s+/).reverse();
+        let word;
+        let line = [];
+        const lineHeight = 1.1; // ems
+        const y = text.attr("y");
+        let tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y);
+        while ((word = words.pop())) {
+          line.push(word);
+          tspan.text(line.join(" "));
+          if (tspan.node().getComputedTextLength() > width) {
+            line.pop();
+            tspan.text(line.join(" "));
+            line = [word];
+            tspan = text
+              .append("tspan")
+              .attr("x", 0)
+              .attr("y", y)
+              .attr("dy", lineHeight + "em")
+              .text(word);
+          }
+        }
+      });
+    };
+    svg
+      .selectAll("myLabels")
+      .data(data)
+      .enter()
+      .append("g")
+      .append("text")
+      .datum((d) => {
+        return { name: d.name, color: d.color, value: d.items[0] };
+      }) // keep only the last value of each time series
+      .attr(
+        "transform",
+        (d) =>
+          "translate(" +
+          xScale(d.value.time) +
+          "," +
+          yScale(d.value.score) +
+          ")"
+      ) // Put the text at the position of the last point
+      .attr("x", 12) // shift the text a bit more right
+      .text((d) => d.name)
+      .style("fill", (d) => d.color)
+      .style("font-size", 15)
+      .call(wrap, 50);
+  }, [data, width]); // Redraw chart if data changes
 
   return <svg ref={svgRef} width={svgWidth} height={svgHeight} />;
 }
