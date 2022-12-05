@@ -32,18 +32,22 @@ export default function JumpalLineChart({ data, dimensions }) {
   const svgHeight = height + margin.top + margin.bottom;
 
   React.useEffect(() => {
+    let combinedData = [];
+    for (let i = 0; i < data.length; i++) {
+      combinedData = combinedData.concat(data[i].items);
+    }
     const xScale = d3
       .scaleUtc() // creates a time scale with a domain and range
       .domain(
         // min and max values
-        d3.extent(data[0].items, (d) => new Date(d.time).getTime())
+        d3.extent(combinedData, (d) => new Date(d.time).getTime())
       )
-      .range([0, width - 20]); // how much space the chart takes up in this axis, offset by 150 to accommodate line labels
+      .range([0, width - 20]); // how much space the chart takes up in this axis, offset by 20 to accommodate line labels
     const yScale = d3
       .scaleLinear()
       .domain([
-        Math.max(d3.min(data[0].items, (d) => parseInt(d.score)) - 10, 0),
-        d3.max(data[0].items, (d) => parseInt(d.score)) + 10,
+        Math.max(d3.min(combinedData, (d) => parseInt(d.score)) - 10, 0),
+        d3.max(combinedData, (d) => parseInt(d.score)) + 10,
       ])
       .range([height, 0]);
 
@@ -53,7 +57,6 @@ export default function JumpalLineChart({ data, dimensions }) {
     const svg = svgEl
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`); // transform to add margins for entire chart
-
     // Add X grid lines with labels
     const xAxis = d3
       .axisBottom(xScale)
@@ -92,12 +95,25 @@ export default function JumpalLineChart({ data, dimensions }) {
       .attr("y", 0 - margin.top / 2)
       .text("Score");
 
+    // clip rect
+    svg
+      .append("defs")
+      .append("svg:clipPath")
+      .attr("id", "clip")
+      .append("svg:rect")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("x", 0)
+      .attr("y", 0);
+
+    const connectedScatter = svg.append("g").attr("clip-path", "url(#clip)");
+
     // Draw the lines
     const line = d3
       .line()
       .x((d) => xScale(d.time))
       .y((d) => yScale(d.score));
-    svg
+    connectedScatter
       .selectAll(".line")
       .data(data)
       .enter()
@@ -105,10 +121,14 @@ export default function JumpalLineChart({ data, dimensions }) {
       .attr("fill", "none")
       .attr("stroke", (d) => d.color)
       .attr("stroke-width", 3)
-      .attr("d", (d) => line(d.items));
+      .attr("id", "pointline")
+      .attr("d", (d) => {
+        console.log("d.items at first", d.items);
+        return line(d.items);
+      });
 
     // Add the points
-    svg
+    connectedScatter
       // First we need to enter in a group
       .selectAll("myDots")
       .data(data)
@@ -119,6 +139,7 @@ export default function JumpalLineChart({ data, dimensions }) {
       .data((d) => d.items)
       .enter()
       .append("circle")
+      .attr("id", "circles")
       .attr("cx", (d) => xScale(d.time))
       .attr("cy", (d) => yScale(d.score))
       .attr("r", 5)
@@ -152,12 +173,13 @@ export default function JumpalLineChart({ data, dimensions }) {
         }
       });
     };
-    svg
+    connectedScatter
       .selectAll("myLabels")
       .data(data)
       .enter()
       .append("g")
       .append("text")
+      .attr("id", "myLabel")
       .datum((d) => {
         return { name: d.name, color: d.color, value: d.items[0] };
       }) // keep only the last value of each time series
@@ -175,6 +197,67 @@ export default function JumpalLineChart({ data, dimensions }) {
       .style("fill", (d) => d.color)
       .style("font-size", 15)
       .call(wrap, 50);
+
+    // A function that updates the chart when the user zoom and thus new boundaries are available
+    const updateChart = (e) => {
+      // recover the new scale
+      const newXScale = e.transform.rescaleX(xScale);
+
+      // update axes with these new boundaries
+      xAxisGroup.call(d3.axisBottom(newXScale).ticks(20).tickSize(-height));
+      // update line position
+      const newLine = d3
+        .line()
+        .x((d) => newXScale(d.time))
+        .y((d) => yScale(d.score));
+      connectedScatter
+        .selectAll("#pointline")
+        .attr("d", (d) => newLine(d.items));
+      xAxisGroup.selectAll("line").attr("stroke", "grey"); // axis line color
+      xAxisGroup
+        .selectAll("text")
+        .attr("color", "grey")
+        .attr("font-size", "0.5rem"); // axis labels
+
+      // update points in scatter plot
+      connectedScatter
+        .selectAll("#circles")
+        .attr("cx", (d) => newXScale(d.time))
+        .attr("cy", (d) => yScale(d.score));
+
+      // update position of labels
+      connectedScatter
+        .selectAll("#myLabel")
+        .attr(
+          "transform",
+          (d) =>
+            "translate(" +
+            newXScale(d.value.time) +
+            "," +
+            yScale(d.value.score) +
+            ")"
+        );
+    };
+    const zoom = d3
+      .zoom()
+      .scaleExtent([0.8, Infinity]) // This control how much you can unzoom (x0.8) and infinity
+      .translateExtent([
+        [0, 0],
+        [width, height],
+      ])
+      .extent([
+        [0, 0],
+        [width, height],
+      ])
+      .on("zoom", updateChart);
+    svg
+      .append("rect")
+      .attr("width", svgWidth)
+      .attr("height", svgHeight)
+      .style("fill", "none")
+      .style("pointer-events", "all")
+      .attr("transform", `translate(${margin.left},${margin.top})`)
+      .call(zoom);
   }, [data, width]); // Redraw chart if data changes
 
   return <svg ref={svgRef} width={svgWidth} height={svgHeight} />;
