@@ -2,12 +2,12 @@ import React from "react";
 import * as d3 from "d3";
 import PropTypes from "prop-types";
 
-JumpalBarChart.propTypes = {
+JumpalLineChart.propTypes = {
   data: PropTypes.array,
   dimensions: PropTypes.object,
 };
 
-export default function JumpalBarChart({ data, dimensions }) {
+export default function JumpalLineChart({ data, dimensions }) {
   // const [windowWidth, setWindowWidth] = useState(
   //   Math.min(window.innerWidth, 1000) * 0.95
   // );
@@ -30,14 +30,12 @@ export default function JumpalBarChart({ data, dimensions }) {
 
   React.useEffect(() => {
     const xScale = d3
-      .scaleTime()
+      .scaleTime() // creates a time scale with a domain and range
       .domain(
-        d3.extent(data[0].items, (d) => {
-          // console.log(new Date(d.time).getTime());
-          return new Date(d.time).getTime();
-        })
+        // min and max values
+        d3.extent(data[0].items, (d) => new Date(d.time).getTime())
       )
-      .range([0, width]);
+      .range([0, width]); // how much space the chart takes up in this axis
     const yScale = d3
       .scaleLinear()
       .domain([
@@ -60,32 +58,33 @@ export default function JumpalBarChart({ data, dimensions }) {
     svgEl.selectAll("*").remove(); // Clear svg content before adding new elements
     const svg = svgEl
       .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+      .attr("transform", `translate(${margin.left},${margin.top})`); // transform to add margins for entire chart
 
     // Add X grid lines with labels
-    const xAxis = d3.axisBottom(xScale).ticks(5).tickSize(-height);
+    const xAxis = d3
+      .axisBottom(xScale)
+      .ticks(5) // number of separators for X axis
+      .tickSize(-height); // how long the lines should be
     const xAxisGroup = svg
       .append("g")
-      .attr("transform", `translate(0, ${height})`)
+      .attr("transform", `translate(0, ${height})`) // where the axis should be
       .call(xAxis);
-    xAxisGroup.select(".domain").remove();
-    xAxisGroup.selectAll("line").attr("stroke", "grey");
+    xAxisGroup.selectAll("line").attr("stroke", "grey"); // axis line color
     xAxisGroup
       .selectAll("text")
       .attr("color", "grey")
-      .attr("font-size", "0.75rem");
+      .attr("font-size", "0.75rem"); // axis labels
     svg
       .append("text")
       .attr("class", "x label")
       .attr("text-anchor", "end")
       .attr("x", width)
       .attr("y", height + margin.bottom)
-      .text("Date");
+      .text("Date"); // axis name
 
     // Add Y grid lines with labels
     const yAxis = d3.axisLeft(yScale).ticks(10).tickSize(-width);
     const yAxisGroup = svg.append("g").call(yAxis);
-    yAxisGroup.select(".domain").remove();
     yAxisGroup.selectAll("line").attr("stroke", "grey");
     yAxisGroup
       .selectAll("text")

@@ -10,7 +10,7 @@ import {
   JumpalTableDeleteButton,
   JumpalHideableComponent,
   JumpalErrorText,
-  JumpalBarChart,
+  JumpalLineChart,
 } from "../../../../components";
 import { Table, TableRow } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -88,10 +88,10 @@ export default function SpeedData(props) {
                 </JumpalButton>
               )}
             </TitleButtonContainer>
-            <JumpalBarChart
+            <JumpalLineChart
               data={[
                 {
-                  name: "SCHC",
+                  name: "all",
                   color: "#d53e4f",
                   items: sd.map((d) => ({ ...d, time: new Date(d.time) })),
                 },
