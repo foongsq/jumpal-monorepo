@@ -4,6 +4,7 @@ import JumpalPossiblyEmpty from "./JumpalPossiblyEmpty";
 import JumpalSpinnerWrapper from "./JumpalSpinnerWrapper";
 import JumpalToggleButtons from "./JumpalToggleButtons";
 import JumpalHideableComponent from "./JumpalHideableComponent";
+import JumpalLineChart from "./JumpalLineChart";
 import {
   JumpalTableContainer,
   JumpalHeaderTableCell,
@@ -28,6 +29,7 @@ export {
   JumpalTableDeleteButton,
   JumpalPageContainer,
   JumpalHideableComponent,
+  JumpalLineChart,
   useJumpalToast,
   useJumpalConfirm,
 };

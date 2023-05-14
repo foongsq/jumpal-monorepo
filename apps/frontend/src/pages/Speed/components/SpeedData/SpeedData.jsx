@@ -10,6 +10,7 @@ import {
   JumpalTableDeleteButton,
   JumpalHideableComponent,
   JumpalErrorText,
+  JumpalLineChart,
 } from "../../../../components";
 import { Table, TableRow } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -28,8 +29,16 @@ SpeedData.propTypes = {
 
 export default function SpeedData(props) {
   const { hide } = props;
-  const [sd, today, loading, addSd, showToday, handleDelete, toggleToday] =
-    useSpeedDataController();
+  const [
+    sd,
+    today,
+    loading,
+    addSd,
+    showToday,
+    handleDelete,
+    toggleToday,
+    splitSdByEvents,
+  ] = useSpeedDataController();
   const [user] = useAuth();
 
   const renderTableHeader = () => {
@@ -87,6 +96,7 @@ export default function SpeedData(props) {
                 </JumpalButton>
               )}
             </TitleButtonContainer>
+            <JumpalLineChart data={splitSdByEvents()} dimensions={dimensions} />
             <JumpalPossiblyEmpty
               msg={messages.SD_EMPTY}
               isPopulated={isDataPopulated(sd)}
@@ -112,3 +122,14 @@ const TitleButtonContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
+const dimensions = {
+  width: 600,
+  height: 300,
+  margin: {
+    top: 30,
+    right: 50,
+    bottom: 30,
+    left: 50,
+  },
+};
